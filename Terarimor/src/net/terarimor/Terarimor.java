@@ -8,18 +8,17 @@ public class Terarimor extends Canvas implements Runnable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1337968212257060894L;
-	public static int height = 400;//The height of the jFrame -King
-	public static int width = 600;//The width of the jFrame -King
-	public static String title = "Terarimor!";//The title of the window -King
 	public boolean running = true;//A boolean used to show whether or not the game is running -King
+	public static Configuration config;
 	public Thread thread;
 	
 	public static void main(String args[]){
+		config = new Configuration();
 		Terarimor game = new Terarimor();
 		JFrame mainFrame = new JFrame();
 		
-		mainFrame.setSize(width, height);
-		mainFrame.setTitle(title);
+		mainFrame.setSize(config.getWindow_width(), config.getWindow_height());
+		mainFrame.setTitle(config.getWindow_title());
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.setLocationRelativeTo(null);
 		mainFrame.setVisible(true);
