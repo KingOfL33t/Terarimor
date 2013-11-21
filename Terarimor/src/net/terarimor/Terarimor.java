@@ -44,7 +44,6 @@ public class Terarimor extends Canvas implements Runnable{
 	}
 	public void run(){
 		while (this.running){
-			System.out.println("Ticked");
 		}
 	}
 }
