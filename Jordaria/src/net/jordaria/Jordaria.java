@@ -1,7 +1,10 @@
 package net.jordaria;
 
 import java.awt.Canvas;
+
 import javax.swing.JFrame;
+
+import net.jordaria.gui.GuiIngame;
 
 public class Jordaria extends Canvas implements Runnable{
 	/**
@@ -35,6 +38,7 @@ public class Jordaria extends Canvas implements Runnable{
 		this.running = true;
 		this.thread = new Thread(this);
 		this.thread.start();
+		GuiIngame ingameGui = new GuiIngame(this);
 	}
 	public void stop(){
 		if (!this.running){
