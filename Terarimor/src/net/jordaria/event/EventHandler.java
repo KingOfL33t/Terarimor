@@ -1,4 +1,4 @@
-package net.terarimor.event;
+package net.jordaria.event;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

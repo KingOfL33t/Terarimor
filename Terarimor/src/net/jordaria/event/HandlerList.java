@@ -1,4 +1,4 @@
-package net.terarimor.event;
+package net.jordaria.event;
 
 import java.util.ArrayList;
 import java.util.Collection;

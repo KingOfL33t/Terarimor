@@ -1,6 +1,6 @@
-package net.terarimor.event;
+package net.jordaria.event;
 
-import net.terarimor.exception.EventException;
+import net.jordaria.exception.EventException;
 
 public class EventListener {
 	private final Listener listener;

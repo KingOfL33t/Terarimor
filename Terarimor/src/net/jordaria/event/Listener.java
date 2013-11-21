@@ -1,3 +1,3 @@
-package net.terarimor.event;
+package net.jordaria.event;
 
 public interface Listener {}

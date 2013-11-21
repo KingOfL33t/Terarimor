@@ -1,4 +1,4 @@
-package net.terarimor.event;
+package net.jordaria.event;
 
 public abstract class Event {
 	private String name;

@@ -1,4 +1,4 @@
-package net.terarimor.exception;
+package net.jordaria.exception;
 
 public class EventException extends Exception {
 	
