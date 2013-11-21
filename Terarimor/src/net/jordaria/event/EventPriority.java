@@ -1,4 +1,4 @@
-package net.terarimor.event;
+package net.jordaria.event;
 
 public enum EventPriority {
 	LOWEST(0),

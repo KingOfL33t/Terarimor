@@ -1,10 +1,10 @@
-package net.terarimor;
+package net.jordaria;
 
 //The settings and configurations for various parts of the program
 public class Configuration {
 	public static int window_height = 400;
 	public static  int window_width = 600;
-	public static String window_title = "Terarimor!";
+	public static String window_title = "Jordaria!";
 	
 	public int getWindow_height(){
 		return window_height;

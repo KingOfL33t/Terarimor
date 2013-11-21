@@ -1,9 +1,9 @@
-package net.terarimor;
+package net.jordaria;
 
 import java.awt.Canvas;
 import javax.swing.JFrame;
 
-public class Terarimor extends Canvas implements Runnable{
+public class Jordaria extends Canvas implements Runnable{
 	/**
 	 * 
 	 */
@@ -14,7 +14,7 @@ public class Terarimor extends Canvas implements Runnable{
 	
 	public static void main(String args[]){
 		config = new Configuration();
-		Terarimor game = new Terarimor();
+		Jordaria game = new Jordaria();
 		JFrame mainFrame = new JFrame();
 		
 		mainFrame.setSize(config.getWindow_width(), config.getWindow_height());
