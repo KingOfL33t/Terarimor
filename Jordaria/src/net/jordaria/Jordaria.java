@@ -1,12 +1,16 @@
 package net.jordaria;
 
 import java.awt.Canvas;
+import java.nio.FloatBuffer;
 
 import net.jordaria.gui.GuiIngame;
+import net.jordaria.world.Chunk;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
 import org.lwjgl.util.glu.GLU;
 
 
@@ -22,6 +26,10 @@ public class Jordaria extends Canvas implements Runnable{
 
 	public GuiIngame ingameGui;
 	DisplayMode displayMode;
+	int VBOColorHandle;
+	int VBOVertexHandle;
+	
+	Chunk testChunk;
 
 	public static void main(String args[]){
 		config = new Configuration();
@@ -36,10 +44,11 @@ public class Jordaria extends Canvas implements Runnable{
 		}
 		this.running = true;
 		try{
-			wireframe = false;
+			wireframe = true;
 			ingameGui= new GuiIngame(this);
 			createWindow();
 			InitGL();
+			testChunk = new Chunk(0, 0, 0);
 			run();
 		}
 		catch(Exception e){
@@ -52,6 +61,7 @@ public class Jordaria extends Canvas implements Runnable{
 		while (this.running && !Display.isCloseRequested()){
 			try{
 				Render();
+				testChunk.render();
 				Display.update();
 				Display.sync(60);
 			}
@@ -90,7 +100,7 @@ public class Jordaria extends Canvas implements Runnable{
 
 		GL11.glMatrixMode(GL11.GL_PROJECTION);//modify pixel projection matrix
 		GL11.glLoadIdentity();
-		
+
 		//set up the camera
 		GLU.gluPerspective(45.0f, (float)displayMode.getWidth()/ (float)displayMode.getHeight(), 0.1f, 100.0f);
 
@@ -117,4 +127,32 @@ public class Jordaria extends Canvas implements Runnable{
 		}
 
 	}
+
+	private void CreateVBO() {
+		VBOColorHandle=GL15.glGenBuffers();
+		VBOVertexHandle=GL15.glGenBuffers();
+		FloatBuffer VertexPositionData = BufferUtils.createFloatBuffer(4*3);
+		VertexPositionData.put(new float[]{0.0f, 0.0f, 0.0f, 0f, 1f, 0f,1.0f, 1.0f, 0.0f,1.0f, 0f, 0f});
+		VertexPositionData.flip();
+		FloatBuffer VertexColorData = BufferUtils.createFloatBuffer(4*3);
+		VertexColorData.put(new float[]{1,1,1,1,1,1,1,1,1,0,1,1});
+		VertexColorData.flip();
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,VBOVertexHandle);
+		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, VertexPositionData, GL15.GL_STATIC_DRAW);
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,0);
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,VBOColorHandle);
+		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, VertexColorData, GL15.GL_STATIC_DRAW);
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,0);
+	}
+	private void DrawVBO() {
+		GL11.glPushMatrix();
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,VBOVertexHandle);
+		GL11.glVertexPointer(3, GL11.GL_FLOAT, 0, 0L);
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,VBOColorHandle);
+		GL11.glColorPointer(3, GL11.GL_FLOAT, 0, 0L);
+		GL11.glDrawArrays(GL11.GL_LINE_LOOP, 0, 4);
+		GL11.glPopMatrix();
+	}
+	
+	
 }
