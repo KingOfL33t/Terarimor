@@ -2,6 +2,8 @@ package net.jordaria;
 
 import java.awt.Canvas;
 
+import net.jordaria.gui.GuiIngame;
+
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
@@ -16,13 +18,14 @@ public class Jordaria extends Canvas implements Runnable{
 	public boolean running;//A boolean used to show whether or not the game is running -King
 	public static Configuration config;
 	public Thread thread;
+	public boolean wireframe;
 
+	public GuiIngame ingameGui;
 	DisplayMode displayMode;
 
 	public static void main(String args[]){
 		config = new Configuration();
 		Jordaria game = new Jordaria();
-		
 		game.start();
 	}
 
@@ -32,9 +35,9 @@ public class Jordaria extends Canvas implements Runnable{
 			return;//if the game is already in progress, dont start it again -King
 		}
 		this.running = true;
-		//this.thread = new Thread(this);
-		//this.thread.start();
 		try{
+			wireframe = false;
+			ingameGui= new GuiIngame(this);
 			createWindow();
 			InitGL();
 			run();
@@ -85,6 +88,7 @@ public class Jordaria extends Canvas implements Runnable{
 
 		GL11.glMatrixMode(GL11.GL_PROJECTION);//modify pixel projection matrix
 		GL11.glLoadIdentity();
+		
 		//set up the camera
 		GLU.gluPerspective(45.0f, (float)displayMode.getWidth()/ (float)displayMode.getHeight(), 0.1f, 100.0f);
 
@@ -96,9 +100,19 @@ public class Jordaria extends Canvas implements Runnable{
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		GL11.glLoadIdentity();
 
-		GL11.glTranslatef(0f,0.0f,-7f);             
-		GL11.glRotatef(45f,0.5f,1.0f,0.0f);               
+		GL11.glTranslatef(-3f,0.0f,-20f);             
+		GL11.glRotatef(45f,0.4f,1.0f,0.1f);               
 		GL11.glColor3f(0.5f,0.5f,1.0f);  
+		for (int x = 0; x<3; x++){
+			for (int y = 0; y<3; y++){
+				for (int z = 0; z<3; z++){
+					ingameGui.RenderCube();
+					GL11.glTranslatef(0.0f, 0.0f, 2f);
+				}
+				GL11.glTranslatef(0.0f, 2f, -6f);
+			}
+			GL11.glTranslatef(2f, -6f, 0.0f);
+		}
 
 	}
 }
