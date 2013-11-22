@@ -2,7 +2,7 @@ package net.jordaria.block;
 
 public class BlockStone extends Block{
 
-	protected BlockStone(int id) {
+	protected BlockStone(short id) {
 		super(id);
 	}
 

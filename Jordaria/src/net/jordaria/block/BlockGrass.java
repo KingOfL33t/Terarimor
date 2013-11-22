@@ -1,7 +1,7 @@
 package net.jordaria.block;
 
 public class BlockGrass extends Block{
-	protected BlockGrass(int id){
+	protected BlockGrass(short id){
 		super(id);
 	}
 }

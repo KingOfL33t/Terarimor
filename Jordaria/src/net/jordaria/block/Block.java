@@ -5,11 +5,11 @@ public class Block {
 
 	public static final Block[] blocksList = new Block[4096];
 	
-	public static final Block stone = new BlockStone(1);
-	public static final Block grass = new BlockGrass(2);
+	public static final Block stone = new BlockStone((short) 1);
+	public static final Block grass = new BlockGrass((short) 2);
 	
 	
-	public final int blockID;
+	public final short blockID;
 
 	//Local coordinates
 	protected double minX;
@@ -19,7 +19,7 @@ public class Block {
 	protected double maxY;
 	protected double maxZ;
 
-	protected Block(int id){
+	protected Block(short id){
 
 		if (blocksList[id] != null){
 			throw new IllegalArgumentException("Slot " + id + " is already occupied by " + blocksList[id] + " when adding " + this);
