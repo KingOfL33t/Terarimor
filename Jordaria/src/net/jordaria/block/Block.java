@@ -46,4 +46,7 @@ public class Block {
 	public void setActive(boolean active){
 		isActive = active;
 	}
+	public short getID(){
+		return blockID;
+	}
 }
