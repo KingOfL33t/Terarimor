@@ -80,6 +80,8 @@ public class Jordaria extends Canvas implements Runnable{
 
 	private void InitGL(){
 		GL11.glEnable(GL11.GL_TEXTURE_2D);//enable mapping textures to faces or quads
+		GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
+		GL11.glEnableClientState(GL11.GL_COLOR_ARRAY);
 		GL11.glShadeModel(GL11.GL_SMOOTH);//makes surfaces prettier :3
 		GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);//Sets the background color
 		GL11.glClearDepth(1.0);//the depth used when the depth buffer is cleared
