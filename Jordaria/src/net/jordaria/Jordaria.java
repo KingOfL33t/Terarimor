@@ -2,8 +2,6 @@ package net.jordaria;
 
 import java.awt.Canvas;
 
-import javax.swing.JFrame;
-
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
