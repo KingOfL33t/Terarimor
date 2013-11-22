@@ -40,7 +40,7 @@ public class Chunk {
 		for (int x = 0; x < Configuration.getCHUNK_SIZE(); x++){
 			for (int y = 0; y< Configuration.getCHUNK_SIZE(); y++){
 				for (int z = 0; z < Configuration.getCHUNK_SIZE(); z++){
-					if (x==0){
+					if (y==0){
 						blocks[x][y][z] = Block.stone;
 					}
 					else if (x==1){
