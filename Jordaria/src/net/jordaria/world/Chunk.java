@@ -43,7 +43,7 @@ public class Chunk {
 					if (y==0){
 						blocks[x][y][z] = Block.stone;
 					}
-					else if (x==1){
+					else if (y==1){
 						blocks[x][y][z] = Block.grass;
 					}
 					else{
