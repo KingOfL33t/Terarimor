@@ -5,9 +5,9 @@ public class Block {
 
 	public static final Block[] blocksList = new Block[4096];
 	
+	public static final Block air = new BlockAir((short) 0);
 	public static final Block stone = new BlockStone((short) 1);
 	public static final Block grass = new BlockGrass((short) 2);
-	
 	
 	public final short blockID;
 
