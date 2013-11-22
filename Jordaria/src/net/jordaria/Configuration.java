@@ -4,8 +4,10 @@ package net.jordaria;
 public class Configuration {
 	public static int window_height = 480;
 	public static int window_width = 640;
-	public static String window_title = "Jordaria!";
 	public static int display_bitsPerPixel = 32;
+	
+	public static String window_title = "Jordaria!";
+
 	
 	public int getWindow_height(){
 		return window_height;
