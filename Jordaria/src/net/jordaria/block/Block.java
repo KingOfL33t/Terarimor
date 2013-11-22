@@ -39,5 +39,11 @@ public class Block {
 		this.maxY = (double)maxY;
 		this.maxZ = (double)maxZ;
 	}
-
+	
+	public boolean isActive(){
+		return isActive;
+	}
+	public void setActive(boolean active){
+		isActive = active;
+	}
 }
