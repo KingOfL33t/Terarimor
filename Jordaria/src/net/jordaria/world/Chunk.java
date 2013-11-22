@@ -5,6 +5,9 @@ import net.jordaria.block.Block;
 public class Chunk {
 	static final int CHUNK_SIZE = 16;
 	private short[][][] blocks;
+	public final int xPosition;
+	public final int yPosition;
+	public final int zPosition;
 	
 	public void render(){
 		
@@ -12,7 +15,10 @@ public class Chunk {
 	public void update(){
 		
 	}
-	public Chunk(){
+	public Chunk(int xPos, int yPos, int zPos){
+		xPosition = xPos;
+		yPosition = yPos;
+		zPosition = zPos;
 		blocks = new short[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE];
 		for (int x = 0; x < CHUNK_SIZE; x++){
 			for (int y = 0; y< CHUNK_SIZE; y++){
