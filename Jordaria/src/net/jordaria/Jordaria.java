@@ -24,15 +24,7 @@ public class Jordaria extends Canvas implements Runnable{
 	public static void main(String args[]){
 		config = new Configuration();
 		Jordaria game = new Jordaria();
-		JFrame mainFrame = new JFrame();
-
-		mainFrame.setSize(config.getWindow_width(), config.getWindow_height());
-		mainFrame.setTitle(config.getWindow_title());
-		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mainFrame.setLocationRelativeTo(null);
-		mainFrame.setVisible(true);
-		mainFrame.add(game);
-
+		
 		game.start();
 	}
 
