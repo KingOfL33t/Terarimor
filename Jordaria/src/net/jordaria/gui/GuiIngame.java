@@ -13,7 +13,12 @@ public class GuiIngame extends Gui{
 	}
 
 	public void RenderCube(){
-		GL11.glBegin(GL11.GL_QUADS);
+		if (jordaria.wireframe){
+			GL11.glBegin(GL11.GL_LINE_LOOP);
+		}
+		else{
+			GL11.glBegin(GL11.GL_QUADS);
+		}
 		GL11.glColor3f(1.0f,1.0f,0.0f);
 		GL11.glVertex3f( 1.0f, 1.0f,-1.0f);
 		GL11.glVertex3f(-1.0f, 1.0f,-1.0f);        
