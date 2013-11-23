@@ -17,18 +17,12 @@ public class GuiScreen extends Gui{
     public int height;
 
     public Jordaria jd;
-    /**
-     * Draws the screen and all the components in it.
-     */
-    public void drawScreen(int par1, int par2, float par3)
-    {
-    	
-    }
+
 
     /**
      * Fired when a key is typed. This is the equivalent of KeyListener.keyTyped(KeyEvent e).
      */
-    protected void keyTyped(char par1, int par2)
+    protected void keyTyped(char charTyped, int key)
     {
     	
     }
@@ -40,14 +34,14 @@ public class GuiScreen extends Gui{
     {
         try
         {
-            Transferable var0 = Toolkit.getDefaultToolkit().getSystemClipboard().getContents((Object)null);
+            Transferable trans = Toolkit.getDefaultToolkit().getSystemClipboard().getContents((Object)null);
 
-            if (var0 != null && var0.isDataFlavorSupported(DataFlavor.stringFlavor))
+            if (trans != null && trans.isDataFlavorSupported(DataFlavor.stringFlavor))
             {
-                return (String)var0.getTransferData(DataFlavor.stringFlavor);
+                return (String)trans.getTransferData(DataFlavor.stringFlavor);
             }
         }
-        catch (Exception var1)
+        catch (Exception e)
         {
             ;
         }
@@ -58,14 +52,14 @@ public class GuiScreen extends Gui{
     /**
      * store a string in the system clipboard
      */
-    public static void setClipboardString(String par0Str)
+    public static void setClipboardString(String newString)
     {
         try
         {
-            StringSelection var1 = new StringSelection(par0Str);
-            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(var1, (ClipboardOwner)null);
+            StringSelection selection = new StringSelection(newString);
+            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, (ClipboardOwner)null);
         }
-        catch (Exception var2)
+        catch (Exception e)
         {
             ;
         }
@@ -74,25 +68,18 @@ public class GuiScreen extends Gui{
     /**
      * Called when the mouse is clicked.
      */
-    protected void mouseClicked(int par1, int par2, int par3)
+    protected void mouseClicked(int mouseX, int mouseY)
     {
     	
     }
 
-    /**
-     * Called when the mouse is moved or a mouse button is released.  Signature: (mouseX, mouseY, which) which==-1 is
-     * mouseMove, which==0 or which==1 is mouseUp
-     */
-    protected void mouseMovedOrUp(int par1, int par2, int par3)
-    {
-        
-    }
+
 
     /**
      * Called when a mouse button is pressed and the mouse is moved around. Parameters are : mouseX, mouseY,
      * lastButtonClicked & timeSinceMouseClick.
      */
-    protected void mouseClickMove(int par1, int par2, int par3, long par4) {}
+    protected void mouseClickMove(int mouseX, int mouseY, int lastButtonClicked, long timeSinceMouseClick) {}
 
 
     /**
@@ -169,7 +156,6 @@ public class GuiScreen extends Gui{
         return true;
     }
 
-    public void confirmClicked(boolean par1, int par2) {}
 
     public static boolean isShiftKeyDown()
     {
