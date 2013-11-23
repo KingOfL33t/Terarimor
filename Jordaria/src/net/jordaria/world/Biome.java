@@ -8,6 +8,8 @@ import net.jordaria.block.Block;
 public class Biome {
 	public static final Biome[] biomeList = new Biome[256];
 	
+	public static final Biome flat = (new BiomeFlat(0)).setBiomeName("Forest").setFillerBlockID(Block.dirt.blockID).setHumidity(0.75F).setMagic(0.5F).setTechnology(0.0F).setTemperature(0.5F).setTopBlockID(Block.grass.blockID);
+	
 	public short topBlockID;//the block on top of the biome
 	public short fillerBlockID;
 	
@@ -19,6 +21,7 @@ public class Biome {
 	protected List spawnableMobs;
 	
 	public final int biomeID;
+	public String biomeName;
 	
 	 protected Biome(int par1)
 	    {
@@ -33,4 +36,67 @@ public class Biome {
 	        this.biomeID = par1;
 	        biomeList[par1] = this;
 	    }
+
+	public short getTopBlockID() {
+		return topBlockID;
+	}
+
+	public short getFillerBlockID() {
+		return fillerBlockID;
+	}
+
+	public float getTemperature() {
+		return temperature;
+	}
+
+	public float getHumidity() {
+		return humidity;
+	}
+
+	public float getMagic() {
+		return magic;
+	}
+
+	public float getTechnology() {
+		return technology;
+	}
+
+	private String getBiomeName() {
+		return biomeName;
+	}
+
+	protected Biome setBiomeName(String biomeName) {
+		this.biomeName = biomeName;
+		return this;
+	}
+
+	private Biome setTopBlockID(short topBlockID) {
+		this.topBlockID = topBlockID;
+		return this;
+	}
+
+	private Biome setFillerBlockID(short fillerBlockID) {
+		this.fillerBlockID = fillerBlockID;
+		return this;
+	}
+
+	private Biome setTemperature(float temperature) {
+		this.temperature = temperature;
+		return this;
+	}
+
+	private Biome setHumidity(float humidity) {
+		this.humidity = humidity;
+		return this;
+	}
+
+	private Biome setMagic(float magic) {
+		this.magic = magic;
+		return this;
+	}
+
+	private Biome setTechnology(float technology) {
+		this.technology = technology;
+		return this;
+	}
 }
