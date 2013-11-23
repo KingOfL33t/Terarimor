@@ -11,6 +11,11 @@ public class World {
 	
 	public List playerEntities = new ArrayList();
 	
-	 protected Set activeChunkSet = new HashSet();
-
+	protected Set activeChunkSet = new HashSet();
+	 
+	public String worldName;
+	
+	public World(String name){
+		this.worldName = name;
+	}
 }
