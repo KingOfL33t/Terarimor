@@ -1,13 +1,14 @@
 package net.jordaria;
 
-import java.awt.Canvas;
 import java.nio.FloatBuffer;
-
 import net.jordaria.gui.GuiIngame;
+import net.jordaria.gui.GuiScreen;
+import net.jordaria.gui.MouseAssistant;
 import net.jordaria.world.Chunk;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
@@ -15,27 +16,33 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.util.glu.GLU;
 
 
-public class Jordaria extends Canvas implements Runnable{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1337968212257060894L;
+public class Jordaria implements Runnable{
+
 	public boolean running;//A boolean used to show whether or not the game is running -King
 	public static Configuration config;
+	public GameSettings gameSettings;
 	public Thread thread;
 	public boolean wireframe;
-
+	
+    
 	public GuiIngame ingameGui;
+	public GuiScreen currentScreen;
 	DisplayMode displayMode;
 	int VBOColorHandle;
 	int VBOVertexHandle;
+	public int displayWidth;
+    public int displayHeight;
+	
+    public MouseAssistant mouseHelper;
 
-	private float PX, PY, PZ;
+	//whether or not the actual game has the focus or a menu does
+	public boolean inGameHasFocus;
 
 	Chunk testChunk;
 
 	public static void main(String args[]){
 		config = new Configuration();
+
 		Jordaria game = new Jordaria();
 		game.start();
 	}
@@ -47,7 +54,7 @@ public class Jordaria extends Canvas implements Runnable{
 		}
 		this.running = true;
 		try{
-			wireframe = true;
+			gameSettings = new GameSettings(this);
 			ingameGui= new GuiIngame(this);
 			createWindow();
 			InitGL();
@@ -68,7 +75,7 @@ public class Jordaria extends Canvas implements Runnable{
 				Render();
 				Display.update();
 				Display.sync(60);
-				
+
 			}
 			catch(Exception e){
 				;
@@ -158,6 +165,99 @@ public class Jordaria extends Canvas implements Runnable{
 		GL11.glDrawArrays(GL11.GL_LINE_LOOP, 0, 4);
 		GL11.glPopMatrix();
 	}
+	public void runTick(){
+		int mouseButton;
+		while (Mouse.next())
+		{
+			mouseButton = Mouse.getEventButton();
 
+			KeyBind.setKeyBindState(mouseButton - 100, Mouse.getEventButtonState());
+
+			if (Mouse.getEventButtonState())
+			{
+				KeyBind.onTick(mouseButton - 100);
+			}
+
+			if (this.currentScreen == null)
+			{
+				if (!this.inGameHasFocus && Mouse.getEventButtonState())
+				{
+					this.setIngameFocus();
+				}
+			}
+			else if (this.currentScreen != null)
+			{
+				this.currentScreen.handleMouseInput();
+			}
+		}
+
+
+		while (Keyboard.next())
+		{
+			KeyBind.setKeyBindState(Keyboard.getEventKey(), Keyboard.getEventKeyState());
+
+			if (Keyboard.getEventKeyState())
+			{
+				KeyBind.onTick(Keyboard.getEventKey());
+			}
+		}
+
+	}
+
+	public void setIngameFocus()
+	{
+		if (Display.isActive())
+		{
+			if (!this.inGameHasFocus)
+			{
+				this.inGameHasFocus = true;
+				this.mouseHelper.grabMouseCursor();
+				this.displayGuiScreen((GuiScreen)null);
+			}
+		}
+	}
+
+	/**
+	 * Resets the player keystate, disables the ingame focus, and ungrabs the mouse cursor.
+	 */
+	public void setIngameNotInFocus()
+	{
+		if (this.inGameHasFocus)
+		{
+			KeyBind.unPressAllKeys();
+			this.inGameHasFocus = false;
+			this.mouseHelper.releaseMouseCursor();
+		}
+	}
+
+	private void resize(int newX, int newY)
+	{
+		this.displayWidth = newX <= 0 ? 1 : newX;
+		this.displayHeight = newY <= 0 ? 1 : newY;
+
+		if (this.currentScreen != null)
+		{
+			this.currentScreen.setContainerAndResolution(this, this.displayWidth, this.displayHeight);
+		}
+	}
+	public void displayGuiScreen(GuiScreen par1GuiScreen)
+    {
+        if (this.currentScreen != null)
+        {
+            this.currentScreen.onGuiClosed();
+        }
+
+        this.currentScreen = (GuiScreen)par1GuiScreen;
+
+        if (par1GuiScreen != null)
+        {
+            this.setIngameNotInFocus();
+            ((GuiScreen)par1GuiScreen).setContainerAndResolution(this, this.displayWidth, this.displayHeight);
+        }
+        else
+        {
+            this.setIngameFocus();
+        }
+    }
 
 }
