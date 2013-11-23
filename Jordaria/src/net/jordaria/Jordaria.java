@@ -7,6 +7,7 @@ import net.jordaria.gui.GuiIngame;
 import net.jordaria.world.Chunk;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
@@ -28,7 +29,9 @@ public class Jordaria extends Canvas implements Runnable{
 	DisplayMode displayMode;
 	int VBOColorHandle;
 	int VBOVertexHandle;
-	
+
+	private float PX, PY, PZ;
+
 	Chunk testChunk;
 
 	public static void main(String args[]){
@@ -58,12 +61,14 @@ public class Jordaria extends Canvas implements Runnable{
 	}
 
 	public void run(){
+
 		while (this.running && !Display.isCloseRequested()){
+
 			try{
 				Render();
-				testChunk.render();
 				Display.update();
 				Display.sync(60);
+				
 			}
 			catch(Exception e){
 				;
@@ -102,7 +107,7 @@ public class Jordaria extends Canvas implements Runnable{
 		GL11.glLoadIdentity();
 
 		//set up the camera
-		GLU.gluPerspective(45.0f, (float)displayMode.getWidth()/ (float)displayMode.getHeight(), 0.1f, 100.0f);
+		GLU.gluPerspective(45.0f, (float)displayMode.getWidth()/ (float)displayMode.getHeight(), 0.1f, 10000.0f);
 
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);//modify the orientation and location matrix
 		GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
@@ -153,6 +158,6 @@ public class Jordaria extends Canvas implements Runnable{
 		GL11.glDrawArrays(GL11.GL_LINE_LOOP, 0, 4);
 		GL11.glPopMatrix();
 	}
-	
-	
+
+
 }
