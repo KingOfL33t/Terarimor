@@ -9,7 +9,7 @@ public class Chunk {
 	private World world;
 	
 	public void update(){
-
+		
 	}
 
 	public Chunk(World theWorld, int xPos, int yPos, int zPos){
