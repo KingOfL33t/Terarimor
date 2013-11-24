@@ -6,6 +6,7 @@ import net.jordaria.entity.Entity;
 import net.jordaria.entity.EntityLiving;
 import net.jordaria.entity.EntityPlayer;
 import net.jordaria.entity.NameGenerator;
+import net.jordaria.entity.PlayerMoveHelper;
 import net.jordaria.gui.GuiIngame;
 import net.jordaria.gui.GuiScreen;
 import net.jordaria.gui.MouseAssistant;
@@ -213,7 +214,7 @@ public class Jordaria implements Runnable{
 				KeyBind.onTick(Keyboard.getEventKey());
 			}
 		}
-		
+
 		if (!this.isPaused)
 		{
 			this.theWorld.updateEntities();
@@ -257,7 +258,7 @@ public class Jordaria implements Runnable{
 			this.currentScreen.setContainerAndResolution(this, this.displayWidth, this.displayHeight);
 		}
 	}
-	
+
 	public void displayGuiScreen(GuiScreen par1GuiScreen)
 	{
 		if (this.currentScreen != null)
@@ -277,24 +278,17 @@ public class Jordaria implements Runnable{
 			this.setIngameFocus();
 		}
 	}
-	
+
 	public void loadWorld()
 	{
 
 		this.renderViewEntity = null;
-		
-		
-			if (this.renderGlobal != null)
-			{
-				this.renderGlobal.setWorldAndLoadRenderers(par1WorldClient);
-			}
 
-			this.thePlayer.preparePlayerToSpawn();
-			this.theWorld.spawnEntityInWorld(this.thePlayer);
-			this.thePlayer.movementInput = new MovementInputFromOptions(this.gameSettings);
-			this.playerController.setPlayerCapabilities(this.thePlayer);
-			this.renderViewEntity = this.thePlayer;
-		
+		this.thePlayer.preparePlayerToSpawn();
+		this.theWorld.spawnEntityInWorld(this.thePlayer);
+		this.thePlayer.movementInput = new PlayerMoveHelper(this.gameSettings);
+		this.renderViewEntity = this.thePlayer;
+
 
 		System.gc();
 		this.systemTime = 0L;
