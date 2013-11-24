@@ -1,12 +1,17 @@
 package net.jordaria.world;
 
-import net.jordaria.block.Block;
+import java.util.ArrayList;
+import java.util.List;
+
 import net.jordaria.Configuration;
+import net.jordaria.block.Block;
+import net.jordaria.entity.Entity;
 
 public class Chunk {
 	private Block[][][] blocks;
 	public ChunkCoordinates coordinates;
 	private World world;
+	public List<Entity> entitylist;
 	
 	public boolean isChunkLoaded;
 	public boolean isEmpty;
@@ -17,6 +22,7 @@ public class Chunk {
 
 	public Chunk(World theWorld, int xPos, int yPos, int zPos){
 		world = theWorld;
+		entitylist = new ArrayList<Entity>();
 		this.coordinates = new ChunkCoordinates(xPos, yPos, zPos);
 		blocks = new Block[Configuration.getCHUNK_SIZE()][Configuration.getCHUNK_SIZE()][Configuration.getCHUNK_SIZE()];
 		for (int x = 0; x < Configuration.getCHUNK_SIZE(); x++){
@@ -52,6 +58,20 @@ public class Chunk {
 	}
 
 	public void onChunkUnload() {
+		
+	}
+
+	public void removeEntity(Entity tmpEntity) {
+		if (this.entitylist == null){
+			return;
+		}
+		boolean remove = false;
+		if (this.entitylist.contains(tmpEntity)){
+			remove = true;
+		}
+		if (remove){
+			this.entitylist.remove(tmpEntity);
+		}
 		
 	}
 
