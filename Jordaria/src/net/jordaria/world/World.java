@@ -1,21 +1,50 @@
 package net.jordaria.world;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
+
+import net.jordaria.entity.Entity;
 
 public class World {
 	public Random rng = new Random();
 	
-	public List playerEntities = new ArrayList();
+	public List<Object> playerEntities = new ArrayList<Object>();
+	public List<Object> loadedEntityList = new ArrayList<Object>();//Entities loaded in the world
+    protected List<Object> unloadedEntityList = new ArrayList<Object>();
 	
-	protected Set activeChunkSet = new HashSet();
+    public ChunkManager chunkManager;
 	 
 	public String worldName;
 	
 	public World(String name){
 		this.worldName = name;
+		this.chunkManager = new ChunkManager(this);
 	}
+	
+	public void updateEntities(){
+		this.loadedEntityList.removeAll(this.unloadedEntityList);//dont update unloaded entities
+		Entity tmpEntity;
+		int i;//for loops
+		int xCoord;
+		int yCoord;
+		int zCoord;
+		for (i = 0; i < this.unloadedEntityList.size(); ++i)
+        {
+            tmpEntity = (Entity)this.unloadedEntityList.get(i);
+            xCoord = tmpEntity.chunkCoordX;
+            yCoord = tmpEntity.chunkCoordY;
+            zCoord = tmpEntity.chunkCoordZ;
+
+            if (tmpEntity.addedToChunk)
+            {
+                this.getChunkFromChunkCoords(xCoord, yCoord, zCoord).removeEntity(tmpEntity);
+            }
+        }
+	}
+	 public Chunk getChunkFromChunkCoords(int xPos, int yPos, int zPos)
+	    {
+	        return this.chunkManager.provideChunk(xPos, yPos, zPos);
+	    }
+
 }
