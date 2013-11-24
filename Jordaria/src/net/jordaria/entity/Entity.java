@@ -1,10 +1,17 @@
 package net.jordaria.entity;
 
+import java.util.Random;
+import java.util.UUID;
+
 import net.jordaria.world.World;
 
 public abstract class Entity {
 	public int id;
+	private static int nextEntityID;
+	private UUID entityUniqueID;
 	public World worldObj;
+	
+	public Random rand;
 	
 	public double posX;//x position
     public double posY;//y position
@@ -22,4 +29,24 @@ public abstract class Entity {
     public int chunkCoordX;
     public int chunkCoordY;
     public int chunkCoordZ;
+    
+    public Entity(World par1World)
+    {
+        this.id = nextEntityID++;
+        this.width = 0.6F;
+        this.height = 1.8F;
+        this.rand = new Random();
+        this.entityUniqueID = UUID.randomUUID();
+        this.worldObj = par1World;
+        this.setPosition(0.0D, 0.0D, 0.0D);
+        this.entityInit();
+    }
+
+    protected abstract void entityInit();//inherited for subclass initiation
+    
+	public void setPosition(double x, double y, double z) {
+		this.posX = x;
+		this.posY = y;
+		this.posZ = z;
+	}
 }
