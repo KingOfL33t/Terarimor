@@ -8,6 +8,9 @@ public class EntityLiving extends Entity{
 	public String name;
 	protected boolean isJumping;
 	private boolean isSleeping;
+	public int lastTickPosX;
+	public int lastTickPosY;
+	public int lastTickPosZ;
 	
 	public EntityLiving(World world){
 		super(world);
