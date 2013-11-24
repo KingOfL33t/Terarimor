@@ -13,7 +13,7 @@ public class GuiIngame extends Gui{
 	}
 
 	public void RenderCube(){
-		if (jordaria.wireframe){
+		if (jordaria.gameSettings.wireframe){
 			GL11.glBegin(GL11.GL_LINE_LOOP);
 		}
 		else{
