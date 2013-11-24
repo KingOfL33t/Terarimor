@@ -55,4 +55,19 @@ public abstract class Entity {
 		this.width = w;
 		this.height = h;
 	}
+	protected void preparePlayerToSpawn()
+	{
+		if (this.worldObj != null)
+		{
+			while (this.posY > 0.0D)
+			{
+				this.setPosition(this.posX, this.posY, this.posZ);
+
+				++this.posY;
+			}
+
+			this.velX = this.velY = this.velZ = 0.0D;
+			this.rotationPitch = 0.0F;
+		}
+	}
 }
