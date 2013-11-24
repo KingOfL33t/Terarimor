@@ -14,6 +14,7 @@ import net.jordaria.world.Chunk;
 import net.jordaria.world.World;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
@@ -48,7 +49,7 @@ public class Jordaria implements Runnable{
 	public boolean inGameHasFocus;
 
 	public World theWorld;
-	private EntityLiving renderViewEntity;
+	public EntityLiving renderViewEntity;
 	public EntityPlayer thePlayer;
 
 	public static void main(String args[]){
@@ -293,4 +294,10 @@ public class Jordaria implements Runnable{
 		System.gc();
 		this.systemTime = 0L;
 	}
+
+	public static long getSystemTime()
+	{
+		return Sys.getTime() * 1000L / Sys.getTimerResolution();
+	}
+
 }
