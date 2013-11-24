@@ -1,10 +1,16 @@
 package net.jordaria;
 
 import java.nio.FloatBuffer;
+
+import net.jordaria.entity.Entity;
+import net.jordaria.entity.EntityLiving;
+import net.jordaria.entity.EntityPlayer;
+import net.jordaria.entity.NameGenerator;
 import net.jordaria.gui.GuiIngame;
 import net.jordaria.gui.GuiScreen;
 import net.jordaria.gui.MouseAssistant;
 import net.jordaria.world.Chunk;
+import net.jordaria.world.World;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
@@ -22,23 +28,27 @@ public class Jordaria implements Runnable{
 	public static Configuration config;
 	public GameSettings gameSettings;
 	public Thread thread;
-	public boolean wireframe;
-	
-    
+
+	private boolean isPaused;
+
+
 	public GuiIngame ingameGui;
 	public GuiScreen currentScreen;
 	DisplayMode displayMode;
 	int VBOColorHandle;
 	int VBOVertexHandle;
 	public int displayWidth;
-    public int displayHeight;
-	
-    public MouseAssistant mouseHelper;
+	public int displayHeight;
+	private long systemTime;
+
+	public MouseAssistant mouseHelper;
 
 	//whether or not the actual game has the focus or a menu does
 	public boolean inGameHasFocus;
 
-	Chunk testChunk;
+	public World theWorld;
+	private EntityLiving renderViewEntity;
+	public EntityPlayer thePlayer;
 
 	public static void main(String args[]){
 		config = new Configuration();
@@ -58,7 +68,9 @@ public class Jordaria implements Runnable{
 			ingameGui= new GuiIngame(this);
 			createWindow();
 			InitGL();
-			testChunk = new Chunk(0, 0, 0);
+			theWorld = new World("Test");
+			NameGenerator namegen = new NameGenerator();
+			thePlayer = new EntityPlayer(theWorld, namegen.getRandomName());
 			run();
 		}
 		catch(Exception e){
@@ -201,6 +213,11 @@ public class Jordaria implements Runnable{
 				KeyBind.onTick(Keyboard.getEventKey());
 			}
 		}
+		
+		if (!this.isPaused)
+		{
+			this.theWorld.updateEntities();
+		}
 
 	}
 
@@ -240,24 +257,46 @@ public class Jordaria implements Runnable{
 			this.currentScreen.setContainerAndResolution(this, this.displayWidth, this.displayHeight);
 		}
 	}
+	
 	public void displayGuiScreen(GuiScreen par1GuiScreen)
-    {
-        if (this.currentScreen != null)
-        {
-            this.currentScreen.onGuiClosed();
-        }
+	{
+		if (this.currentScreen != null)
+		{
+			this.currentScreen.onGuiClosed();
+		}
 
-        this.currentScreen = (GuiScreen)par1GuiScreen;
+		this.currentScreen = (GuiScreen)par1GuiScreen;
 
-        if (par1GuiScreen != null)
-        {
-            this.setIngameNotInFocus();
-            ((GuiScreen)par1GuiScreen).setContainerAndResolution(this, this.displayWidth, this.displayHeight);
-        }
-        else
-        {
-            this.setIngameFocus();
-        }
-    }
+		if (par1GuiScreen != null)
+		{
+			this.setIngameNotInFocus();
+			((GuiScreen)par1GuiScreen).setContainerAndResolution(this, this.displayWidth, this.displayHeight);
+		}
+		else
+		{
+			this.setIngameFocus();
+		}
+	}
+	
+	public void loadWorld()
+	{
 
+		this.renderViewEntity = null;
+		
+		
+			if (this.renderGlobal != null)
+			{
+				this.renderGlobal.setWorldAndLoadRenderers(par1WorldClient);
+			}
+
+			this.thePlayer.preparePlayerToSpawn();
+			this.theWorld.spawnEntityInWorld(this.thePlayer);
+			this.thePlayer.movementInput = new MovementInputFromOptions(this.gameSettings);
+			this.playerController.setPlayerCapabilities(this.thePlayer);
+			this.renderViewEntity = this.thePlayer;
+		
+
+		System.gc();
+		this.systemTime = 0L;
+	}
 }
