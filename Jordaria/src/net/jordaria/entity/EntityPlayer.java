@@ -8,6 +8,7 @@ public class EntityPlayer extends EntityLiving{
 	public float cameraYaw;
 	private ChunkCoordinates spawnChunk;
 	protected final String username;
+	public PlayerMoveHelper movementInput;//the helper for movement input
 
 	public EntityPlayer(World world, String name) {
 		super(world);
