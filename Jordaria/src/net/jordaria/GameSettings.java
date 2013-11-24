@@ -25,6 +25,8 @@ public class GameSettings {
 	public float noclipSpeed;
 	public String language = "en_US";
 
+	public float mouseSensitivity = 0.5F;
+
 	public GameSettings(Jordaria jordaria)
 	{
 		this.keyBindings = new KeyBind[] {this.KEYBIND_MOVE_FORWARD, this.KEYBIND_MOVE_BACKWARD, this.KEYBIND_MOVE_JUMP, this.KEYBIND_MOVE_LEFT, this.KEYBIND_MOVE_RIGHT};
