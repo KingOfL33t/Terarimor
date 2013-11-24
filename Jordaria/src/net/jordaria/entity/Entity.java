@@ -16,8 +16,13 @@ public abstract class Entity {
 	public double posX;//x position
 	public double posY;//y position
 	public double posZ;//z position
+	public double prevPosX;//x position
+	public double prevPosY;//y position
+	public double prevPosZ;//z position
 	public float rotationYaw;
 	public float rotationPitch;
+	public float prevRotationYaw;
+	public float prevRotationPitch;
 	public double velX;//velocity in the x direction
 	public double velY;//velocity in the y direction
 	public double velZ;//velocity in the z direction
@@ -70,4 +75,24 @@ public abstract class Entity {
 			this.rotationPitch = 0.0F;
 		}
 	}
+	 public void setAngles(float yaw, float pitch)
+	    {
+	        float var3 = this.rotationPitch;
+	        float var4 = this.rotationYaw;
+	        this.rotationYaw = (float)((double)this.rotationYaw + (double)yaw * 0.15D);
+	        this.rotationPitch = (float)((double)this.rotationPitch - (double)pitch * 0.15D);
+
+	        if (this.rotationPitch < -90.0F)
+	        {
+	            this.rotationPitch = -90.0F;
+	        }
+
+	        if (this.rotationPitch > 90.0F)
+	        {
+	            this.rotationPitch = 90.0F;
+	        }
+
+	        this.prevRotationPitch += this.rotationPitch - var3;
+	        this.prevRotationYaw += this.rotationYaw - var4;
+	    }
 }
