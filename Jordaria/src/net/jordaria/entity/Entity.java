@@ -16,6 +16,10 @@ public abstract class Entity {
     public double velZ;//velocity in the z direction
     public float width;
     public float height;
+
     
     public boolean addedToChunk;//set to true when it has been added to its current chunk
+    public int chunkCoordX;
+    public int chunkCoordY;
+    public int chunkCoordZ;
 }
