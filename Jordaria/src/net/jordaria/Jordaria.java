@@ -2,14 +2,12 @@ package net.jordaria;
 
 import java.nio.FloatBuffer;
 
-import net.jordaria.entity.Entity;
 import net.jordaria.entity.EntityLiving;
 import net.jordaria.entity.EntityPlayer;
 import net.jordaria.entity.NameGenerator;
 import net.jordaria.entity.PlayerMoveHelper;
 import net.jordaria.gui.GuiScreen;
 import net.jordaria.gui.MouseAssistant;
-import net.jordaria.world.Chunk;
 import net.jordaria.world.World;
 
 import org.lwjgl.BufferUtils;
@@ -70,7 +68,6 @@ public class Jordaria implements Runnable{
 			NameGenerator namegen = new NameGenerator();
 			thePlayer = new EntityPlayer(theWorld, namegen.getRandomName());
 			this.loadWorld();
-			
 			run();
 		}
 		catch(Exception e){
@@ -86,7 +83,6 @@ public class Jordaria implements Runnable{
 				this.RenderCube();
 				Display.update();
 				Display.sync(60);
-
 			}
 			catch(Exception e){
 				;
@@ -259,14 +255,12 @@ public class Jordaria implements Runnable{
 
 	public void loadWorld()
 	{
-
 		this.renderViewEntity = null;
 
 		this.thePlayer.preparePlayerToSpawn();
 		this.theWorld.spawnEntityInWorld(this.thePlayer);
 		this.thePlayer.movementInput = new PlayerMoveHelper(this.gameSettings);
 		this.renderViewEntity = this.thePlayer;
-
 
 		System.gc();
 		this.systemTime = 0L;
