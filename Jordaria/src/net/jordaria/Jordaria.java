@@ -7,7 +7,6 @@ import net.jordaria.entity.EntityLiving;
 import net.jordaria.entity.EntityPlayer;
 import net.jordaria.entity.NameGenerator;
 import net.jordaria.entity.PlayerMoveHelper;
-import net.jordaria.gui.EntityRenderer;
 import net.jordaria.gui.GuiScreen;
 import net.jordaria.gui.MouseAssistant;
 import net.jordaria.world.Chunk;
@@ -81,13 +80,10 @@ public class Jordaria implements Runnable{
 	}
 
 	public void run(){
-		EntityRenderer renderer = new EntityRenderer(this);
-		renderer.updateRenderer();
 		while (this.running && !Display.isCloseRequested()){
 
 			try{
 				this.RenderCube();
-				renderer.renderWorld();
 				Display.update();
 				Display.sync(60);
 
