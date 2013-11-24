@@ -7,6 +7,7 @@ public class EntityLiving extends Entity{
 	public int maxHealth = 100;
 	public String name;
 	protected boolean isJumping;
+	private boolean isSleeping;
 	
 	public EntityLiving(World world){
 		super(world);
@@ -30,6 +31,9 @@ public class EntityLiving extends Entity{
 	}
 	public void setHealthToMax(){
 		this.health = this.maxHealth;
+	}
+	public boolean isPlayerSleeping() {
+		return this.isSleeping;
 	}
 	
 }
