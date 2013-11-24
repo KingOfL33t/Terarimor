@@ -11,13 +11,6 @@ import org.lwjgl.opengl.GL11;
 
 public class EntityRenderer
 {
-
-	public static boolean anaglyphEnable;
-
-	/** Anaglyph field (0=R, 1=GB) */
-	public static int anaglyphField;
-
-	/** A reference to the Minecraft object. */
 	private Jordaria jd;
 	private float camRoll;
 	private float prevCamRoll;
@@ -55,11 +48,11 @@ public class EntityRenderer
 	/**
 	 * sets up player's eye (or camera in third person mode)
 	 */
-	private void orientCamera(float par1)
+	private void orientCamera()
 	{
 		EntityLiving renderPlayerEntity = this.jd.renderViewEntity;
 		float y = renderPlayerEntity.yOffset - 1.62F;
-		GL11.glRotatef(this.prevCamRoll + (this.camRoll - this.prevCamRoll) * par1, 0.0F, 0.0F, 1.0F);
+		GL11.glRotatef(this.prevCamRoll + (this.camRoll - this.prevCamRoll), 0.0F, 0.0F, 1.0F);
 
 		if (renderPlayerEntity.isPlayerSleeping())
 		{
@@ -77,7 +70,7 @@ public class EntityRenderer
 	/**
 	 * sets up projection, view effects, camera position/rotation
 	 */
-	private void setupCameraTransform(float par1, int par2)
+	private void setupCameraTransform()
 	{
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
@@ -90,7 +83,7 @@ public class EntityRenderer
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glLoadIdentity();
 
-		this.orientCamera(par1);
+		this.orientCamera();
 	}
 
 	/**
@@ -112,12 +105,12 @@ public class EntityRenderer
 			float var6 = (float)this.jd.mouseHelper.deltaY * var4;
 			byte var7 = 1;
 
-				this.jd.thePlayer.setAngles(var5, var6 * (float)var7);
+			this.jd.thePlayer.setAngles(var5, var6 * (float)var7);
 		}
 
 	}
 
-	public void renderWorld(float par1, long par2)
+	public void renderWorld()
 	{
 
 		GL11.glEnable(GL11.GL_CULL_FACE);
@@ -129,7 +122,7 @@ public class EntityRenderer
 		}
 
 		EntityLiving renderEntity = this.jd.renderViewEntity;
-		
+
 		for (int i = 0; i < 2; ++i)
 		{
 
@@ -138,20 +131,16 @@ public class EntityRenderer
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 			GL11.glEnable(GL11.GL_CULL_FACE);
 
-			this.setupCameraTransform(par1, i);
+			this.setupCameraTransform();
 
-			
+
 			GL11.glShadeModel(GL11.GL_FLAT);
 			GL11.glDisable(GL11.GL_BLEND);
 			GL11.glEnable(GL11.GL_CULL_FACE);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			GL11.glDepthMask(true);
 
-			if (this.cameraZoom == 1.0D && renderEntity instanceof EntityPlayer)
-			{
-			}
 
-		
 			GL11.glDisable(GL11.GL_FOG);
 
 		}
@@ -159,28 +148,4 @@ public class EntityRenderer
 		GL11.glColorMask(true, true, true, false);
 	}
 
-	/**
-	 * Converts performance value (0-2) to FPS (35-200)
-	 */
-	public static int performanceToFps(int par0)
-	{
-		short var1 = 200;
-
-		if (par0 == 1)
-		{
-			var1 = 120;
-		}
-
-		if (par0 == 2)
-		{
-			var1 = 35;
-		}
-
-		return var1;
-	}
-
-	static Jordaria getRendererJordaria(EntityRenderer entityRenderer)
-	{
-		return entityRenderer.jd;
-	}
 }

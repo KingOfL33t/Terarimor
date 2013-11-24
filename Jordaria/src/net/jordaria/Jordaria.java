@@ -7,7 +7,7 @@ import net.jordaria.entity.EntityLiving;
 import net.jordaria.entity.EntityPlayer;
 import net.jordaria.entity.NameGenerator;
 import net.jordaria.entity.PlayerMoveHelper;
-import net.jordaria.gui.GuiIngame;
+import net.jordaria.gui.EntityRenderer;
 import net.jordaria.gui.GuiScreen;
 import net.jordaria.gui.MouseAssistant;
 import net.jordaria.world.Chunk;
@@ -33,8 +33,6 @@ public class Jordaria implements Runnable{
 
 	private boolean isPaused;
 
-
-	public GuiIngame ingameGui;
 	public GuiScreen currentScreen;
 	DisplayMode displayMode;
 	int VBOColorHandle;
@@ -67,12 +65,13 @@ public class Jordaria implements Runnable{
 		this.running = true;
 		try{
 			gameSettings = new GameSettings(this);
-			ingameGui= new GuiIngame(this);
 			createWindow();
 			InitGL();
 			theWorld = new World("Test");
 			NameGenerator namegen = new NameGenerator();
 			thePlayer = new EntityPlayer(theWorld, namegen.getRandomName());
+			this.loadWorld();
+			
 			run();
 		}
 		catch(Exception e){
@@ -82,11 +81,13 @@ public class Jordaria implements Runnable{
 	}
 
 	public void run(){
-
+		EntityRenderer renderer = new EntityRenderer(this);
+		renderer.updateRenderer();
 		while (this.running && !Display.isCloseRequested()){
 
 			try{
-				Render();
+				this.RenderCube();
+				renderer.renderWorld();
 				Display.update();
 				Display.sync(60);
 
@@ -132,26 +133,6 @@ public class Jordaria implements Runnable{
 
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);//modify the orientation and location matrix
 		GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
-	}
-
-	private void Render(){
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-		GL11.glLoadIdentity();
-
-		GL11.glTranslatef(-3f,0.0f,-20f);             
-		GL11.glRotatef(45f,0.4f,1.0f,0.1f);               
-		GL11.glColor3f(0.5f,0.5f,1.0f);  
-		for (int x = 0; x<3; x++){
-			for (int y = 0; y<3; y++){
-				for (int z = 0; z<3; z++){
-					ingameGui.RenderCube();
-					GL11.glTranslatef(0.0f, 0.0f, 2f);
-				}
-				GL11.glTranslatef(0.0f, 2f, -6f);
-			}
-			GL11.glTranslatef(2f, -6f, 0.0f);
-		}
-
 	}
 
 	private void CreateVBO() {
@@ -298,6 +279,45 @@ public class Jordaria implements Runnable{
 	public static long getSystemTime()
 	{
 		return Sys.getTime() * 1000L / Sys.getTimerResolution();
+	}
+	
+	public void RenderCube(){
+		if (gameSettings.wireframe){
+			GL11.glBegin(GL11.GL_LINE_LOOP);
+		}		else{
+			GL11.glBegin(GL11.GL_QUADS);
+		}
+		GL11.glColor3f(1.0f,1.0f,0.0f);
+		GL11.glVertex3f( 1.0f, 1.0f,-1.0f);
+		GL11.glVertex3f(-1.0f, 1.0f,-1.0f);        
+		GL11.glVertex3f(-1.0f, 1.0f, 1.0f);
+		GL11.glVertex3f( 1.0f, 1.0f, 1.0f);
+		GL11.glColor3f(1.0f,0.5f,0.0f);
+		GL11.glVertex3f( 1.0f,-1.0f, 1.0f);
+		GL11.glVertex3f(-1.0f,-1.0f, 1.0f);
+		GL11.glVertex3f(-1.0f,-1.0f,-1.0f);
+		GL11.glVertex3f( 1.0f,-1.0f,-1.0f);
+		GL11.glColor3f(1.0f,0.0f,0.0f);
+		GL11.glVertex3f( 1.0f, 1.0f, 1.0f);
+		GL11.glVertex3f(-1.0f, 1.0f, 1.0f);
+		GL11.glVertex3f(-1.0f,-1.0f, 1.0f);
+		GL11.glVertex3f( 1.0f,-1.0f, 1.0f);
+		GL11.glColor3f(1.0f,1.0f,0.0f);
+		GL11.glVertex3f( 1.0f,-1.0f,-1.0f);
+		GL11.glVertex3f(-1.0f,-1.0f,-1.0f);
+		GL11.glVertex3f(-1.0f, 1.0f,-1.0f);
+		GL11.glVertex3f( 1.0f, 1.0f,-1.0f);
+		GL11.glColor3f(0.0f,0.0f,1.0f);
+		GL11.glVertex3f(-1.0f, 1.0f, 1.0f);
+		GL11.glVertex3f(-1.0f, 1.0f,-1.0f);
+		GL11.glVertex3f(-1.0f,-1.0f,-1.0f);
+		GL11.glVertex3f(-1.0f,-1.0f, 1.0f);
+		GL11.glColor3f(1.0f,0.0f,1.0f);
+		GL11.glVertex3f( 1.0f, 1.0f,-1.0f);
+		GL11.glVertex3f( 1.0f, 1.0f, 1.0f);
+		GL11.glVertex3f( 1.0f,-1.0f, 1.0f);
+		GL11.glVertex3f( 1.0f,-1.0f,-1.0f);
+		GL11.glEnd();
 	}
 
 }
