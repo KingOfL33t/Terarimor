@@ -8,6 +8,9 @@ public class Chunk {
 	public ChunkCoordinates coordinates;
 	private World world;
 	
+	public boolean isChunkLoaded;
+	public boolean isEmpty;
+	
 	public void update(){
 		
 	}
@@ -29,6 +32,7 @@ public class Chunk {
 				}
 			}
 		}
+		this.isChunkLoaded = true;
 
 	}
 	public Chunk makeEmptyChunk(){
@@ -39,7 +43,16 @@ public class Chunk {
 				}
 			}
 		}
+		this.isChunkLoaded = true;
+		this.isEmpty = true;
 		return this;
+	}
+	public boolean isEmpty(){
+		return isEmpty;
+	}
+
+	public void onChunkUnload() {
+		
 	}
 
 
