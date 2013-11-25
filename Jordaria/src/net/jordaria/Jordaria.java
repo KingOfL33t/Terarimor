@@ -3,7 +3,6 @@ package net.jordaria;
 import net.jordaria.entity.EntityLiving;
 import net.jordaria.entity.EntityPlayer;
 import net.jordaria.entity.NameGenerator;
-import net.jordaria.gui.GuiScreen;
 import net.jordaria.world.World;
 
 import org.lwjgl.opengl.Display;
@@ -19,7 +18,6 @@ public class Jordaria implements Runnable{
 	public GameSettings gameSettings;
 	public Thread thread;
 
-	public GuiScreen currentScreen;
 	DisplayMode displayMode;
 
 	public int displayWidth;
