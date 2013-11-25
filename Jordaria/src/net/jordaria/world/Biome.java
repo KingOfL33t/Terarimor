@@ -8,7 +8,7 @@ import net.jordaria.block.Block;
 public class Biome {
 	public static final Biome[] biomeList = new Biome[256];
 	
-	public static final Biome flat = (new BiomeFlat(0)).setBiomeName("Forest").setFillerBlockID(Block.dirt.blockID).setHumidity(0.75F).setMagic(0.5F).setTechnology(0.0F).setTemperature(0.5F).setTopBlockID(Block.grass.blockID);
+	public static final Biome flat = (new BiomeFlat(0)).setBiomeName("Flat").setFillerBlockID(Block.dirt.blockID).setTopBlockID(Block.grass.blockID);
 	
 	public short topBlockID;//the block on top of the biome
 	public short fillerBlockID;
