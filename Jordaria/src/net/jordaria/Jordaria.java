@@ -1,23 +1,14 @@
 package net.jordaria;
 
-import java.nio.FloatBuffer;
-
 import net.jordaria.entity.EntityLiving;
 import net.jordaria.entity.EntityPlayer;
 import net.jordaria.entity.NameGenerator;
-import net.jordaria.entity.PlayerMoveHelper;
 import net.jordaria.gui.GuiScreen;
-import net.jordaria.gui.MouseAssistant;
 import net.jordaria.world.World;
 
-import org.lwjgl.BufferUtils;
-import org.lwjgl.Sys;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
 import org.lwjgl.util.glu.GLU;
 
 
@@ -28,17 +19,12 @@ public class Jordaria implements Runnable{
 	public GameSettings gameSettings;
 	public Thread thread;
 
-	private boolean isPaused;
-
 	public GuiScreen currentScreen;
 	DisplayMode displayMode;
-	int VBOColorHandle;
-	int VBOVertexHandle;
+
 	public int displayWidth;
 	public int displayHeight;
-	private long systemTime;
-
-	public MouseAssistant mouseHelper;
+	
 
 	//whether or not the actual game has the focus or a menu does
 	public boolean inGameHasFocus;
@@ -67,7 +53,6 @@ public class Jordaria implements Runnable{
 			theWorld = new World("Test");
 			NameGenerator namegen = new NameGenerator();
 			thePlayer = new EntityPlayer(theWorld, namegen.getRandomName());
-			this.loadWorld();
 			run();
 		}
 		catch(Exception e){
@@ -80,7 +65,6 @@ public class Jordaria implements Runnable{
 		while (this.running && !Display.isCloseRequested()){
 
 			try{
-				this.RenderCube();
 				Display.update();
 				Display.sync(60);
 			}
@@ -127,187 +111,5 @@ public class Jordaria implements Runnable{
 		GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
 	}
 
-	private void CreateVBO() {
-		VBOColorHandle=GL15.glGenBuffers();
-		VBOVertexHandle=GL15.glGenBuffers();
-		FloatBuffer VertexPositionData = BufferUtils.createFloatBuffer(4*3);
-		VertexPositionData.put(new float[]{0.0f, 0.0f, 0.0f, 0f, 1f, 0f,1.0f, 1.0f, 0.0f,1.0f, 0f, 0f});
-		VertexPositionData.flip();
-		FloatBuffer VertexColorData = BufferUtils.createFloatBuffer(4*3);
-		VertexColorData.put(new float[]{1,1,1,1,1,1,1,1,1,0,1,1});
-		VertexColorData.flip();
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,VBOVertexHandle);
-		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, VertexPositionData, GL15.GL_STATIC_DRAW);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,0);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,VBOColorHandle);
-		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, VertexColorData, GL15.GL_STATIC_DRAW);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,0);
-	}
-	private void DrawVBO() {
-		GL11.glPushMatrix();
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,VBOVertexHandle);
-		GL11.glVertexPointer(3, GL11.GL_FLOAT, 0, 0L);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,VBOColorHandle);
-		GL11.glColorPointer(3, GL11.GL_FLOAT, 0, 0L);
-		GL11.glDrawArrays(GL11.GL_LINE_LOOP, 0, 4);
-		GL11.glPopMatrix();
-	}
-	public void runTick(){
-		int mouseButton;
-		while (Mouse.next())
-		{
-			mouseButton = Mouse.getEventButton();
-
-			KeyBind.setKeyBindState(mouseButton - 100, Mouse.getEventButtonState());
-
-			if (Mouse.getEventButtonState())
-			{
-				KeyBind.onTick(mouseButton - 100);
-			}
-
-			if (this.currentScreen == null)
-			{
-				if (!this.inGameHasFocus && Mouse.getEventButtonState())
-				{
-					this.setIngameFocus();
-				}
-			}
-			else if (this.currentScreen != null)
-			{
-				this.currentScreen.handleMouseInput();
-			}
-		}
-
-
-		while (Keyboard.next())
-		{
-			KeyBind.setKeyBindState(Keyboard.getEventKey(), Keyboard.getEventKeyState());
-
-			if (Keyboard.getEventKeyState())
-			{
-				KeyBind.onTick(Keyboard.getEventKey());
-			}
-		}
-
-		if (!this.isPaused)
-		{
-			this.theWorld.updateEntities();
-		}
-
-	}
-
-	public void setIngameFocus()
-	{
-		if (Display.isActive())
-		{
-			if (!this.inGameHasFocus)
-			{
-				this.inGameHasFocus = true;
-				this.mouseHelper.grabMouseCursor();
-				this.displayGuiScreen((GuiScreen)null);
-			}
-		}
-	}
-
-	/**
-	 * Resets the player keystate, disables the ingame focus, and ungrabs the mouse cursor.
-	 */
-	public void setIngameNotInFocus()
-	{
-		if (this.inGameHasFocus)
-		{
-			KeyBind.unPressAllKeys();
-			this.inGameHasFocus = false;
-			this.mouseHelper.releaseMouseCursor();
-		}
-	}
-
-	private void resize(int newX, int newY)
-	{
-		this.displayWidth = newX <= 0 ? 1 : newX;
-		this.displayHeight = newY <= 0 ? 1 : newY;
-
-		if (this.currentScreen != null)
-		{
-			this.currentScreen.setContainerAndResolution(this, this.displayWidth, this.displayHeight);
-		}
-	}
-
-	public void displayGuiScreen(GuiScreen par1GuiScreen)
-	{
-		if (this.currentScreen != null)
-		{
-			this.currentScreen.onGuiClosed();
-		}
-
-		this.currentScreen = (GuiScreen)par1GuiScreen;
-
-		if (par1GuiScreen != null)
-		{
-			this.setIngameNotInFocus();
-			((GuiScreen)par1GuiScreen).setContainerAndResolution(this, this.displayWidth, this.displayHeight);
-		}
-		else
-		{
-			this.setIngameFocus();
-		}
-	}
-
-	public void loadWorld()
-	{
-		this.renderViewEntity = null;
-
-		this.thePlayer.preparePlayerToSpawn();
-		this.theWorld.spawnEntityInWorld(this.thePlayer);
-		this.thePlayer.movementInput = new PlayerMoveHelper(this.gameSettings);
-		this.renderViewEntity = this.thePlayer;
-
-		System.gc();
-		this.systemTime = 0L;
-	}
-
-	public static long getSystemTime()
-	{
-		return Sys.getTime() * 1000L / Sys.getTimerResolution();
-	}
-	
-	public void RenderCube(){
-		if (gameSettings.wireframe){
-			GL11.glBegin(GL11.GL_LINE_LOOP);
-		}		else{
-			GL11.glBegin(GL11.GL_QUADS);
-		}
-		GL11.glColor3f(1.0f,1.0f,0.0f);
-		GL11.glVertex3f( 1.0f, 1.0f,-1.0f);
-		GL11.glVertex3f(-1.0f, 1.0f,-1.0f);        
-		GL11.glVertex3f(-1.0f, 1.0f, 1.0f);
-		GL11.glVertex3f( 1.0f, 1.0f, 1.0f);
-		GL11.glColor3f(1.0f,0.5f,0.0f);
-		GL11.glVertex3f( 1.0f,-1.0f, 1.0f);
-		GL11.glVertex3f(-1.0f,-1.0f, 1.0f);
-		GL11.glVertex3f(-1.0f,-1.0f,-1.0f);
-		GL11.glVertex3f( 1.0f,-1.0f,-1.0f);
-		GL11.glColor3f(1.0f,0.0f,0.0f);
-		GL11.glVertex3f( 1.0f, 1.0f, 1.0f);
-		GL11.glVertex3f(-1.0f, 1.0f, 1.0f);
-		GL11.glVertex3f(-1.0f,-1.0f, 1.0f);
-		GL11.glVertex3f( 1.0f,-1.0f, 1.0f);
-		GL11.glColor3f(1.0f,1.0f,0.0f);
-		GL11.glVertex3f( 1.0f,-1.0f,-1.0f);
-		GL11.glVertex3f(-1.0f,-1.0f,-1.0f);
-		GL11.glVertex3f(-1.0f, 1.0f,-1.0f);
-		GL11.glVertex3f( 1.0f, 1.0f,-1.0f);
-		GL11.glColor3f(0.0f,0.0f,1.0f);
-		GL11.glVertex3f(-1.0f, 1.0f, 1.0f);
-		GL11.glVertex3f(-1.0f, 1.0f,-1.0f);
-		GL11.glVertex3f(-1.0f,-1.0f,-1.0f);
-		GL11.glVertex3f(-1.0f,-1.0f, 1.0f);
-		GL11.glColor3f(1.0f,0.0f,1.0f);
-		GL11.glVertex3f( 1.0f, 1.0f,-1.0f);
-		GL11.glVertex3f( 1.0f, 1.0f, 1.0f);
-		GL11.glVertex3f( 1.0f,-1.0f, 1.0f);
-		GL11.glVertex3f( 1.0f,-1.0f,-1.0f);
-		GL11.glEnd();
-	}
 
 }

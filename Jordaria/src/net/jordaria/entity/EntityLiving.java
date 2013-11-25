@@ -6,17 +6,9 @@ public class EntityLiving extends Entity{
 	public int health;
 	public int maxHealth = 100;
 	public String name;
-	protected boolean isJumping;
-	private boolean isSleeping;
-	public int lastTickPosX;
-	public int lastTickPosY;
-	public int lastTickPosZ;
 	
 	public EntityLiving(World world){
 		super(world);
-	}
-	public void setJumping(boolean jumping) {
-		this.isJumping = jumping;
 	}
 	
 	@Override
@@ -34,9 +26,6 @@ public class EntityLiving extends Entity{
 	}
 	public void setHealthToMax(){
 		this.health = this.maxHealth;
-	}
-	public boolean isPlayerSleeping() {
-		return this.isSleeping;
 	}
 	
 }

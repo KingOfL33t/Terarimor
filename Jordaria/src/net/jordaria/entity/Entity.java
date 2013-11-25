@@ -1,14 +1,12 @@
 package net.jordaria.entity;
 
 import java.util.Random;
-import java.util.UUID;
 
 import net.jordaria.world.World;
 
 public abstract class Entity {
 	public int id;
 	private static int nextEntityID;
-	private UUID entityUniqueID;
 	public World worldObj;
 
 	public Random rand;
@@ -16,13 +14,8 @@ public abstract class Entity {
 	public double posX;//x position
 	public double posY;//y position
 	public double posZ;//z position
-	public double prevPosX;//x position
-	public double prevPosY;//y position
-	public double prevPosZ;//z position
 	public float rotationYaw;
 	public float rotationPitch;
-	public float prevRotationYaw;
-	public float prevRotationPitch;
 	public double velX;//velocity in the x direction
 	public double velY;//velocity in the y direction
 	public double velZ;//velocity in the z direction
@@ -30,19 +23,12 @@ public abstract class Entity {
 	public float height;
 	public float yOffset;
 
-
-	public boolean addedToChunk;//set to true when it has been added to its current chunk
-	public int chunkCoordX;
-	public int chunkCoordY;
-	public int chunkCoordZ;
-
 	public Entity(World par1World)
 	{
 		this.id = nextEntityID++;
 		this.width = 0.6F;
 		this.height = 1.8F;
 		this.rand = new Random();
-		this.entityUniqueID = UUID.randomUUID();
 		this.worldObj = par1World;
 		this.setPosition(0.0D, 0.0D, 0.0D);
 		this.entityInit();
@@ -60,39 +46,4 @@ public abstract class Entity {
 		this.width = w;
 		this.height = h;
 	}
-	protected void preparePlayerToSpawn()
-	{
-		if (this.worldObj != null)
-		{
-			while (this.posY > 0.0D)
-			{
-				this.setPosition(this.posX, this.posY, this.posZ);
-
-				++this.posY;
-			}
-
-			this.velX = this.velY = this.velZ = 0.0D;
-			this.rotationPitch = 0.0F;
-		}
-	}
-	 public void setAngles(float yaw, float pitch)
-	    {
-	        float var3 = this.rotationPitch;
-	        float var4 = this.rotationYaw;
-	        this.rotationYaw = (float)((double)this.rotationYaw + (double)yaw * 0.15D);
-	        this.rotationPitch = (float)((double)this.rotationPitch - (double)pitch * 0.15D);
-
-	        if (this.rotationPitch < -90.0F)
-	        {
-	            this.rotationPitch = -90.0F;
-	        }
-
-	        if (this.rotationPitch > 90.0F)
-	        {
-	            this.rotationPitch = 90.0F;
-	        }
-
-	        this.prevRotationPitch += this.rotationPitch - var3;
-	        this.prevRotationYaw += this.rotationYaw - var4;
-	    }
 }

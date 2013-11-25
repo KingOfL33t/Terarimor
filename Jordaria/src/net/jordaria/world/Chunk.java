@@ -94,12 +94,6 @@ public class Chunk {
 		{
 			y = 0;
 		}
-
-
-		theEntity.addedToChunk = true;
-		theEntity.chunkCoordX = this.coordinates.xPos;
-		theEntity.chunkCoordY = this.coordinates.yPos;
-		theEntity.chunkCoordZ = this.coordinates.zPos;
 		this.entitylist.add(theEntity);
 	}
 

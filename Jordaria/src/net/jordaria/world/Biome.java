@@ -18,7 +18,7 @@ public class Biome {
 	public float magic;//how prevalent magic is in the biome
 	public float technology;//how prevalent technology is in the biome
 	
-	protected List spawnableMobs;
+	protected List<Object> spawnableMobs;
 	
 	public final int biomeID;
 	public String biomeName;
@@ -32,7 +32,7 @@ public class Biome {
 	        this.magic = 0.5F;
 	        this.technology = 0.5F;
 	        
-	        this.spawnableMobs = new ArrayList();
+	        this.spawnableMobs = new ArrayList<Object>();
 	        this.biomeID = par1;
 	        biomeList[par1] = this;
 	    }

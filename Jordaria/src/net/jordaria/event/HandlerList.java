@@ -13,7 +13,7 @@ public class HandlerList {
 	//Handler array. This field being an array is the key to the system's speed.
 	private volatile EventListener[] handlers = null;
 
-	/**
+	/*
 	 * * Dynamic handler lists. These change when register() and unregister() 
 	 * and are automatically baked to the handlers array any time they have changed.
 	 */
@@ -24,7 +24,7 @@ public class HandlerList {
 	private static ArrayList<HandlerList> allLists = new ArrayList<HandlerList>();
 
 
-	/**
+	/*
 	 * * Bake all handler lists. Best used just after all normal event
 	 * registration is complete.
 	 */
@@ -49,7 +49,7 @@ public class HandlerList {
 		}
 	}
 
-	/**
+	/*
 	 * * Unregister a specific listener from all handler lists.
 	 * listener is the listener to unregister
 	 */
@@ -61,7 +61,7 @@ public class HandlerList {
 		}
 	}
 
-	/**
+	/*
 	 * * Create a new handler list and initialize using an EventPriority 
 	 * TheHandlerList is then added to meta-list for use in bakeAll()
 	 */
@@ -75,7 +75,7 @@ public class HandlerList {
 		}
 	}
 
-	/**
+	/*
 	 * * Register a new listener in this handler list
 	 */
 	public synchronized void register(EventListener listener) {
@@ -87,7 +87,7 @@ public class HandlerList {
 		handlerslots.get(listener.getPriority()).add(listener);
 	}
 
-	/**
+	/*
 	 * * Register a collection of new listeners in this handler list
 	 */
 	public void registerAll(Collection<EventListener> listeners) {
@@ -96,7 +96,7 @@ public class HandlerList {
 		}
 	}
 
-	/**
+	/*
 	 * * Remove a listener from a specific order slot
 	 */
 	public synchronized void unregister(EventListener listener) {
@@ -106,7 +106,7 @@ public class HandlerList {
 	}
 
 
-	/**
+	/*
 	 * * Remove a specific listener from this handler 
 	 */
 	public synchronized void unregister(Listener listener) {
@@ -123,7 +123,7 @@ public class HandlerList {
 			handlers = null;
 	}
 
-	/**     * Bake HashMap and ArrayLists to 2d array - does nothing if not necessary     */    
+	/*     * Bake HashMap and ArrayLists to 2d array - does nothing if not necessary    */    
 	public synchronized void bake() {        
 		if (handlers != null) return; // don't re-bake when still valid        
 		List<EventListener> entries = new ArrayList<EventListener>();        
@@ -141,9 +141,9 @@ public class HandlerList {
 	}
 
 
-	/**     * Get a list of all handler lists for every event type     *
-	 *      * @return the list of all handler lists     
-	 *      */   
+	/*Get a list of all handler lists for every event type
+	 *returns the list of all handler lists     
+	*/   
 	@SuppressWarnings("unchecked")
 	public static ArrayList<HandlerList> getHandlerLists() {
 		synchronized (allLists) {

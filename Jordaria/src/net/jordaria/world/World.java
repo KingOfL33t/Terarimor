@@ -28,20 +28,9 @@ public class World {
 		this.loadedEntityList.removeAll(this.unloadedEntityList);//dont update unloaded entities
 		Entity tmpEntity;
 		int i;//for loops
-		int xCoord;
-		int yCoord;
-		int zCoord;
 		for (i = 0; i < this.unloadedEntityList.size(); ++i)
 		{
 			tmpEntity = (Entity)this.unloadedEntityList.get(i);
-			xCoord = tmpEntity.chunkCoordX;
-			yCoord = tmpEntity.chunkCoordY;
-			zCoord = tmpEntity.chunkCoordZ;
-
-			if (tmpEntity.addedToChunk)
-			{
-				this.getChunkFromChunkCoords(xCoord, yCoord, zCoord).removeEntity(tmpEntity);
-			}
 		}
 	}
 	public Chunk getChunkFromChunkCoords(int xPos, int yPos, int zPos)

@@ -25,7 +25,7 @@ public class EventException extends Exception {
 		cause = null;
 	}
 
-	/**
+	/*
 	 * * If applicable, returns the Exception that triggered this Exception
 	 * returns Inner exception, or null if one does not exist
 	 */

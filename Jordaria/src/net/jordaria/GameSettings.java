@@ -18,12 +18,9 @@ public class GameSettings {
 
 	//booleans
 	public boolean showAdvancedInfo;//for later use in showing biome info (humidity, magic, etc) on screen
-	public boolean noclip;
 	public boolean wireframe;
 
 	public int renderDistance;
-	public float noclipSpeed;
-	public String language = "en_US";
 
 	public float mouseSensitivity = 0.5F;
 
@@ -35,9 +32,6 @@ public class GameSettings {
 	}
 	private void loadDefaults(){
 		this.showAdvancedInfo = false;
-		this.noclip = false;
-		this.noclipSpeed = 1.0F;
-		this.language = "en_US";
 		this.renderDistance = 10;
 		this.wireframe = false;
 	}
@@ -47,20 +41,12 @@ public class GameSettings {
 	public boolean isShowAdvancedInfo() {
 		return showAdvancedInfo;
 	}
-	public boolean isNoclip() {
-		return noclip;
-	}
+
 	public boolean isWireframe() {
 		return wireframe;
 	}
 	public int getRenderDistance() {
 		return renderDistance;
-	}
-	public float getNoclipSpeed() {
-		return noclipSpeed;
-	}
-	public String getLanguage() {
-		return language;
 	}
 
 }
