@@ -40,9 +40,9 @@ public class World {
 	
 	public boolean spawnEntityInWorld(Entity entity)
     {
-        int x = (int)Math.floor(entity.posX/Jordaria.config.CHUNK_SIZE);
-        int y = (int)Math.floor(entity.posY/Jordaria.config.CHUNK_SIZE);
-        int z = (int)Math.floor(entity.posZ/Jordaria.config.CHUNK_SIZE);
+        int x = (int)Math.floor(entity.posX/Jordaria.config.getCHUNK_SIZE());
+        int y = (int)Math.floor(entity.posY/Jordaria.config.getCHUNK_SIZE());
+        int z = (int)Math.floor(entity.posZ/Jordaria.config.getCHUNK_SIZE());
         boolean isPlayer = false;
 
         if (entity instanceof EntityPlayer)
