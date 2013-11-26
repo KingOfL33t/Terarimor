@@ -35,11 +35,16 @@ public class Jordaria implements Runnable{
 
 	public static void main(String args[]){
 		config = new Configuration();
-
 		Jordaria game = new Jordaria();
+		game.tryConsoleInit();
 		game.start();
 	}
-
+	public void tryConsoleInit(){
+		if (config.getDebugActive()){
+			console = new DebugConsole();
+			console.setVisible(true);
+		}
+	}
 	public void start(){
 		if (this.running)
 		{
@@ -47,9 +52,7 @@ public class Jordaria implements Runnable{
 		}
 		this.running = true;
 		try{
-			if (config.getDebugActive()){
-				console = new DebugConsole();
-			}
+			
 			gameSettings = new GameSettings(this);
 			createWindow();
 			InitGL();
