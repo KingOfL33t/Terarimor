@@ -7,6 +7,9 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import net.jordaria.event.DebugMessage;
+import net.jordaria.event.EventHandler;
+
 public class DebugConsole extends WindowAdapter{
 	
 	private String window_title = "Debug Console";
@@ -26,5 +29,9 @@ public class DebugConsole extends WindowAdapter{
 		frame.getContentPane().setLayout(new BorderLayout());
 		frame.getContentPane().add(new JScrollPane(textArea),BorderLayout.CENTER);
 		frame.setVisible(true);
+	}
+	@EventHandler
+	public void onDebugMessage(DebugMessage event){
+		this.textArea.append(event.getMessage());
 	}
 }
