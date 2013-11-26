@@ -1,23 +1,30 @@
 package net.jordaria.debug;
 
-import java.awt.FlowLayout;
+import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
 
-import javax.swing.JPanel;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
-public class DebugConsole extends JPanel{
+public class DebugConsole extends WindowAdapter{
 	
-	private static final long serialVersionUID = 133789912946195636L;
 	private String window_title = "Debug Console";
+	private int width = 300; 
+	private int height = 200;
+	
+	private JFrame frame;
+	private JTextArea textArea;
 	
 	public DebugConsole(){
-		super();
-		this.init();
-	}
-
-	private void init(){
-		setSize(300,200);
-		setLayout(new FlowLayout(FlowLayout.CENTER));
-		setName(window_title);
-		setVisible(true);
+		frame = new JFrame(window_title);
+		frame.setSize(width, height);
+		
+		textArea = new JTextArea();
+		textArea.setEditable(false);
+		
+		frame.getContentPane().setLayout(new BorderLayout());
+		frame.getContentPane().add(new JScrollPane(textArea),BorderLayout.CENTER);
+		frame.setVisible(true);
 	}
 }
