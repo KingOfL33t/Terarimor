@@ -9,8 +9,9 @@ import javax.swing.JTextArea;
 
 import net.jordaria.event.DebugMessage;
 import net.jordaria.event.EventHandler;
+import net.jordaria.event.Listener;
 
-public class DebugConsole extends WindowAdapter{
+public class DebugConsole extends WindowAdapter implements Listener{
 	
 	private String window_title = "Debug Console";
 	private int width = 300; 
