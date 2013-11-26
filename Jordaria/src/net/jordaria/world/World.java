@@ -7,6 +7,7 @@ import java.util.Random;
 import net.jordaria.Jordaria;
 import net.jordaria.entity.Entity;
 import net.jordaria.entity.EntityPlayer;
+import net.jordaria.event.DebugMessage;
 
 public class World {
 	public Random rng = new Random();
