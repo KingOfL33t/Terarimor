@@ -1,5 +1,6 @@
 package net.jordaria;
 
+import net.jordaria.debug.DebugConsole;
 import net.jordaria.entity.EntityLiving;
 import net.jordaria.entity.EntityPlayer;
 import net.jordaria.entity.NameGenerator;
@@ -23,6 +24,7 @@ public class Jordaria implements Runnable{
 	public int displayWidth;
 	public int displayHeight;
 	
+	DebugConsole console;
 
 	//whether or not the actual game has the focus or a menu does
 	public boolean inGameHasFocus;
@@ -45,6 +47,9 @@ public class Jordaria implements Runnable{
 		}
 		this.running = true;
 		try{
+			if (config.getDebugActive()){
+				console = new DebugConsole();
+			}
 			gameSettings = new GameSettings(this);
 			createWindow();
 			InitGL();
