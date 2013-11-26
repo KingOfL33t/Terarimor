@@ -10,6 +10,7 @@ public class Configuration {
 	public static int window_width = 640;
 	public static int display_bitsPerPixel = 32;
 	public static int CHUNK_SIZE = 16;
+	public static boolean debugActive = true;
 	
 	public static String window_title = "Jordaria!";
 
@@ -26,8 +27,11 @@ public class Configuration {
 	public int getDisplay_bitsPerPixel() {
 		return display_bitsPerPixel;
 	}
-	public static int getCHUNK_SIZE() {
+	public int getCHUNK_SIZE() {
 		return CHUNK_SIZE;
+	}
+	public boolean getDebugActive(){
+		return debugActive;
 	}
 	
 }
