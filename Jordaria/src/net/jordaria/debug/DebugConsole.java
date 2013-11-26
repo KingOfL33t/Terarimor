@@ -18,5 +18,6 @@ public class DebugConsole extends JPanel{
 		setSize(300,200);
 		setLayout(new FlowLayout(FlowLayout.CENTER));
 		setName(window_title);
+		setVisible(true);
 	}
 }
