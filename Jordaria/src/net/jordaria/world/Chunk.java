@@ -26,10 +26,10 @@ public class Chunk {
 		world = theWorld;
 		entitylist = new ArrayList<Entity>();
 		this.coordinates = new ChunkCoordinates(xPos, yPos, zPos);
-		blocks = new Block[Configuration.getCHUNK_SIZE()][Configuration.getCHUNK_SIZE()][Configuration.getCHUNK_SIZE()];
-		for (int x = 0; x < Configuration.getCHUNK_SIZE(); x++){
-			for (int y = 0; y< Configuration.getCHUNK_SIZE(); y++){
-				for (int z = 0; z < Configuration.getCHUNK_SIZE(); z++){
+		blocks = new Block[Configuration.CHUNK_SIZE][Configuration.CHUNK_SIZE][Configuration.CHUNK_SIZE];
+		for (int x = 0; x < Configuration.CHUNK_SIZE; x++){
+			for (int y = 0; y< Configuration.CHUNK_SIZE; y++){
+				for (int z = 0; z < Configuration.CHUNK_SIZE; z++){
 					if (Math.random() < .5){
 						blocks[x][y][z] = Block.stone;
 					}
@@ -44,9 +44,9 @@ public class Chunk {
 
 	}
 	public Chunk makeEmptyChunk(){
-		for (int x = 0; x < Configuration.getCHUNK_SIZE(); x++){
-			for (int y = 0; y< Configuration.getCHUNK_SIZE(); y++){
-				for (int z = 0; z < Configuration.getCHUNK_SIZE(); z++){
+		for (int x = 0; x < Configuration.CHUNK_SIZE; x++){
+			for (int y = 0; y< Configuration.CHUNK_SIZE; y++){
+				for (int z = 0; z < Configuration.CHUNK_SIZE; z++){
 					blocks[x][y][z] = Block.air;
 				}
 			}
@@ -80,9 +80,9 @@ public class Chunk {
 	public void addEntity(Entity theEntity)
 	{
 		this.hasEntities = true;
-		int x = (int)Math.floor(theEntity.posX/Jordaria.config.CHUNK_SIZE);
-		int y = (int)Math.floor(theEntity.posY/Jordaria.config.CHUNK_SIZE);
-		int z = (int)Math.floor(theEntity.posZ/Jordaria.config.CHUNK_SIZE);
+		int x = (int)Math.floor(theEntity.posX/Jordaria.config.getCHUNK_SIZE());
+		int y = (int)Math.floor(theEntity.posY/Jordaria.config.getCHUNK_SIZE());
+		int z = (int)Math.floor(theEntity.posZ/Jordaria.config.getCHUNK_SIZE());
 
 		if (x != this.coordinates.xPos || z != this.coordinates.zPos)
 		{
