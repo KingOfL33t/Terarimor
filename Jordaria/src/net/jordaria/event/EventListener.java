@@ -7,7 +7,7 @@ public class EventListener {
 	private final EventPriority priority;
 	private final EventExecutor executor;
 
-	public EventListener(final Listener listener, final EventExecutor executor, final EventPriority priority, final boolean ignoreCancelled) {
+	public EventListener(final Listener listener, final EventExecutor executor, final EventPriority priority) {
 		this.listener = listener;
 		this.priority = priority;
 		this.executor = executor;
