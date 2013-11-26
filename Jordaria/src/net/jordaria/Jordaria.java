@@ -42,7 +42,6 @@ public class Jordaria implements Runnable{
 	public void tryConsoleInit(){
 		if (config.getDebugActive()){
 			console = new DebugConsole();
-			console.setVisible(true);
 		}
 	}
 	public void start(){
