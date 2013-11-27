@@ -47,5 +47,18 @@ public class EventManager {
 		}
 	}
 
+	public void fireEvent(Event event){
+		HandlerList handlers = event.getHandlers();
+		EventListener[] listeners = handlers.getRegisteredListeners();
+		for (EventListener registration : listeners) {
+			try {
+				registration.callEvent(event);
+			} catch (EventException e) {
+				;//should probably do something here, but its the event system. 
+				//soooo if this is broken we are screwed for reporting errors.
+				//perhaps implement a log system for these cases
+			}
+		}
+	}
 
 }
