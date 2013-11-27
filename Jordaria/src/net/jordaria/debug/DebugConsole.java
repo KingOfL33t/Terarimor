@@ -39,6 +39,6 @@ public class DebugConsole extends WindowAdapter implements Listener{
 	
 	@EventHandler
 	public void onDebugMessage(DebugMessage event){
-		this.textArea.append(event.getMessage());
+		this.textArea.append(event.getMessage()+"\n");
 	}
 }
