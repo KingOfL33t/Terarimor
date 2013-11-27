@@ -1,6 +1,7 @@
 package net.jordaria.debug;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.WindowAdapter;
 
 import javax.swing.JFrame;
@@ -26,7 +27,9 @@ public class DebugConsole extends WindowAdapter implements Listener{
 		frame.setSize(width, height);
 		
 		textArea = new JTextArea();
-		textArea.setEditable(false);
+		textArea.setEditable(true);
+		textArea.setBackground(new Color(2, 3, 2));
+		textArea.setForeground(new Color(2,200,2));
 		
 		frame.getContentPane().setLayout(new BorderLayout());
 		frame.getContentPane().add(new JScrollPane(textArea),BorderLayout.CENTER);
