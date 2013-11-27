@@ -61,6 +61,7 @@ public class Jordaria implements Runnable{
 			createWindow();
 			InitGL();
 			theWorld = new World("Test");
+			eventManager.fireEvent(new DebugMessage("World ("+theWorld.worldName+") created!"));
 			NameGenerator namegen = new NameGenerator();
 			thePlayer = new EntityPlayer(theWorld, namegen.getRandomName());
 			run();
