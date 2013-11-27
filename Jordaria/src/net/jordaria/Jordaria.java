@@ -4,7 +4,7 @@ import net.jordaria.debug.DebugConsole;
 import net.jordaria.entity.EntityLiving;
 import net.jordaria.entity.EntityPlayer;
 import net.jordaria.entity.NameGenerator;
-import net.jordaria.event.DebugMessage;
+import net.jordaria.event.DebugMessageEvent;
 import net.jordaria.event.EventManager;
 import net.jordaria.world.World;
 
@@ -61,10 +61,10 @@ public class Jordaria implements Runnable{
 			createWindow();
 			InitGL();
 			theWorld = new World("Test");
-			eventManager.fireEvent(new DebugMessage("World ("+theWorld.worldName+") created!"));
+			eventManager.fireEvent(new DebugMessageEvent("World ("+theWorld.worldName+") created!"));
 			NameGenerator namegen = new NameGenerator();
 			thePlayer = new EntityPlayer(theWorld, namegen.getRandomName());
-			eventManager.fireEvent(new DebugMessage("Player ("+thePlayer.name+") created!"));
+			eventManager.fireEvent(new DebugMessageEvent("Player ("+thePlayer.name+") created!"));
 			run();
 		}
 		catch(Exception e){
@@ -138,7 +138,7 @@ public class Jordaria implements Runnable{
 	public void registerListeners(){
 		if (config.getDebugActive()){
 			try {
-				eventManager.registerEvent(DebugMessage.class, console);
+				eventManager.registerEvent(DebugMessageEvent.class, console);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

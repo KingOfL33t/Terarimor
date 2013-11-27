@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import net.jordaria.event.DebugMessage;
+import net.jordaria.event.DebugMessageEvent;
 import net.jordaria.event.EventHandler;
 import net.jordaria.event.EventListener;
 import net.jordaria.event.Listener;
@@ -38,7 +38,7 @@ public class DebugConsole extends WindowAdapter implements Listener{
 	}
 	
 	@EventHandler
-	public void onDebugMessage(DebugMessage event){
+	public void onDebugMessage(DebugMessageEvent event){
 		this.textArea.append(event.getMessage()+"\n");
 	}
 }
