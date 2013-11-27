@@ -4,6 +4,8 @@ import net.jordaria.debug.DebugConsole;
 import net.jordaria.entity.EntityLiving;
 import net.jordaria.entity.EntityPlayer;
 import net.jordaria.entity.NameGenerator;
+import net.jordaria.event.DebugMessage;
+import net.jordaria.event.EventManager;
 import net.jordaria.world.World;
 
 import org.lwjgl.opengl.Display;
@@ -25,6 +27,8 @@ public class Jordaria implements Runnable{
 	public int displayHeight;
 	
 	DebugConsole console;
+	
+	EventManager eventManager;
 
 	//whether or not the actual game has the focus or a menu does
 	public boolean inGameHasFocus;
@@ -36,6 +40,7 @@ public class Jordaria implements Runnable{
 	public static void main(String args[]){
 		config = new Configuration();
 		Jordaria game = new Jordaria();
+		
 		game.tryConsoleInit();
 		game.start();
 	}
@@ -51,8 +56,8 @@ public class Jordaria implements Runnable{
 		}
 		this.running = true;
 		try{
-			
 			gameSettings = new GameSettings(this);
+			eventManager = new EventManager();
 			createWindow();
 			InitGL();
 			theWorld = new World("Test");
@@ -77,7 +82,18 @@ public class Jordaria implements Runnable{
 				;
 			}
 		}
+		shutdown();
 		Display.destroy();
+	}
+	
+	public void shutdown(){
+		this.running = false;
+		this.console = null;
+		this.theWorld = null;
+		this.thePlayer = null;
+		this.renderViewEntity = null;
+		this.eventManager = null;
+		System.gc();
 	}
 
 	public void createWindow() throws Exception{
@@ -115,6 +131,13 @@ public class Jordaria implements Runnable{
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);//modify the orientation and location matrix
 		GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
 	}
-
+	
+	//register all the listeners here
+	public void registerListeners(){
+		if (config.getDebugActive()){
+			eventManager.registerEvent(new DebugMessage(), console);
+		}
+		
+	}
 
 }
