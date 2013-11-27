@@ -9,6 +9,7 @@ import javax.swing.JTextArea;
 
 import net.jordaria.event.DebugMessage;
 import net.jordaria.event.EventHandler;
+import net.jordaria.event.EventListener;
 import net.jordaria.event.Listener;
 
 public class DebugConsole extends WindowAdapter implements Listener{
@@ -29,8 +30,10 @@ public class DebugConsole extends WindowAdapter implements Listener{
 		
 		frame.getContentPane().setLayout(new BorderLayout());
 		frame.getContentPane().add(new JScrollPane(textArea),BorderLayout.CENTER);
+		
 		frame.setVisible(true);
 	}
+	
 	@EventHandler
 	public void onDebugMessage(DebugMessage event){
 		this.textArea.append(event.getMessage());
