@@ -64,6 +64,7 @@ public class Jordaria implements Runnable{
 			eventManager.fireEvent(new DebugMessage("World ("+theWorld.worldName+") created!"));
 			NameGenerator namegen = new NameGenerator();
 			thePlayer = new EntityPlayer(theWorld, namegen.getRandomName());
+			eventManager.fireEvent(new DebugMessage("Player ("+thePlayer.name+") created!"));
 			run();
 		}
 		catch(Exception e){
@@ -136,7 +137,11 @@ public class Jordaria implements Runnable{
 	//register all the listeners here
 	public void registerListeners(){
 		if (config.getDebugActive()){
-			eventManager.registerEvent(new DebugMessage(), console);
+			try {
+				eventManager.registerEvent(DebugMessage.class, console);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
 	}
