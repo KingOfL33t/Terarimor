@@ -58,6 +58,7 @@ public class Jordaria implements Runnable{
 		try{
 			gameSettings = new GameSettings(this);
 			eventManager = new EventManager();
+			registerListeners();
 			createWindow();
 			InitGL();
 			theWorld = new World("Test");
@@ -81,7 +82,7 @@ public class Jordaria implements Runnable{
 				Display.sync(60);
 			}
 			catch(Exception e){
-				;
+				break;
 			}
 		}
 		shutdown();
