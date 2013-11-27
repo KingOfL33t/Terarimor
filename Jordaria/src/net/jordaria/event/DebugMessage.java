@@ -7,7 +7,11 @@ public class DebugMessage extends Event{
 	String message;
 	
 	public DebugMessage(String theMessage){
+		this();
 		this.message = theMessage;
+	}
+	public DebugMessage(){
+		
 	}
 	
 	public String getMessage(){
