@@ -44,7 +44,7 @@ public class ChunkManager {
     public Chunk provideChunk(int xPos, int yPos, int zPos)
     {
         Chunk theChunk = (Chunk)this.chunkMap.get(new ChunkCoordinates(xPos, yPos, zPos));
-        return theChunk == null ? this.blankChunk : theChunk;
+        return theChunk == null ? this.blankChunk : theChunk;//if the chunk is null return the blank chunk, else return the chunk
     }
     
     public int getLoadedChunkCount()
