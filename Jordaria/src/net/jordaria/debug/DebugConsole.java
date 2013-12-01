@@ -26,7 +26,7 @@ public class DebugConsole extends WindowAdapter implements Listener{
 		frame.setSize(width, height);
 		
 		textArea = new JTextArea();
-		textArea.setEditable(true);
+		textArea.setEditable(false);
 		textArea.setBackground(new Color(2, 3, 2));
 		textArea.setForeground(new Color(2,200,2));
 		
