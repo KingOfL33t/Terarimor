@@ -26,13 +26,6 @@ public class World {
 	}
 
 	public void updateEntities(){
-		this.loadedEntityList.removeAll(this.unloadedEntityList);//dont update unloaded entities
-		Entity tmpEntity;
-		int i;//for loops
-		for (i = 0; i < this.unloadedEntityList.size(); ++i)
-		{
-			tmpEntity = (Entity)this.unloadedEntityList.get(i);
-		}
 	}
 	public Chunk getChunkFromChunkCoords(int xPos, int yPos, int zPos)
 	{
