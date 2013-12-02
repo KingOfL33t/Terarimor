@@ -10,25 +10,10 @@ import net.jordaria.exception.EventException;
 
 public class EventManager {
 
-	public void registerEvent(final Class<? extends Event> type, Listener listener) throws Exception {
+	public void registerEventListeners(Listener listener) throws Exception {
 		for (Map.Entry<Class<? extends Event>, Set<EventListener>> entry : createRegisteredListeners(listener).entrySet()) {
 			getEventListeners(getRegistrationClass(entry.getKey())).registerAll(entry.getValue());
 		}
-		/*EventExecutor tmpExecutor = new EventExecutor() {
-			public void execute(Listener listener, Event event)
-					throws EventException {
-				try {
-					if (!type.isAssignableFrom(event.getClass())) {
-						return;
-					}
-
-				} catch (Throwable t) {
-					throw new EventException(t);
-				}
-			}
-		};
-		getEventListeners(type).register(
-				new EventListener(listener, tmpExecutor, EventPriority.NORMAL));*/
 	}
 
 	private HandlerList getEventListeners(Class<? extends Event> type)
@@ -50,16 +35,10 @@ public class EventManager {
 			eventClass.getDeclaredMethod("getHandlerList");
 			return eventClass;
 		} catch (NoSuchMethodException e) {
-			if (eventClass.getSuperclass() != null// super is not null
-					&& !eventClass.getSuperclass().equals(Event.class)// and its
-					// an
-					// event
-					// subclass
-					&& Event.class.isAssignableFrom(eventClass.getSuperclass())) {// and
-				// it
-				// should
-				// be
-				// assignable
+			if (eventClass.getSuperclass() != null
+					&& !eventClass.getSuperclass().equals(Event.class)
+					&& Event.class.isAssignableFrom(eventClass.getSuperclass())) {
+
 				return getRegistrationClass(eventClass.getSuperclass()
 						.asSubclass(Event.class));
 			} else {
