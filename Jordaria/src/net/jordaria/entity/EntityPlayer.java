@@ -11,9 +11,13 @@ public class EntityPlayer extends EntityLiving{
 		super(world);
 		this.username = name;
 	}
-	
+
 	public String getUsername(){
 		return this.username;
+	}
+
+	protected void entityInit() {
+		super.entityInit();
 	}
 
 
