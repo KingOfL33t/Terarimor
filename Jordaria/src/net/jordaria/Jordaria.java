@@ -144,7 +144,7 @@ public class Jordaria implements Runnable{
 	public void registerListeners(){
 		if (config.getDebugActive()){
 			try {
-				eventManager.registerEvent(DebugMessageEvent.class, console);
+				eventManager.registerEventListeners(console);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
