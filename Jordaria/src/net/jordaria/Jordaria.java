@@ -12,6 +12,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
+import org.lwjgl.input.Keyboard;
 
 
 public class Jordaria implements Runnable{
@@ -83,6 +84,48 @@ public class Jordaria implements Runnable{
 		while (this.running && !Display.isCloseRequested()){
 
 			try{
+				while (Keyboard.next()){
+					KeyBind.setKeyBindState(Keyboard.getEventKey(), Keyboard.getEventKeyState());
+					if (Keyboard.getEventKeyState())
+					{
+						KeyBind.onTick(Keyboard.getEventKey());
+					}
+
+					while (this.gameSettings.KEYBIND_MOVE_FORWARD.isPressed())
+					{
+						if (config.getDebugActive())
+							eventManager.fireEvent(new DebugMessageEvent("Key pressed! ("+gameSettings.KEYBIND_MOVE_FORWARD.keyDescription+")"));
+					}
+					while (this.gameSettings.KEYBIND_MOVE_BACKWARD.isPressed())
+					{
+						if (config.getDebugActive())
+							eventManager.fireEvent(new DebugMessageEvent("Key pressed! ("+gameSettings.KEYBIND_MOVE_BACKWARD.keyDescription+")"));
+					}
+					while (this.gameSettings.KEYBIND_MOVE_LEFT.isPressed())
+					{
+						if (config.getDebugActive())
+							eventManager.fireEvent(new DebugMessageEvent("Key pressed! (("+gameSettings.KEYBIND_MOVE_LEFT.keyDescription+")"));
+					}
+					while (this.gameSettings.KEYBIND_MOVE_RIGHT.isPressed())
+					{
+						if (config.getDebugActive())
+							eventManager.fireEvent(new DebugMessageEvent("Key pressed! ("+gameSettings.KEYBIND_MOVE_RIGHT.keyDescription+")"));
+					}
+					while (this.gameSettings.KEYBIND_MOVE_JUMP.isPressed())
+					{
+						if (config.getDebugActive())
+							eventManager.fireEvent(new DebugMessageEvent("Key pressed! ("+gameSettings.KEYBIND_MOVE_JUMP.keyDescription+")"));
+					}
+					while (this.gameSettings.KEYBIND_WIREFRAME.isPressed())
+					{
+						this.gameSettings.toggleWireframe();
+						if (config.getDebugActive()){
+								eventManager.fireEvent(new DebugMessageEvent("Key pressed! ("+gameSettings.KEYBIND_WIREFRAME.keyDescription+")"));
+							
+						}
+					}
+
+				}
 				Display.update();
 				Display.sync(60);
 			}
