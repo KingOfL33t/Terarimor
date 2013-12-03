@@ -19,7 +19,7 @@ public class DebugConsole extends WindowAdapter implements Listener{
 	private String window_title = "Debug Console";
 	private int width = 300; 
 	private int height = 200;
-	
+	 
 	private JFrame frame;
 	private JTextArea textArea;
 	
