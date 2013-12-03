@@ -1,10 +1,15 @@
 package net.jordaria.world;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class ChunkManager {
 	public HashMap<ChunkCoordinates, Chunk> chunkMap = new HashMap<ChunkCoordinates, Chunk>();
-
+	
+	public HashSet<Chunk> chunksToLoad = new HashSet<Chunk>();
+	public HashSet<Chunk> chunksToUnload = new HashSet<Chunk>();
+	public HashSet<Chunk> chunksToRebuild = new HashSet<Chunk>();
+	
 	private World worldObj;
 
 	private Chunk blankChunk;
