@@ -104,7 +104,7 @@ public class Jordaria implements Runnable{
 					while (this.gameSettings.KEYBIND_MOVE_LEFT.isPressed())
 					{
 						if (config.getDebugActive())
-							eventManager.fireEvent(new DebugMessageEvent("Key pressed! (("+gameSettings.KEYBIND_MOVE_LEFT.keyDescription+")"));
+							eventManager.fireEvent(new DebugMessageEvent("Key pressed! ("+gameSettings.KEYBIND_MOVE_LEFT.keyDescription+")"));
 					}
 					while (this.gameSettings.KEYBIND_MOVE_RIGHT.isPressed())
 					{
