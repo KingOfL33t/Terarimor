@@ -120,8 +120,8 @@ public class Jordaria implements Runnable{
 					{
 						this.gameSettings.toggleWireframe();
 						if (config.getDebugActive()){
-								eventManager.fireEvent(new DebugMessageEvent("Key pressed! ("+gameSettings.KEYBIND_WIREFRAME.keyDescription+")"));
-							
+							eventManager.fireEvent(new DebugMessageEvent("Key pressed! ("+gameSettings.KEYBIND_WIREFRAME.keyDescription+")"));
+
 						}
 					}
 
