@@ -1,13 +1,16 @@
 package net.jordaria.event;
 
+import net.jordaria.entity.Direction;
 import net.jordaria.entity.EntityPlayer;
 
 public class PlayerMoveRequestEvent extends Event{
 	private static final HandlerList handlers = new HandlerList();
 	
 	public EntityPlayer player;
-	
-	public PlayerMoveRequestEvent(EntityPlayer player){//TODO add a direction		this.player = player;
+	public Direction direction;
+	public PlayerMoveRequestEvent(EntityPlayer player, Direction direction){		
+		this.player = player;
+		this.direction = direction;
 	}
 	
 	@Override
