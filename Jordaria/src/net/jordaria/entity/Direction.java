@@ -5,6 +5,11 @@ public class Direction {
 	public float angle_y;//the angle about the y axis, in degrees.
 	public float angle_z;//the angle about the z axis, in degrees.
 	
+	public Direction(float x, float y, float z){
+		this.angle_x = x;
+		this.angle_y = y;
+		this.angle_z = z;
+	}
 	public float getAngleX(){
 		return this.angle_x;
 	}
