@@ -22,6 +22,7 @@ public abstract class Entity {
 	public float width;
 	public float height;
 	public float yOffset;
+	public Direction direction;
 
 	public Entity(World par1World)
 	{
@@ -32,6 +33,7 @@ public abstract class Entity {
 		this.worldObj = par1World;
 		this.setPosition(0.0D, 0.0D, 0.0D);
 		this.entityInit();
+		this.direction = new Direction(0,0,0);
 	}
 
 	protected abstract void entityInit();//inherited for subclass initiation
