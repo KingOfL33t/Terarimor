@@ -7,8 +7,7 @@ public class PlayerMoveRequestEvent extends Event{
 	
 	public EntityPlayer player;
 	
-	public PlayerMoveRequestEvent(EntityPlayer player){//TODO add a direction
-		this.player = player;
+	public PlayerMoveRequestEvent(EntityPlayer player){//TODO add a direction		this.player = player;
 	}
 	
 	@Override
