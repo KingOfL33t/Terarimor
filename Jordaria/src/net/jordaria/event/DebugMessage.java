@@ -1,16 +1,16 @@
 package net.jordaria.event;
 
-public class DebugMessageEvent extends Event{
+public class DebugMessage extends Event{
 
 	private static final HandlerList handlers = new HandlerList();
 	
 	String message;
 	
-	public DebugMessageEvent(String theMessage){
+	public DebugMessage(String theMessage){
 		this();
 		this.message = theMessage;
 	}
-	public DebugMessageEvent(){
+	public DebugMessage(){
 		
 	}
 	
