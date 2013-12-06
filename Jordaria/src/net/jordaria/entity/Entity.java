@@ -11,11 +11,7 @@ public abstract class Entity {
 
 	public Random rand;
 
-	public double posX;//x position
-	public double posY;//y position
-	public double posZ;//z position
-	public float rotationYaw;
-	public float rotationPitch;
+	Location location;
 	public double velX;//velocity in the x direction
 	public double velY;//velocity in the y direction
 	public double velZ;//velocity in the z direction
@@ -39,9 +35,7 @@ public abstract class Entity {
 	protected abstract void entityInit();//inherited for subclass initiation
 
 	public void setPosition(double x, double y, double z) {
-		this.posX = x;
-		this.posY = y;
-		this.posZ = z;
+		this.location.setPositions(x, y, z);
 	}
 
 	public void setSize(float w, float h){
