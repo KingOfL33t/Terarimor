@@ -10,7 +10,7 @@ import javax.swing.JTextArea;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
 
-import net.jordaria.event.DebugMessageEvent;
+import net.jordaria.event.DebugMessage;
 import net.jordaria.event.EventHandler;
 import net.jordaria.event.Listener;
 
@@ -41,7 +41,7 @@ public class DebugConsole extends WindowAdapter implements Listener{
 	}
 	
 	@EventHandler
-	public void onDebugMessage(DebugMessageEvent event){
+	public void onDebugMessage(DebugMessage event){
 		this.textArea.append(event.getMessage()+"\n");
 		
 		if (this.textArea.getLineCount()>=100){
