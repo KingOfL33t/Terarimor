@@ -6,6 +6,8 @@ import net.jordaria.entity.EntityPlayer;
 import net.jordaria.entity.NameGenerator;
 import net.jordaria.event.DebugMessage;
 import net.jordaria.event.EventManager;
+import net.jordaria.event.EventSystemStarted;
+import net.jordaria.event.GraphicsSystemStarted;
 import net.jordaria.world.World;
 
 import org.lwjgl.opengl.Display;
@@ -30,6 +32,10 @@ public class Jordaria implements Runnable{
 	DebugConsole console;
 
 	EventManager eventManager;
+	
+	public FileIO fileIO;
+	
+	public Localization localization;
 
 	//whether or not the actual game has the focus or a menu does
 	public boolean inGameHasFocus;
@@ -58,10 +64,18 @@ public class Jordaria implements Runnable{
 		this.running = true;
 		try{
 			gameSettings = new GameSettings(this);
+			
 			eventManager = new EventManager();
 			registerListeners();
+			eventManager.fireEvent(new EventSystemStarted());
+			
+			fileIO = new FileIO(this);
+			
+			localization = new Localization(this);
+			
 			createWindow();
 			InitGL();
+			eventManager.fireEvent(new GraphicsSystemStarted());
 
 			theWorld = new World("Test");
 			if (config.getDebugActive())
@@ -69,7 +83,6 @@ public class Jordaria implements Runnable{
 
 			NameGenerator namegen = new NameGenerator();
 			thePlayer = new EntityPlayer(theWorld, namegen.getRandomName());
-			if (config.getDebugActive())
 				eventManager.fireEvent(new DebugMessage("Player ("+thePlayer.getUsername()+") created!"));
 
 			run();
@@ -93,33 +106,33 @@ public class Jordaria implements Runnable{
 
 					while (this.gameSettings.KEYBIND_MOVE_FORWARD.isPressed())
 					{
-						if (config.getDebugActive())
+						if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES())
 							eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_MOVE_FORWARD.keyDescription+")"));
 					}
 					while (this.gameSettings.KEYBIND_MOVE_BACKWARD.isPressed())
 					{
-						if (config.getDebugActive())
+						if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES())
 							eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_MOVE_BACKWARD.keyDescription+")"));
 					}
 					while (this.gameSettings.KEYBIND_MOVE_LEFT.isPressed())
 					{
-						if (config.getDebugActive())
+						if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES())
 							eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_MOVE_LEFT.keyDescription+")"));
 					}
 					while (this.gameSettings.KEYBIND_MOVE_RIGHT.isPressed())
 					{
-						if (config.getDebugActive())
+						if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES())
 							eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_MOVE_RIGHT.keyDescription+")"));
 					}
 					while (this.gameSettings.KEYBIND_MOVE_JUMP.isPressed())
 					{
-						if (config.getDebugActive())
+						if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES())
 							eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_MOVE_JUMP.keyDescription+")"));
 					}
 					while (this.gameSettings.KEYBIND_WIREFRAME.isPressed())
 					{
 						this.gameSettings.toggleWireframe();
-						if (config.getDebugActive()){
+						if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES()){
 							eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_WIREFRAME.keyDescription+")"));
 
 						}

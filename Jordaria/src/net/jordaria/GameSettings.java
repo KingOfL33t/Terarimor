@@ -26,6 +26,10 @@ public class GameSettings {
 
 	public float mouseSensitivity = 0.5F;
 
+	public String language = "en_US";
+	public String OS;
+	public String homeDirectory;
+
 	public GameSettings(Jordaria jordaria)
 	{
 		this.keyBindings = new KeyBind[] {this.KEYBIND_MOVE_FORWARD, this.KEYBIND_MOVE_BACKWARD, this.KEYBIND_MOVE_JUMP, this.KEYBIND_MOVE_LEFT, this.KEYBIND_MOVE_RIGHT};
@@ -33,6 +37,8 @@ public class GameSettings {
 		this.loadDefaults();
 	}
 	private void loadDefaults(){
+		this.obtainOS();
+		this.setHomeDir();
 		this.showAdvancedInfo = false;
 		this.renderDistance = 10;
 		this.wireframe = false;
@@ -54,5 +60,42 @@ public class GameSettings {
 	public int getRenderDistance() {
 		return renderDistance;
 	}
+
+
+	private void obtainOS(){
+		String osName = System.getProperty("os.name").toLowerCase();
+		String toSet = "UNKNOWN";
+
+		if (osName.contains("win")){
+			toSet = "WINDOWS";
+		}
+		else if (osName.contains("mac")){
+			toSet = "MAC";
+		}
+		else if (osName.contains("linux") || osName.contains("unix")){
+			toSet = "LINUX";
+		}
+		else{
+			toSet = "UNKNOWN";
+		}
+		this.OS = toSet;
+	}
+	private void setHomeDir(){
+		String theDir = "";
+		if (OS == "WINDOWS"){
+			theDir = System.getenv("APPDATA");
+		}
+		else if (OS == "MAC"){
+			theDir = System.getProperty("user.home") + "/Library/Application Support";
+		}
+		else if (OS == "LINUX"){
+			theDir = System.getProperty("user.home");
+		}
+		else{
+			theDir = System.getProperty("user.dir");
+		}
+		this.homeDirectory = theDir;
+	}
+
 
 }
