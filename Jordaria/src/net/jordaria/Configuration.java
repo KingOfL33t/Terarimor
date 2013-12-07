@@ -6,15 +6,19 @@ package net.jordaria;
  * without having to redo large chunks of code
  */
 public class Configuration {
+	//GUI settings
 	public static int window_height = 480;
 	public static int window_width = 640;
 	public static int display_bitsPerPixel = 32;
-	public static int CHUNK_SIZE = 16;
-	public static boolean debugActive = true;
-	
 	public static String window_title = "Jordaria!";
-
 	
+	//Chunk settings
+	public static int CHUNK_SIZE = 16;
+	
+	//debug settings
+	public static boolean debugActive = true;
+
+	//getters for non-static versions of the variables
 	public int getWindow_height(){
 		return window_height;
 	}
