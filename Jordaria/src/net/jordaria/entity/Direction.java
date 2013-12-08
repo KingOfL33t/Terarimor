@@ -1,7 +1,8 @@
 package net.jordaria.entity;
 
 public class Direction {
-	public float angle_x = 0;//the angle about the x axis. in degrees.
+	//angles start facing the origin from the negative axis and increase as you move clockwise
+	public float angle_x = 0;//the angle about the x axis. in degrees. 
 	public float angle_y = 0;//the angle about the y axis, in degrees.
 	public float angle_z = 0;//the angle about the z axis, in degrees.
 	
