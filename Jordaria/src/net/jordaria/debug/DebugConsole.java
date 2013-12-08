@@ -15,6 +15,7 @@ import net.jordaria.entity.EntityPlayer;
 import net.jordaria.event.DebugMessage;
 import net.jordaria.event.EntityMoveRequest;
 import net.jordaria.event.EventHandler;
+import net.jordaria.event.EventPriority;
 import net.jordaria.event.EventSystemStarted;
 import net.jordaria.event.GraphicsSystemStarted;
 import net.jordaria.event.Listener;
@@ -62,40 +63,40 @@ public class DebugConsole extends WindowAdapter implements Listener{
 		}
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onDebugMessage(DebugMessage event){
 		this.appendMessage(event.getMessage());
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onEventSystemStarted(EventSystemStarted event){
 		if (Configuration.DEBUG_SHOW_STARTINGSYSTEMS){
 			this.appendMessage("Event system started");
 		}
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onGraphicsSystemStarted(GraphicsSystemStarted event){
 		if (Configuration.DEBUG_SHOW_STARTINGSYSTEMS){
 			this.appendMessage("Graphics system started");
 		}
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPhysicsSystemStarted(PhysicsSystemStarted event){
 		if (Configuration.DEBUG_SHOW_STARTINGSYSTEMS){
 			this.appendMessage("Physics system started");
 		}
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onSoundSystemStarted(SoundSystemStarted event){
 		if (Configuration.DEBUG_SHOW_STARTINGSYSTEMS){
 			this.appendMessage("Sound system started");
 		}
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onEntityMoveRequest(EntityMoveRequest event){
 		if (event.entity instanceof EntityPlayer){
 			String direct = "("+event.direction.getAngleX()+","+event.direction.getAngleY()+","+event.direction.getAngleZ()+")";
