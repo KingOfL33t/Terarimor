@@ -19,13 +19,11 @@ public class EventManager {
 	private HandlerList getEventListeners(Class<? extends Event> type)
 			throws Exception {
 		try {
-			Method method = getRegistrationClass(type).getDeclaredMethod("getHandlerList");// get the gethandlerlist method
-			method.setAccessible(true);// eh, security? we have a try/catch for
-			// that :P
-			return (HandlerList) method.invoke(null);// get the handler list
-			// from the class
+			Method method = getRegistrationClass(type).getDeclaredMethod("getHandlerList");
+			method.setAccessible(true);
+			return (HandlerList) method.invoke(null);//get the handler list from the class
 		} catch (Exception e) {
-			throw new Exception(e.getMessage(), e.getCause());// oops
+			throw new Exception(e.getMessage(), e.getCause());
 		}
 	}
 
@@ -42,8 +40,7 @@ public class EventManager {
 				return getRegistrationClass(eventClass.getSuperclass()
 						.asSubclass(Event.class));
 			} else {
-				throw new Exception("Unable to find handler list for event "
-						+ eventClass.getName());// they dont exist
+				throw new Exception("Unable to find handler list for event "+ eventClass.getName());
 			}
 		}
 	}
@@ -56,8 +53,7 @@ public class EventManager {
 				registration.callEvent(event);
 			} catch (EventException e) {
 				;// should probably do something here, but its the event system.
-				// soooo if this is broken we are screwed for reporting
-				// errors.
+				// so if this is broken we are screwed for reporting errors
 				// perhaps implement a log system for these cases
 			}
 		}
@@ -116,5 +112,4 @@ public class EventManager {
 		}
 		return toReturn;
 	}
-
 }
