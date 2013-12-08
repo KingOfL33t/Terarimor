@@ -11,10 +11,15 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
 
 import net.jordaria.Configuration;
+import net.jordaria.entity.EntityPlayer;
 import net.jordaria.event.DebugMessage;
+import net.jordaria.event.EntityMoveRequest;
 import net.jordaria.event.EventHandler;
 import net.jordaria.event.EventSystemStarted;
+import net.jordaria.event.GraphicsSystemStarted;
 import net.jordaria.event.Listener;
+import net.jordaria.event.PhysicsSystemStarted;
+import net.jordaria.event.SoundSystemStarted;
 
 public class DebugConsole extends WindowAdapter implements Listener{
 
@@ -66,6 +71,35 @@ public class DebugConsole extends WindowAdapter implements Listener{
 	public void onEventSystemStarted(EventSystemStarted event){
 		if (Configuration.DEBUG_SHOW_STARTINGSYSTEMS){
 			this.appendMessage("Event system started");
+		}
+	}
+	
+	@EventHandler
+	public void onGraphicsSystemStarted(GraphicsSystemStarted event){
+		if (Configuration.DEBUG_SHOW_STARTINGSYSTEMS){
+			this.appendMessage("Graphics system started");
+		}
+	}
+	
+	@EventHandler
+	public void onPhysicsSystemStarted(PhysicsSystemStarted event){
+		if (Configuration.DEBUG_SHOW_STARTINGSYSTEMS){
+			this.appendMessage("Physics system started");
+		}
+	}
+	
+	@EventHandler
+	public void onSoundSystemStarted(SoundSystemStarted event){
+		if (Configuration.DEBUG_SHOW_STARTINGSYSTEMS){
+			this.appendMessage("Sound system started");
+		}
+	}
+	
+	@EventHandler
+	public void onEntityMoveRequest(EntityMoveRequest event){
+		if (event.entity instanceof EntityPlayer){
+			String direct = "("+event.direction.getAngleX()+","+event.direction.getAngleY()+","+event.direction.getAngleZ()+")";
+			this.appendMessage("Player move requested! "+direct);
 		}
 	}
 }

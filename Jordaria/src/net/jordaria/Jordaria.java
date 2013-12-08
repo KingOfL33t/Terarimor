@@ -1,10 +1,13 @@
 package net.jordaria;
 
 import net.jordaria.debug.DebugConsole;
+import net.jordaria.entity.Direction;
 import net.jordaria.entity.EntityLiving;
 import net.jordaria.entity.EntityPlayer;
 import net.jordaria.entity.NameGenerator;
 import net.jordaria.event.DebugMessage;
+import net.jordaria.event.EntityMoveRequest;
+import net.jordaria.event.Error;
 import net.jordaria.event.EventManager;
 import net.jordaria.event.EventSystemStarted;
 import net.jordaria.event.GraphicsSystemStarted;
@@ -65,17 +68,15 @@ public class Jordaria implements Runnable{
 		try{
 			gameSettings = new GameSettings(this);
 			
-			eventManager = new EventManager();
-			registerListeners();
-			eventManager.fireEvent(new EventSystemStarted());
+			initEventManager();
 			
 			fileIO = new FileIO(this);
+			fileIO.createMainDirectories(gameSettings.homeDirectory);
 			
 			localization = new Localization(this);
+			localization.loadLanguage();
 			
-			createWindow();
-			InitGL();
-			eventManager.fireEvent(new GraphicsSystemStarted());
+			initGraphics();
 
 			theWorld = new World("Test");
 			if (config.getDebugActive())
@@ -84,7 +85,7 @@ public class Jordaria implements Runnable{
 			NameGenerator namegen = new NameGenerator();
 			thePlayer = new EntityPlayer(theWorld, namegen.getRandomName());
 				eventManager.fireEvent(new DebugMessage("Player ("+thePlayer.getUsername()+") created!"));
-
+				
 			run();
 		}
 		catch(Exception e){
@@ -92,7 +93,20 @@ public class Jordaria implements Runnable{
 		}
 
 	}
-
+	private void initEventManager(){
+		eventManager = new EventManager();
+		registerListeners();
+		eventManager.fireEvent(new EventSystemStarted());
+	}
+	private void initGraphics(){
+		try {
+			createWindow();
+		} catch (Exception e) {
+			eventManager.fireEvent(new Error("Error creating Window"));
+		}
+		InitGL();
+		eventManager.fireEvent(new GraphicsSystemStarted());
+	}
 	public void run(){
 		while (this.running && !Display.isCloseRequested()){
 
@@ -106,26 +120,31 @@ public class Jordaria implements Runnable{
 
 					while (this.gameSettings.KEYBIND_MOVE_FORWARD.isPressed())
 					{
+						eventManager.fireEvent(new EntityMoveRequest(thePlayer, thePlayer.direction));
 						if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES())
 							eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_MOVE_FORWARD.keyDescription+")"));
 					}
 					while (this.gameSettings.KEYBIND_MOVE_BACKWARD.isPressed())
 					{
+						eventManager.fireEvent(new EntityMoveRequest(thePlayer, thePlayer.direction.getRelativeDirection(new Direction(180, 0, 0))));
 						if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES())
 							eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_MOVE_BACKWARD.keyDescription+")"));
 					}
 					while (this.gameSettings.KEYBIND_MOVE_LEFT.isPressed())
 					{
+						eventManager.fireEvent(new EntityMoveRequest(thePlayer, thePlayer.direction.getRelativeDirection(new Direction(90, 0, 0))));
 						if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES())
 							eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_MOVE_LEFT.keyDescription+")"));
 					}
 					while (this.gameSettings.KEYBIND_MOVE_RIGHT.isPressed())
 					{
+						eventManager.fireEvent(new EntityMoveRequest(thePlayer, thePlayer.direction.getRelativeDirection(new Direction(-90, 0, 0))));
 						if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES())
 							eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_MOVE_RIGHT.keyDescription+")"));
 					}
 					while (this.gameSettings.KEYBIND_MOVE_JUMP.isPressed())
 					{
+						eventManager.fireEvent(new EntityMoveRequest(thePlayer, thePlayer.direction.getRelativeDirection(new Direction(0, 90, 0))));
 						if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES())
 							eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_MOVE_JUMP.keyDescription+")"));
 					}
