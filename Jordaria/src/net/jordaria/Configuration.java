@@ -16,7 +16,7 @@ public class Configuration {
 	
 	//debug settings
 	public static boolean debugActive = true;
-	public static boolean DEBUG_SHOW_ENTITYMOVE = true;//movements of entities (will be a lot of events)
+	public static boolean DEBUG_SHOW_ENTITYMOVE = false;//movements of entities (will be a lot of events)
 	public static boolean DEBUG_SHOW_KEYPRESSES = true;//keys pressed in the gui
 	public static boolean DEBUG_SHOW_STARTINGSYSTEMS = true;//game systems starting such as physics
 
