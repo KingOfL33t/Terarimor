@@ -51,7 +51,7 @@ public class DebugConsole extends WindowAdapter implements Listener{
 	public void appendMessage(String message){
 		this.textArea.append(message+"\n");
 
-		if (this.textArea.getLineCount()>=100){
+		if (this.textArea.getLineCount()>=150){
 			int end;
 			try {
 				end = this.textArea.getLineEndOffset(0);
