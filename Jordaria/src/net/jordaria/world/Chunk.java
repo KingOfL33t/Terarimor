@@ -80,20 +80,7 @@ public class Chunk {
 	public void addEntity(Entity theEntity)
 	{
 		this.hasEntities = true;
-		int x = (int)Math.floor(theEntity.location.getPosX()/Jordaria.config.getCHUNK_SIZE());
-		int y = (int)Math.floor(theEntity.location.getPosY()/Jordaria.config.getCHUNK_SIZE());
-		int z = (int)Math.floor(theEntity.location.getPosZ()/Jordaria.config.getCHUNK_SIZE());
-
-		if (x != this.coordinates.xPos || z != this.coordinates.zPos)
-		{
-			return;
-		}
-
-
-		if (y < 0)
-		{
-			y = 0;
-		}
+		
 		this.entitylist.add(theEntity);
 	}
 
