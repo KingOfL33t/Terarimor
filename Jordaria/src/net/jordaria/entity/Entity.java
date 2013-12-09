@@ -43,4 +43,48 @@ public abstract class Entity {
 		this.width = w;
 		this.height = h;
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public World getWorldObj() {
+		return worldObj;
+	}
+
+	public Random getRand() {
+		return rand;
+	}
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public double getVelX() {
+		return velX;
+	}
+
+	public double getVelY() {
+		return velY;
+	}
+
+	public double getVelZ() {
+		return velZ;
+	}
+
+	public float getWidth() {
+		return width;
+	}
+
+	public float getHeight() {
+		return height;
+	}
+
+	public float getyOffset() {
+		return yOffset;
+	}
+
+	public Direction getDirection() {
+		return direction;
+	}
 }

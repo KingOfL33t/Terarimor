@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.jordaria.Jordaria;
 import net.jordaria.entity.Entity;
 import net.jordaria.entity.EntityPlayer;
-import net.jordaria.event.DebugMessage;
 
 public class World {
 	public Random rng = new Random();
@@ -34,9 +32,9 @@ public class World {
 	
 	public boolean spawnEntityInWorld(Entity entity)
     {
-        int x = (int)Math.floor(entity.location.getPosX()/Jordaria.config.getCHUNK_SIZE());
-        int y = (int)Math.floor(entity.location.getPosY()/Jordaria.config.getCHUNK_SIZE());
-        int z = (int)Math.floor(entity.location.getPosZ()/Jordaria.config.getCHUNK_SIZE());
+        int x = entity.getLocation().getChunkLocation().getPosX();
+        int y = entity.getLocation().getChunkLocation().getPosY();
+        int z = entity.getLocation().getChunkLocation().getPosZ();
         boolean isPlayer = false;
 
         if (entity instanceof EntityPlayer)

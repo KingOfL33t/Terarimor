@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.jordaria.Configuration;
-import net.jordaria.Jordaria;
 import net.jordaria.block.Block;
 import net.jordaria.entity.Entity;
 
