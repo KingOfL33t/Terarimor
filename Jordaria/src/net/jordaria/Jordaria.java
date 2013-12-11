@@ -1,7 +1,5 @@
 package net.jordaria;
 
-import java.util.HashMap;
-
 import net.jordaria.debug.DebugConsole;
 import net.jordaria.entity.Direction;
 import net.jordaria.entity.EntityLiving;
@@ -13,7 +11,6 @@ import net.jordaria.event.Error;
 import net.jordaria.event.EventManager;
 import net.jordaria.event.EventSystemStarted;
 import net.jordaria.event.GraphicsSystemStarted;
-import net.jordaria.math.Random;
 import net.jordaria.world.World;
 
 import org.lwjgl.opengl.Display;

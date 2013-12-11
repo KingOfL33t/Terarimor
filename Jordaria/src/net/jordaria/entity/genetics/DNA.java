@@ -13,7 +13,6 @@ public class DNA {
 	private byte[] dna = new byte[32];
 	
 	public DNA(){
-
 	}
 	
 	private byte[] getNormalGenes(){
