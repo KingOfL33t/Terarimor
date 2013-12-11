@@ -2,7 +2,6 @@ package net.jordaria.math;
 
 /*
  * A Mersenne twister algorithm
- * May be broken.
  */
 public class Random {
 	int[] mt = new int[624];
