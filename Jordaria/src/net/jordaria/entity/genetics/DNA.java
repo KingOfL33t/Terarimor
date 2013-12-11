@@ -23,4 +23,5 @@ public class DNA {
 		geneArray[genePosition.SIZE.pos] = size.NORMAL.geneData;
 		return geneArray;
 	}
+	
 }
