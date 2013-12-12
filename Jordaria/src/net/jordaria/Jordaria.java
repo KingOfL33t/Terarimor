@@ -1,6 +1,7 @@
 package net.jordaria;
 
 import net.jordaria.debug.DebugConsole;
+import net.jordaria.debug.DebugPanel;
 import net.jordaria.entity.Direction;
 import net.jordaria.entity.EntityLiving;
 import net.jordaria.entity.EntityPlayer;
@@ -11,6 +12,7 @@ import net.jordaria.event.Error;
 import net.jordaria.event.EventManager;
 import net.jordaria.event.EventSystemStarted;
 import net.jordaria.event.GraphicsSystemStarted;
+import net.jordaria.math.Random;
 import net.jordaria.world.World;
 
 import org.lwjgl.opengl.Display;
@@ -46,6 +48,8 @@ public class Jordaria implements Runnable{
 	public World theWorld;
 	public EntityLiving renderViewEntity;
 	public EntityPlayer thePlayer;
+	
+	public Random rand;
 
 	public static void main(String args[]){
 		config = new Configuration();
@@ -66,6 +70,8 @@ public class Jordaria implements Runnable{
 		}
 		this.running = true;
 		try{
+			rand = new Random();
+			rand.initializeGenerator((int)(Math.random()*1337));
 			gameSettings = new GameSettings(this);
 			
 			initEventManager();
@@ -86,6 +92,8 @@ public class Jordaria implements Runnable{
 			thePlayer = new EntityPlayer(theWorld, namegen.getRandomName());
 				eventManager.fireEvent(new DebugMessage("Player ("+thePlayer.getUsername()+") created!"));
 				
+			DebugPanel panel = new DebugPanel();
+			panel.setJordariaVar(this);
 			run();
 		}
 		catch(Exception e){
@@ -109,7 +117,6 @@ public class Jordaria implements Runnable{
 	}
 	public void run(){
 		while (this.running && !Display.isCloseRequested()){
-
 			try{
 				while (Keyboard.next()){
 					KeyBind.setKeyBindState(Keyboard.getEventKey(), Keyboard.getEventKeyState());
