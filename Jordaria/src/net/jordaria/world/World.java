@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.jordaria.entity.Entity;
-import net.jordaria.entity.EntityPlayer;
-
 public class World {
 	public Random rng = new Random();
 
@@ -30,34 +27,5 @@ public class World {
 		return this.chunkManager.provideChunk(xPos, yPos, zPos);
 	}
 	
-	public boolean spawnEntityInWorld(Entity entity)
-    {
-        int x = entity.getLocation().getChunkLocation().getPosX();
-        int y = entity.getLocation().getChunkLocation().getPosY();
-        int z = entity.getLocation().getChunkLocation().getPosZ();
-        boolean isPlayer = false;
-
-        if (entity instanceof EntityPlayer)
-        {
-            isPlayer = true;
-        }
-
-        if (!isPlayer)
-        {
-            return false;
-        }
-        else
-        {
-            if (entity instanceof EntityPlayer)
-            {
-                EntityPlayer player = (EntityPlayer)entity;
-                this.playerEntities.add(player);
-            }
-
-            this.getChunkFromChunkCoords(x,y,z).addEntity(entity);
-            this.loadedEntityList.add(entity);
-            return true;
-        }
-    }
 
 }
