@@ -1,5 +1,8 @@
 package net.jordaria;
 
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+
 import net.jordaria.debug.DebugConsole;
 import net.jordaria.debug.DebugPanel;
 import net.jordaria.entity.Direction;
@@ -9,9 +12,11 @@ import net.jordaria.entity.NameGenerator;
 import net.jordaria.event.DebugMessage;
 import net.jordaria.event.EntityMoveRequest;
 import net.jordaria.event.Error;
+import net.jordaria.event.EventHandler;
 import net.jordaria.event.EventManager;
 import net.jordaria.event.EventSystemStarted;
 import net.jordaria.event.GraphicsSystemStarted;
+import net.jordaria.event.Listener;
 import net.jordaria.math.Random;
 import net.jordaria.world.World;
 
@@ -24,7 +29,7 @@ import org.lwjgl.util.glu.GLU;
 import de.lessvoid.nifty.Nifty;
 
 
-public class Jordaria implements Runnable{
+public class Jordaria implements Runnable, Listener{
 
 	//VARIABLES
 
@@ -157,6 +162,7 @@ public class Jordaria implements Runnable{
 		if (config.getDebugActive()){
 			try {
 				eventManager.registerEventListeners(console);
+				eventManager.registerEventListeners(this);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -164,6 +170,14 @@ public class Jordaria implements Runnable{
 
 	}
 
+	@EventHandler
+	public void onError(Error error){
+		JDialog errorDialog = new JDialog();
+		errorDialog.setTitle("Error!");
+		errorDialog.setSize(200, 250);
+		errorDialog.add(new JLabel(error.getMessage()));
+		errorDialog.setVisible(true);
+	}
 
 	//INPUT
 	public void handleKeyboard(){
