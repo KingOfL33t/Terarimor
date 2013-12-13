@@ -23,7 +23,7 @@ public class Localization {
 		
 		mappings.clear();
 		
-		BufferedReader reader = jd.fileIO.getBufferedReaderForFile(jd.gameSettings.homeDirectory.concat(jd.gameSettings.language+".lang"));
+		BufferedReader reader = jd.fileIO.getBufferedReaderForFile(jd.gameSettings.homeDirectory.concat("\\Jordaria\\assets\\lang\\"+jd.gameSettings.language+".lang"));
 		if (reader!=null){
 			String currentLine = "";
 			String[] parts;
