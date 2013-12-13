@@ -1,6 +1,7 @@
 package net.jordaria.item;
 
-public class Item {
-	public String itemName;
+import net.jordaria.text.ColoredText;
 
+public class Item {
+	public ColoredText itemName;
 }
