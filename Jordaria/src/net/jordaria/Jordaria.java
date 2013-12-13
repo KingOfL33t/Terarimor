@@ -15,92 +15,87 @@ import net.jordaria.event.GraphicsSystemStarted;
 import net.jordaria.math.Random;
 import net.jordaria.world.World;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
-import org.lwjgl.input.Keyboard;
+
+import de.lessvoid.nifty.Nifty;
 
 
 public class Jordaria implements Runnable{
 
+	//VARIABLES
+
 	public boolean running;//A boolean used to show whether or not the game is running -King
+	public boolean inGameHasFocus;//whether or not the actual gameplay has the focus
 	public static Configuration config;
-	public GameSettings gameSettings;
-	public Thread thread;
-
-	DisplayMode displayMode;
-
-	public int displayWidth;
-	public int displayHeight;
-
 	DebugConsole console;
-
-	EventManager eventManager;
-	
-	public FileIO fileIO;
-	
-	public Localization localization;
-
-	//whether or not the actual game has the focus or a menu does
-	public boolean inGameHasFocus;
-
-	public World theWorld;
+	DisplayMode displayMode;
 	public EntityLiving renderViewEntity;
 	public EntityPlayer thePlayer;
-	
+	EventManager eventManager;
+	public FileIO fileIO;
+	public GameSettings gameSettings;
+	public int displayWidth;
+	public int displayHeight;
+	public Localization localization;
+	public Nifty nifty;
 	public Random rand;
+	public Thread thread;
+	public World theWorld;
 
+	//MAIN THREAD
 	public static void main(String args[]){
 		config = new Configuration();
 		Jordaria game = new Jordaria();
 
 		game.tryConsoleInit();
+		game.setup();
 		game.start();
 	}
+
+	//SETUP
 	public void tryConsoleInit(){
 		if (config.getDebugActive()){
 			console = new DebugConsole();
 		}
 	}
-	public void start(){
-		if (this.running)
-		{
-			return;//if the game is already in progress, dont start it again -King
-		}
-		this.running = true;
+	public void setup(){
 		try{
 			rand = new Random();
 			rand.initializeGenerator((int)(Math.random()*1337));
 			gameSettings = new GameSettings(this);
-			
+
 			initEventManager();
-			
+
 			fileIO = new FileIO(this);
 			fileIO.createMainDirectories(gameSettings.homeDirectory);
-			
+
 			localization = new Localization(this);
 			localization.loadLanguage();
-			
+
 			initGraphics();
 
 			theWorld = new World("Test");
-			if (config.getDebugActive())
-				eventManager.fireEvent(new DebugMessage("World ("+theWorld.worldName+") created!"));
+			eventManager.fireEvent(new DebugMessage("World ("+theWorld.worldName+") created!"));
 
 			NameGenerator namegen = new NameGenerator();
 			thePlayer = new EntityPlayer(theWorld, namegen.getRandomName());
-				eventManager.fireEvent(new DebugMessage("Player ("+thePlayer.getUsername()+") created!"));
-				
-			DebugPanel panel = new DebugPanel();
-			panel.setJordariaVar(this);
-			run();
+
+			eventManager.fireEvent(new DebugMessage("Player ("+thePlayer.getUsername()+") created!"));
+
+			if (config.getDebugActive()){
+				DebugPanel panel = new DebugPanel();
+				panel.setJordariaVar(this);
+			}
 		}
 		catch(Exception e){
 			e.printStackTrace();
 		}
-
 	}
+
 	private void initEventManager(){
 		eventManager = new EventManager();
 		registerListeners();
@@ -115,56 +110,37 @@ public class Jordaria implements Runnable{
 		InitGL();
 		eventManager.fireEvent(new GraphicsSystemStarted());
 	}
+
+	//RUNNING
+	public void start(){
+		if (this.running)
+		{
+			return;
+		}
+		this.running = true;
+		try{
+
+			run();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+
+	}
+	public void shutdown(){
+		this.running = false;
+		this.console = null;
+		this.theWorld = null;
+		this.thePlayer = null;
+		this.renderViewEntity = null;
+		this.eventManager = null;
+		System.gc();
+	}
+
 	public void run(){
 		while (this.running && !Display.isCloseRequested()){
 			try{
-				while (Keyboard.next()){
-					KeyBind.setKeyBindState(Keyboard.getEventKey(), Keyboard.getEventKeyState());
-					if (Keyboard.getEventKeyState())
-					{
-						KeyBind.onTick(Keyboard.getEventKey());
-					}
-
-					while (this.gameSettings.KEYBIND_MOVE_FORWARD.isPressed())
-					{
-						eventManager.fireEvent(new EntityMoveRequest(thePlayer, thePlayer.direction));
-						if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES())
-							eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_MOVE_FORWARD.keyDescription+")"));
-					}
-					while (this.gameSettings.KEYBIND_MOVE_BACKWARD.isPressed())
-					{
-						eventManager.fireEvent(new EntityMoveRequest(thePlayer, thePlayer.direction.getRelativeDirection(new Direction(180, 0, 0))));
-						if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES())
-							eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_MOVE_BACKWARD.keyDescription+")"));
-					}
-					while (this.gameSettings.KEYBIND_MOVE_LEFT.isPressed())
-					{
-						eventManager.fireEvent(new EntityMoveRequest(thePlayer, thePlayer.direction.getRelativeDirection(new Direction(90, 0, 0))));
-						if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES())
-							eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_MOVE_LEFT.keyDescription+")"));
-					}
-					while (this.gameSettings.KEYBIND_MOVE_RIGHT.isPressed())
-					{
-						eventManager.fireEvent(new EntityMoveRequest(thePlayer, thePlayer.direction.getRelativeDirection(new Direction(-90, 0, 0))));
-						if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES())
-							eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_MOVE_RIGHT.keyDescription+")"));
-					}
-					while (this.gameSettings.KEYBIND_MOVE_JUMP.isPressed())
-					{
-						eventManager.fireEvent(new EntityMoveRequest(thePlayer, thePlayer.direction.getRelativeDirection(new Direction(0, 90, 0))));
-						if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES())
-							eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_MOVE_JUMP.keyDescription+")"));
-					}
-					while (this.gameSettings.KEYBIND_WIREFRAME.isPressed())
-					{
-						this.gameSettings.toggleWireframe();
-						if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES()){
-							eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_WIREFRAME.keyDescription+")"));
-
-						}
-					}
-
-				}
+				handleKeyboard();
 				Display.update();
 				Display.sync(60);
 			}
@@ -176,16 +152,71 @@ public class Jordaria implements Runnable{
 		Display.destroy();
 	}
 
-	public void shutdown(){
-		this.running = false;
-		this.console = null;
-		this.theWorld = null;
-		this.thePlayer = null;
-		this.renderViewEntity = null;
-		this.eventManager = null;
-		System.gc();
+	//REGISTERING LISTENERS
+	public void registerListeners(){
+		if (config.getDebugActive()){
+			try {
+				eventManager.registerEventListeners(console);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
+
+	//INPUT
+	public void handleKeyboard(){
+		while (Keyboard.next()){
+			KeyBind.setKeyBindState(Keyboard.getEventKey(), Keyboard.getEventKeyState());
+			if (Keyboard.getEventKeyState())
+			{
+				KeyBind.onTick(Keyboard.getEventKey());
+			}
+
+			while (this.gameSettings.KEYBIND_MOVE_FORWARD.isPressed())
+			{
+				eventManager.fireEvent(new EntityMoveRequest(thePlayer, thePlayer.direction));
+				if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES())
+					eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_MOVE_FORWARD.keyDescription+")"));
+			}
+			while (this.gameSettings.KEYBIND_MOVE_BACKWARD.isPressed())
+			{
+				eventManager.fireEvent(new EntityMoveRequest(thePlayer, thePlayer.direction.getRelativeDirection(new Direction(180, 0, 0))));
+				if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES())
+					eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_MOVE_BACKWARD.keyDescription+")"));
+			}
+			while (this.gameSettings.KEYBIND_MOVE_LEFT.isPressed())
+			{
+				eventManager.fireEvent(new EntityMoveRequest(thePlayer, thePlayer.direction.getRelativeDirection(new Direction(90, 0, 0))));
+				if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES())
+					eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_MOVE_LEFT.keyDescription+")"));
+			}
+			while (this.gameSettings.KEYBIND_MOVE_RIGHT.isPressed())
+			{
+				eventManager.fireEvent(new EntityMoveRequest(thePlayer, thePlayer.direction.getRelativeDirection(new Direction(-90, 0, 0))));
+				if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES())
+					eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_MOVE_RIGHT.keyDescription+")"));
+			}
+			while (this.gameSettings.KEYBIND_MOVE_JUMP.isPressed())
+			{
+				eventManager.fireEvent(new EntityMoveRequest(thePlayer, thePlayer.direction.getRelativeDirection(new Direction(0, 90, 0))));
+				if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES())
+					eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_MOVE_JUMP.keyDescription+")"));
+			}
+			while (this.gameSettings.KEYBIND_WIREFRAME.isPressed())
+			{
+				this.gameSettings.toggleWireframe();
+				if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES()){
+					eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_WIREFRAME.keyDescription+")"));
+
+				}
+			}
+
+		}
+	}
+
+	//GRAPHICS
 	public void createWindow() throws Exception{
 		Display.setFullscreen(false);
 		DisplayMode d[] = Display.getAvailableDisplayModes();
@@ -220,18 +251,6 @@ public class Jordaria implements Runnable{
 
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);//modify the orientation and location matrix
 		GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
-	}
-
-	//register all the listeners here
-	public void registerListeners(){
-		if (config.getDebugActive()){
-			try {
-				eventManager.registerEventListeners(console);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
 	}
 
 }
