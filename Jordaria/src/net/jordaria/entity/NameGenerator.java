@@ -17,4 +17,5 @@ public class NameGenerator {
 		name = p.concat(m).concat(s);
 		return name;
 	}
+	
 }
