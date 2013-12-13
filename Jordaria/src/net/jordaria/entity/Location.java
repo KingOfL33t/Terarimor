@@ -1,7 +1,5 @@
 package net.jordaria.entity;
 
-import net.jordaria.world.Chunk;
-import net.jordaria.world.ChunkCoordinates;
 
 public class Location {
 	
@@ -9,22 +7,11 @@ public class Location {
 	public double posX;
 	public double posY;
 	public double posZ;
-	
-	public ChunkCoordinates chunkLocation;//The chunk location
-	
-	public Location(ChunkCoordinates chunkLoc, double xPos, double yPos, double zPos){
-		this.chunkLocation = chunkLoc;
+
+	public Location(double xPos, double yPos, double zPos){
 		this.posX = xPos;
 		this.posY = yPos;
 		this.posZ = zPos;
-	}
-	
-	public Location (Chunk chunk, double xPos, double yPos, double zPos){
-		this(chunk.coordinates,xPos,yPos,zPos);
-	}
-	
-	public Location (int chunkPosX, int chunkPosY, int chunkPosZ, double xPos, double yPos, double zPos){
-		this(new ChunkCoordinates(chunkPosX, chunkPosY, chunkPosZ),xPos,yPos,zPos);
 	}
 
 	public double getPosX() {
@@ -49,14 +36,6 @@ public class Location {
 
 	public void setPosZ(double posZ) {
 		this.posZ = posZ;
-	}
-
-	public ChunkCoordinates getChunkLocation() {
-		return chunkLocation;
-	}
-
-	public void setChunkLocation(ChunkCoordinates chunkLocation) {
-		this.chunkLocation = chunkLocation;
 	}
 	public void setPositions(double posX, double posY, double posZ){
 		this.posX = posZ;

@@ -27,8 +27,7 @@ public abstract class Entity {
 		this.height = 1.8F;
 		this.rand = new Random();
 		this.worldObj = par1World;
-		this.location = new Location(0, 0, 0, 0, 0, 0);
-		this.setPosition(0.0D, 0.0D, 0.0D);
+		this.location = new Location(0.0D, 0.0D, 0.0D);
 		this.entityInit();
 		this.direction = new Direction(0,0,0);
 	}
