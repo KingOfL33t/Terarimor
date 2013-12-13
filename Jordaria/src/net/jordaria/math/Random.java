@@ -16,6 +16,17 @@ public class Random {
 			this.mt[i] = 1812433253 * (mt[i-1] ^ (mt[i-1]>>30)) +i;
 		}
 	}
+	private void generateNumbers(){
+		int i;
+		for (i = 0; i< 623; i++) {
+			int y = (mt[i] + 0x80000000) + (mt[(i+1) % 624] + 0x7fffffff);
+			mt[i] = mt[(i + 397) % 624] ^ (y>>1);
+			if (y % 2 != 0) { // y is odd
+				mt[i] = mt[i] ^ 0x9908b0df;
+			}
+		}
+	}
+	
 	public int getNext(){
 		if (index == 0){
 			this.generateNumbers();
@@ -31,18 +42,7 @@ public class Random {
 
 		return y;
 	}
-
-	private void generateNumbers(){
-		int i;
-		for (i = 0; i< 623; i++) {
-			int y = (mt[i] + 0x80000000) + (mt[(i+1) % 624] + 0x7fffffff);
-			mt[i] = mt[(i + 397) % 624] ^ (y>>1);
-			if (y % 2 != 0) { // y is odd
-				mt[i] = mt[i] ^ 0x9908b0df;
-			}
-		}
-	}
-
+	
 	public float nextFloat() {
 		return (getNext()>>7) / ((float)(1 << 24));
 	}
