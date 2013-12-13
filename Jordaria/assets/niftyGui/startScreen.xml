@@ -6,7 +6,7 @@
 
 <screen id="screen1">
     <layer childLayout="absolute" id="layer1">
-      <image filename="/Jordaria/assets/textures/test.png" height="100%" id="iBackground" width="100%" x="0%" y="0%"/>
+      <image filename="assets/textures/test.png" height="100%" id="iBackground" width="100%" x="0%" y="0%"/>
     </layer>
     <layer childLayout="absolute" id="layer2">
       <control font="aurulent-sans-16.fnt" height="10%" id="tTitle" name="label" text="Jordaria" textLineHeight="10%" textMinHeight="10%" width="10%" x="45%" y="10%"/>

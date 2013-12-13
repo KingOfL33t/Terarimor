@@ -5,8 +5,8 @@
   <screen id="screen2">
     <layer childLayout="absolute" id="layer1"/>
     <layer childLayout="absolute" id="layer2">
-      <image filename="/Jordaria/assets/textures/test.png" height="15%" id="iHotbar" width="70%" x="15%" y="80%"/>
-      <image filename="/Jordaria/assets/textures/test.png" height="20%" id="iHealth" width="40%" x="55%" y="5%"/>
+      <image filename="assets/textures/test.png" height="15%" id="iHotbar" width="70%" x="15%" y="80%"/>
+      <image filename="assets/textures/test.png" height="20%" id="iHealth" width="40%" x="55%" y="5%"/>
     </layer>
     <layer childLayout="absolute" id="layer3"/>
   </screen>
