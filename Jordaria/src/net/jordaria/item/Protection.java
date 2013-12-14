@@ -1,13 +1,19 @@
 package net.jordaria.item;
 
+import java.util.Map;
+
 public class Protection {
-	public int base;
-	public int fire;
-	public int water;
-	public int stone;
-	public int poison;
-	public int ice;
-	public int magic;
-	public int holy;
-	public int dark;
+	public Map<Element, Integer> protectionMap;
+	
+	public void addMapping(Element element, int protection){
+		protectionMap.put(element, protection);
+	}
+	public int getProtection(Element element){
+		if (protectionMap.containsKey(element)){
+			return protectionMap.get(element);
+		}
+		else{
+			return 0;
+		}
+	}
 }
