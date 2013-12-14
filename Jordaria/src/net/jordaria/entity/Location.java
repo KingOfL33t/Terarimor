@@ -3,7 +3,6 @@ package net.jordaria.entity;
 
 public class Location {
 	
-	//The positions relative to the chunk
 	public double posX;
 	public double posY;
 	public double posZ;
