@@ -8,8 +8,6 @@ public class ChunkManager {
 	
 	public HashSet<Chunk> chunksToLoad = new HashSet<Chunk>();
 	public HashSet<Chunk> chunksToUnload = new HashSet<Chunk>();
-	public HashSet<Chunk> chunksToRebuild = new HashSet<Chunk>();
-	public HashSet<Chunk> chunksToRender = new HashSet<Chunk>();
 	
 	private World worldObj;
 
@@ -57,6 +55,4 @@ public class ChunkManager {
     {
         return this.chunkMap.size();
     }
-    
-    
 }
