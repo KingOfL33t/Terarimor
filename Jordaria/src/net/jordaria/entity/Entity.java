@@ -19,13 +19,13 @@ public abstract class Entity {
 	public float height;
 	public Direction direction;
 
-	public Entity(World par1World)
+	public Entity(World world)
 	{
 		this.id = nextEntityID++;
 		this.width = 0.6F;
 		this.height = 1.8F;
 		this.rand = new Random();
-		this.worldObj = par1World;
+		this.worldObj = world;
 		this.location = new Location(0.0D, 0.0D, 0.0D);
 		this.entityInit();
 		this.direction = new Direction(0,0,0);

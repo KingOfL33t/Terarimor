@@ -10,6 +10,7 @@ public class EntityPlayer extends EntityLiving{
 	public EntityPlayer(World world, String name) {
 		super(world);
 		this.username = name;
+		this.inventory = new Inventory(64);
 	}
 
 	public String getUsername(){

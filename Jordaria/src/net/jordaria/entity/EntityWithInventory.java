@@ -6,8 +6,8 @@ public class EntityWithInventory extends Entity{
 
 	public Inventory inventory;
 	
-	public EntityWithInventory(World par1World) {
-		super(par1World);
+	public EntityWithInventory(World world) {
+		super(world);
 		this.inventory = new Inventory(16);
 	}
 
