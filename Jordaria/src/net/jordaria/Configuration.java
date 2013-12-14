@@ -13,6 +13,7 @@ public class Configuration {
 	
 	//Chunk settings
 	public static int CHUNK_SIZE = 16;
+	public static int tile_size = 64;
 	
 	//debug settings
 	public static boolean debugActive = true;
@@ -35,6 +36,9 @@ public class Configuration {
 	}
 	public int getCHUNK_SIZE() {
 		return CHUNK_SIZE;
+	}
+	public int getTile_Size(){
+		return tile_size;
 	}
 	public boolean getDebugActive(){
 		return debugActive;
