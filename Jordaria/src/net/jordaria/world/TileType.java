@@ -40,4 +40,7 @@ public enum TileType {
 	private TileType(int id){
 		this.tileID = id;
 	}
+	public int getID(){
+		return tileID;
+	}
 }
