@@ -2,7 +2,7 @@ package net.jordaria.entity;
 
 import net.jordaria.world.World;
 
-public class EntityLiving extends Entity{
+public class EntityLiving extends EntityWithInventory{
 	public int health;
 	public int maxHealth = 100;
 	public String name;
