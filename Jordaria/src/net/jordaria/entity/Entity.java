@@ -17,7 +17,6 @@ public abstract class Entity {
 	public double velZ;//velocity in the z direction
 	public float width;
 	public float height;
-	public float yOffset;
 	public Direction direction;
 
 	public Entity(World par1World)
@@ -77,10 +76,6 @@ public abstract class Entity {
 
 	public float getHeight() {
 		return height;
-	}
-
-	public float getyOffset() {
-		return yOffset;
 	}
 
 	public Direction getDirection() {
