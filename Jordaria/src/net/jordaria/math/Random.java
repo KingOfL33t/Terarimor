@@ -46,4 +46,8 @@ public class Random {
 	public float nextFloat() {
 		return (getNext()>>7) / ((float)(1 << 24));
 	}
+	
+	public int getIntBetween(int min, int max){
+		return min+(int)(nextFloat()*((max-min)+1));
+	}
 }

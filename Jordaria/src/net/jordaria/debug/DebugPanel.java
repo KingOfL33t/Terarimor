@@ -42,61 +42,16 @@ public class DebugPanel implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource().equals(b_testRandomness)){//test randomness was pressed
-
-			HashMap<Float, Integer> randomness = new HashMap<Float, Integer>();
-			float randValue = 0.0f;
-
-			for (int i = 0; i <1000; i++){
-				randValue = jd.rand.nextFloat();
-				if (randomness.containsKey(randValue)){
-					randomness.put(randValue, randomness.get(randValue)+1);
+			int i;
+			int j;
+		
+			for (i = 0; i< 10; i++){
+				for (j = 0; j< 10; j++){
+				System.out.print(jd.rand.getIntBetween(-2, 18)+ " ");
 				}
-				else{
-					randomness.put(randValue, 1);
-				}
+				System.out.println();
 			}
-			int zero,one,two,three,four,five,six,seven,eight,nine;
-			zero = 0;
-			nine=eight=seven=six=five=four=three=two=one=zero;
-			for (float f : randomness.keySet()){
-				if (f<.1){
-					one++;
-				}
-				else if (f<.2){
-					two++;
-				}
-				else if (f<.3){
-					three++;
-				}
-				else if (f<.4){
-					four++;
-				}
-				else if (f<.5){
-					five++;
-				}
-				else if (f<.6){
-					six++;
-				}
-				else if (f<.7){
-					seven++;
-				}
-				else if (f<.8){
-					eight++;
-				}
-				else {
-					nine++;
-				}
-			}
-			System.out.println("1:"+one);
-			System.out.println("2:"+two);
-			System.out.println("3:"+three);
-			System.out.println("4:"+four);
-			System.out.println("5:"+five);
-			System.out.println("6:"+six);
-			System.out.println("7:"+seven);
-			System.out.println("8:"+eight);
-			System.out.println("9:"+nine);
-			randomness.clear();
+			
 		}
 
 	}
