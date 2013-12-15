@@ -10,12 +10,12 @@ public class Map {
 		this.width = width;
 		this.height = height;
 	}
-	public void setAllTilesToFloor(){
+	public void setAllTiles(TileType type){
 		int x;
 		int y;
 		for (x = 0; x < width; x++){
 			for (y = 0; y < height; y++){
-				this.setTile(x, y, TileType.FLOOR_SMOOTH);
+				this.setTile(x, y, type);
 			}
 		}
 	}

@@ -26,9 +26,9 @@ public class World {
 
 	public void updateEntities(){
 	}
-	public Chunk getChunkFromChunkCoords(int xPos, int yPos, int zPos)
+	public Chunk getChunkFromChunkCoords(int xPos, int yPos)
 	{
-		return this.chunkManager.provideChunk(xPos, yPos, zPos);
+		return this.chunkManager.provideChunk(xPos, yPos);
 	}
 	
 

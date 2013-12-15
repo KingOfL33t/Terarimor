@@ -18,11 +18,12 @@ public class GameSettings {
 	public KeyBind KEYBIND_WIREFRAME = new KeyBind("key.wireframe", Keyboard.KEY_F);
 	public KeyBind[] keyBindings;
 
-	//booleans
+	//floats
 	public boolean showAdvancedInfo;//for later use in showing biome info (humidity, magic, etc) on screen
 	public boolean wireframe;
 
 	public int renderDistance;
+	public int maxDungeonSize;
 
 	public float mouseSensitivity = 0.5F;
 
@@ -42,6 +43,7 @@ public class GameSettings {
 		this.showAdvancedInfo = false;
 		this.renderDistance = 10;
 		this.wireframe = false;
+		this.maxDungeonSize = 100;
 	}
 	public KeyBind[] getKeyBindings() {
 		return keyBindings;
@@ -59,6 +61,9 @@ public class GameSettings {
 	}
 	public int getRenderDistance() {
 		return renderDistance;
+	}
+	public int getMaxDungeonSize(){
+		return this.maxDungeonSize;
 	}
 
 

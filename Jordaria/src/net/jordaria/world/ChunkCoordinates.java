@@ -3,12 +3,10 @@ package net.jordaria.world;
 public class ChunkCoordinates {
 	public final int posX;
 	public final int posY;
-	public final int posZ;
 
-	public ChunkCoordinates(int x, int y, int z){
+	public ChunkCoordinates(int x, int y){
 		this.posX = x;
 		this.posY = y;
-		this.posZ = z;
 	}
 
 	public int getPosX() {
@@ -19,12 +17,9 @@ public class ChunkCoordinates {
 		return posY;
 	}
 
-	public int getPosZ() {
-		return posZ;
-	}
 
-	public boolean matchCoordinates(int x, int y, int z){
-		if (this.posX == x && this.posY == y && this.posZ == z){
+	public boolean matchCoordinates(int x, int y){
+		if (this.posX == x && this.posY == y){
 			return true;
 		}
 		return false;
@@ -42,7 +37,7 @@ public class ChunkCoordinates {
 			return false;
 		}
 		ChunkCoordinates otherCC = (ChunkCoordinates)other;
-		if (otherCC.matchCoordinates(this.posX, this.posY, this.posZ)){
+		if (otherCC.matchCoordinates(this.posX, this.posY)){
 			return true;
 		}
 		else{

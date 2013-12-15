@@ -16,20 +16,27 @@ public class Chunk {
 	public boolean isEmpty;
 	public boolean hasEntities;
 
-	public Chunk(World theWorld, int xPos, int yPos, int zPos){
+	public Chunk(World theWorld, int xPos, int yPos){
 		world = theWorld;
 		entitylist = new ArrayList<Entity>();
-		this.coordinates = new ChunkCoordinates(xPos, yPos, zPos);
+		this.coordinates = new ChunkCoordinates(xPos, yPos);
 		tiles = new Tile[Configuration.CHUNK_SIZE][Configuration.CHUNK_SIZE];
+		int x;
+		int y;
+		for (x = 0; x < Configuration.CHUNK_SIZE; x++){
+			for (y = 0; y < Configuration.CHUNK_SIZE; y++){
+				tiles[x][y] = new Tile();
+			}
+		}
 		this.isChunkLoaded = true;
 
 	}
 	public Chunk makeEmptyChunk(){
-		for (int x = 0; x < Configuration.CHUNK_SIZE; x++){
-			for (int y = 0; y< Configuration.CHUNK_SIZE; y++){
-				for (int z = 0; z < Configuration.CHUNK_SIZE; z++){
-					tiles[x][y].setTileType(TileType.AIR);
-				}
+		int x;
+		int y;
+		for (x = 0; x < Configuration.CHUNK_SIZE; x++){
+			for (y = 0; y < Configuration.CHUNK_SIZE; y++){
+				tiles[x][y].setTileType(TileType.AIR);
 			}
 		}
 		this.isChunkLoaded = true;
