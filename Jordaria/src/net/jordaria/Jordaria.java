@@ -26,8 +26,6 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
-import de.lessvoid.nifty.Nifty;
-
 
 public class Jordaria implements Runnable, Listener{
 
@@ -46,7 +44,6 @@ public class Jordaria implements Runnable, Listener{
 	public int displayWidth;
 	public int displayHeight;
 	public Localization localization;
-	public Nifty nifty;
 	public Random rand;
 	public Thread thread;
 	public World theWorld;
