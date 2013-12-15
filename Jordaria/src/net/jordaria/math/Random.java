@@ -26,7 +26,7 @@ public class Random {
 			}
 		}
 	}
-	
+
 	public int getNext(){
 		if (index == 0){
 			this.generateNumbers();
@@ -42,11 +42,13 @@ public class Random {
 
 		return y;
 	}
-	
+	public boolean nextBoolean(){
+		return (getNext()>>30)!=0;
+	}
 	public float nextFloat() {
 		return (getNext()>>7) / ((float)(1 << 24));
 	}
-	
+
 	public int getIntBetween(int min, int max){
 		return min+(int)(nextFloat()*((max-min)+1));
 	}
