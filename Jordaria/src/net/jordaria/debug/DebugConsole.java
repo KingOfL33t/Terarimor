@@ -20,6 +20,7 @@ import net.jordaria.event.EventSystemStarted;
 import net.jordaria.event.GraphicsSystemStarted;
 import net.jordaria.event.Listener;
 import net.jordaria.event.PhysicsSystemStarted;
+import net.jordaria.event.ShuttingDown;
 import net.jordaria.event.SoundSystemStarted;
 
 public class DebugConsole extends WindowAdapter implements Listener{
@@ -102,5 +103,12 @@ public class DebugConsole extends WindowAdapter implements Listener{
 			String direct = "("+event.direction.getAngleX()+","+event.direction.getAngleY()+","+event.direction.getAngleZ()+")";
 			this.appendMessage("Player move requested! "+direct);
 		}
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onShutdown(ShuttingDown event){
+		this.frame.removeAll();
+		this.frame.setVisible(false);
+		this.frame = null;
 	}
 }

@@ -1,5 +1,7 @@
 package net.jordaria;
 
+import java.nio.channels.ShutdownChannelGroupException;
+
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 
@@ -17,6 +19,7 @@ import net.jordaria.event.EventManager;
 import net.jordaria.event.EventSystemStarted;
 import net.jordaria.event.GraphicsSystemStarted;
 import net.jordaria.event.Listener;
+import net.jordaria.event.ShuttingDown;
 import net.jordaria.math.Random;
 import net.jordaria.world.World;
 
@@ -91,6 +94,7 @@ public class Jordaria implements Runnable, Listener{
 			if (config.getDebugActive()){
 				DebugPanel panel = new DebugPanel();
 				panel.setJordariaVar(this);
+				eventManager.registerEventListeners(panel);
 			}
 		}
 		catch(Exception e){
@@ -136,9 +140,13 @@ public class Jordaria implements Runnable, Listener{
 		this.thePlayer = null;
 		this.renderViewEntity = null;
 		this.eventManager = null;
-		System.gc();
+		garbageCollect();
+		System.exit(0);
 	}
 
+	public void garbageCollect(){
+		System.gc();
+	}
 	public void run(){
 		while (this.running && !Display.isCloseRequested()){
 			try{
@@ -150,7 +158,7 @@ public class Jordaria implements Runnable, Listener{
 				break;
 			}
 		}
-		shutdown();
+		eventManager.fireEvent(new ShuttingDown());
 		Display.destroy();
 	}
 
@@ -174,6 +182,11 @@ public class Jordaria implements Runnable, Listener{
 		errorDialog.setSize(200, 250);
 		errorDialog.add(new JLabel(error.getMessage()));
 		errorDialog.setVisible(true);
+	}
+	
+	@EventHandler
+	public void onShutdown(ShuttingDown shutdown){
+		shutdown();
 	}
 
 	//INPUT

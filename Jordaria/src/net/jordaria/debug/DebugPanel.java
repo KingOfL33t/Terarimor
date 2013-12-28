@@ -24,13 +24,17 @@ import javax.swing.JPanel;
 import javax.swing.JWindow;
 
 import net.jordaria.Jordaria;
+import net.jordaria.event.EventHandler;
+import net.jordaria.event.EventPriority;
+import net.jordaria.event.Listener;
+import net.jordaria.event.ShuttingDown;
 
 /*
  * This is a very volitile class which contains
  * A jframe with buttons on for use testing various
  * parts of the game and engines
  */
-public class DebugPanel implements ActionListener{
+public class DebugPanel implements ActionListener, Listener{
 
 	public Jordaria jd;
 
@@ -49,6 +53,15 @@ public class DebugPanel implements ActionListener{
 	public void setJordariaVar(Jordaria jordaria){
 		this.jd = jordaria;
 	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onShutdown(ShuttingDown event){
+		this.jd = null;
+		this.frame.removeAll();
+		this.frame.setVisible(false);
+		this.frame = null;
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
