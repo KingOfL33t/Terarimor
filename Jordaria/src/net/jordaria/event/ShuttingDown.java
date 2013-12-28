@@ -1,12 +1,13 @@
 package net.jordaria.event;
 
 /*
- * The Event system has been started and is now running
+ * The program is shutting down
  */
-public class EventSystemStarted extends Event{
+public class ShuttingDown extends Event{
+
 	private static final HandlerList handlers = new HandlerList();
 
-	public EventSystemStarted(){
+	public ShuttingDown(){
 
 	}
 

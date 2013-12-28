@@ -143,7 +143,7 @@ public class HandlerList {
 
 	/*Get a list of all handler lists for every event type
 	 *returns the list of all handler lists     
-	*/   
+	 */   
 	@SuppressWarnings("unchecked")
 	public static ArrayList<HandlerList> getHandlerLists() {
 		synchronized (allLists) {

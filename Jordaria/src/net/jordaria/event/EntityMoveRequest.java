@@ -9,23 +9,23 @@ import net.jordaria.entity.Entity;
  */
 public class EntityMoveRequest extends Event{
 	private static final HandlerList handlers = new HandlerList();
-	
-	
+
+
 	public Entity entity;
 	public Direction direction;
-	
+
 	public EntityMoveRequest(Entity entity, Direction direction){		
 		this.entity = entity;
 		this.direction = direction;
 	}
-	
+
 	@Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
+	public HandlerList getHandlers() {
+		return handlers;
+	}
 
 
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
+	public static HandlerList getHandlerList() {
+		return handlers;
+	}
 }

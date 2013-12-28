@@ -8,25 +8,25 @@ import net.jordaria.entity.Entity;
  */
 public class EntityMove extends Event{
 	private static final HandlerList handlers = new HandlerList();
-	
+
 	public Entity entity;
 	public Direction direction;
 	public double distanceMoved;
-	
+
 	public EntityMove(Entity entity, Direction direction, double distance){		
 		this.entity = entity;
 		this.direction = direction;
 		this.distanceMoved = distance;
 	}
-	
+
 	@Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
+	public HandlerList getHandlers() {
+		return handlers;
+	}
 
 
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
+	public static HandlerList getHandlerList() {
+		return handlers;
+	}
 
 }
