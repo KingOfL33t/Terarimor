@@ -28,7 +28,7 @@ public abstract class Entity {
 		this.worldObj = world;
 		this.location = new Location(0.0D, 0.0D, 0.0D);
 		this.entityInit();
-		this.direction = new Direction(0,0,0);
+		this.direction = new Direction(0);
 	}
 
 	protected abstract void entityInit();//inherited for subclass initiation

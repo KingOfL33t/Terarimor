@@ -1,7 +1,5 @@
 package net.jordaria;
 
-import java.nio.channels.ShutdownChannelGroupException;
-
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 
@@ -206,27 +204,21 @@ public class Jordaria implements Runnable, Listener{
 			}
 			while (this.gameSettings.KEYBIND_MOVE_BACKWARD.isPressed())
 			{
-				eventManager.fireEvent(new EntityMoveRequest(thePlayer, thePlayer.direction.getRelativeDirection(new Direction(180, 0, 0))));
+				eventManager.fireEvent(new EntityMoveRequest(thePlayer, thePlayer.direction.getRelativeDirection(new Direction(180))));
 				if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES())
 					eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_MOVE_BACKWARD.keyDescription+")"));
 			}
 			while (this.gameSettings.KEYBIND_MOVE_LEFT.isPressed())
 			{
-				eventManager.fireEvent(new EntityMoveRequest(thePlayer, thePlayer.direction.getRelativeDirection(new Direction(90, 0, 0))));
+				eventManager.fireEvent(new EntityMoveRequest(thePlayer, thePlayer.direction.getRelativeDirection(new Direction(90))));
 				if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES())
 					eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_MOVE_LEFT.keyDescription+")"));
 			}
 			while (this.gameSettings.KEYBIND_MOVE_RIGHT.isPressed())
 			{
-				eventManager.fireEvent(new EntityMoveRequest(thePlayer, thePlayer.direction.getRelativeDirection(new Direction(-90, 0, 0))));
+				eventManager.fireEvent(new EntityMoveRequest(thePlayer, thePlayer.direction.getRelativeDirection(new Direction(-90))));
 				if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES())
 					eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_MOVE_RIGHT.keyDescription+")"));
-			}
-			while (this.gameSettings.KEYBIND_MOVE_JUMP.isPressed())
-			{
-				eventManager.fireEvent(new EntityMoveRequest(thePlayer, thePlayer.direction.getRelativeDirection(new Direction(0, 90, 0))));
-				if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES())
-					eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_MOVE_JUMP.keyDescription+")"));
 			}
 			while (this.gameSettings.KEYBIND_WIREFRAME.isPressed())
 			{
