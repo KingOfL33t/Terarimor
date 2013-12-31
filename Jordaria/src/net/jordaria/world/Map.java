@@ -8,7 +8,7 @@ public class Map {
 	public Map(int width, int height){
 		this.tiles = new Tile[width][height];
 		this.width = width;
-		this.height = height; 
+		this.height = height;
 	}
 	public void setAllTiles(TileType type){
 		int x;

@@ -2,7 +2,7 @@ package net.jordaria.world;
 
 public enum TileType {
 	AIR(0),
-	FLOOR_SMOOTH(1),
+	FLOOR(1),
 	FLOOR_ROCKY(2),
 	FLOOR_CRACKED(3),
 	FLOOR_BROKEN(4),

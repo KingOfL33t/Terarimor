@@ -11,6 +11,7 @@ public class Chunk {
 	public ChunkCoordinates coordinates;
 	private World world;
 	public List<Entity> entitylist;
+	public int size;
 
 	public boolean isChunkLoaded;
 	public boolean isEmpty;
@@ -21,6 +22,7 @@ public class Chunk {
 		entitylist = new ArrayList<Entity>();
 		this.coordinates = new ChunkCoordinates(xPos, yPos);
 		tiles = new Tile[Configuration.CHUNK_SIZE][Configuration.CHUNK_SIZE];
+		this.size = Configuration.CHUNK_SIZE;
 		int x;
 		int y;
 		for (x = 0; x < Configuration.CHUNK_SIZE; x++){
@@ -69,6 +71,21 @@ public class Chunk {
 		this.hasEntities = true;
 		this.entitylist.add(theEntity);
 	}
-
+	
+	public void setAllTiles(TileType type){
+		int x;
+		int y;
+		for (x = 0; x < Configuration.CHUNK_SIZE; x++){
+			for (y = 0; y < Configuration.CHUNK_SIZE; y++){
+				this.setTile(x, y, type);
+			}
+		}
+	}
+	public void setTile(int x, int y, TileType type){
+		tiles[x][y].setTileType(type);;
+	}
+	public int getSize(){
+		return size;
+	}
 
 }
