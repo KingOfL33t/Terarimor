@@ -95,5 +95,8 @@ public class Chunk {
 		returned.setTileType(TileType.ERROR);
 		return returned;
 	}
+	public Tile[][] getTiles(){
+		return tiles;
+	}
 
 }
