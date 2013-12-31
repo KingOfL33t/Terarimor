@@ -6,4 +6,7 @@ public class Tile {
 	public void setTileType(TileType type){
 		this.tileType = type;
 	}
+	public TileType getTileType(){
+		return tileType;
+	}
 }

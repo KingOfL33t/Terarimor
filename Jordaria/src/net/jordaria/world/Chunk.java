@@ -71,7 +71,7 @@ public class Chunk {
 		this.hasEntities = true;
 		this.entitylist.add(theEntity);
 	}
-	
+
 	public void setAllTiles(TileType type){
 		int x;
 		int y;
@@ -86,6 +86,14 @@ public class Chunk {
 	}
 	public int getSize(){
 		return size;
+	}
+	public Tile getTile(int x, int y){
+		if (tiles[x][y]!=null)
+			return tiles[x][y];
+
+		Tile returned = new Tile();
+		returned.setTileType(TileType.ERROR);
+		return returned;
 	}
 
 }

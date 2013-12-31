@@ -35,7 +35,8 @@ public enum TileType {
 	STAIRS_N(31),
 	STAIRS_E(32),
 	STAIRS_S(33),
-	STAIRS_W(34);
+	STAIRS_W(34),
+	ERROR(-1);
 	private int tileID;
 	private TileType(int id){
 		this.tileID = id;
