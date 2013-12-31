@@ -21,7 +21,7 @@ import net.jordaria.world.World;
 import net.jordaria.world.WorldGen;
 
 /*
- * This is a very volitile class which contains
+ * This is a very volatile class which contains
  * A jframe with buttons on for use testing various
  * parts of the game and engines
  */
@@ -89,7 +89,7 @@ public class DebugPanel implements ActionListener, Listener{
 			JFrame frame = new JFrame("Rand test");
 			MyPanel panel = new MyPanel(testChunk.getSize(),testChunk.getSize(),testChunk);
 			frame.add(panel);
-			frame.setSize(testChunk.getSize()*50,testChunk.getSize()*50);
+			frame.setSize(testChunk.getSize()*25,testChunk.getSize()*25);
 			frame.setVisible(true);
 		}
 
