@@ -31,9 +31,7 @@ import org.lwjgl.util.glu.GLU;
 public class Jordaria implements Runnable, Listener{
 
 	//VARIABLES
-
-	public boolean running;//A boolean used to show whether or not the game is running -King
-	public boolean inGameHasFocus;//whether or not the actual gameplay has the focus
+	public boolean running;
 	public static Configuration config;
 	DebugConsole console;
 	DisplayMode displayMode;
