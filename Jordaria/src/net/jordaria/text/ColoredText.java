@@ -5,7 +5,7 @@ public class ColoredText {
 	Color color;
 	public ColoredText(String text){
 		this.text = text;
-		this.color = color.BLACK;
+		this.color = Color.BLACK;
 	}
 	public ColoredText(String text, Color color){
 		this.text = text;

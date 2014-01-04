@@ -1,7 +1,5 @@
 package net.jordaria.world;
 
-import java.util.ArrayList;
-
 import net.jordaria.math.Random;
 
 public class WorldGen {
@@ -17,9 +15,9 @@ public class WorldGen {
 		int x;
 		int y;
 		int size = chunk.getSize();
-		int floorChance = 30;//increase this to increase the amount of normal floor (less than 5 and floor blocks dont spawn)
-		Tile[][] tiles = chunk.getTiles();
-		boolean[][] hasNeighbor = new boolean[size][size];
+		int floorChance = 150;//increase this to increase the amount of normal floor (less than 5 and floor blocks dont spawn)
+		//Tile[][] tiles = chunk.getTiles();
+		//boolean[][] hasNeighbor = new boolean[size][size];
 		boolean[][] isSpecial = new boolean[size][size];
 		for (x=0; x < size; x++){
 			for (y=0; y < size; y++){
@@ -45,7 +43,7 @@ public class WorldGen {
 			}
 		}
 
-		for (x=0; x < size; x++){
+		/*for (x=0; x < size; x++){
 			for (y=0; y < size; y++){
 				if (isSpecial[x][y]){
 					if (x==0&&y==0){//upper left corner
@@ -105,7 +103,7 @@ public class WorldGen {
 					chunk.setTile(x, y, TileType.FLOOR);
 				}
 			}
-		}
+		}*/
 
 	}
 

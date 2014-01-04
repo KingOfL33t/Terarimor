@@ -30,4 +30,13 @@ public enum Color {
 		this.g = green;
 		this.b = blue;
 	}
+	public int getR(){
+		return r;
+	}
+	public int getG(){
+		return g;
+	}
+	public int getB(){
+		return b;
+	}
 }
