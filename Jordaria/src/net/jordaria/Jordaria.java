@@ -73,6 +73,7 @@ public class Jordaria implements Runnable, Listener{
 
 			fileIO = new FileIO(this);
 			fileIO.createMainDirectories(gameSettings.homeDirectory);
+			fileIO.copyFilesToDisk(gameSettings.homeDirectory);
 
 			localization = new Localization(this);
 			localization.loadLanguage();
