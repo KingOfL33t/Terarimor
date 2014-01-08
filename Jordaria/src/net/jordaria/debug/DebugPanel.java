@@ -32,7 +32,7 @@ public class DebugPanel implements ActionListener, Listener{
 	public JFrame frame;
 	public JButton b_testRandomness;
 	public JButton b_testChunkGen;
-
+	public JButton b_testChunks;
 
 	public DebugPanel(){
 		frame = new JFrame("Debug Panel");
@@ -42,6 +42,8 @@ public class DebugPanel implements ActionListener, Listener{
 		b_testRandomness.addActionListener(this);
 		b_testChunkGen = new JButton("Test Chunk Generator");
 		b_testChunkGen.addActionListener(this);
+		b_testChunks = new JButton("Test chunks");
+		b_testChunks.addActionListener(this);
 		frame.add(b_testRandomness);
 		frame.add(b_testChunkGen);
 		frame.setVisible(true);
@@ -91,6 +93,26 @@ public class DebugPanel implements ActionListener, Listener{
 			frame.add(panel);
 			frame.setSize(testChunk.getSize()*25,testChunk.getSize()*25);
 			frame.setVisible(true);
+		}
+		else if (e.getSource().equals(b_testChunks)){
+			World world = jd.theWorld;
+			WorldGen generator = new WorldGen();
+			
+			generator.generateMixedFloor(world.chunkManager.provideChunk(0, 0));
+			generator.generateMixedFloor(world.chunkManager.provideChunk(0, 1));
+			generator.generateMixedFloor(world.chunkManager.provideChunk(1, 0));
+			generator.generateMixedFloor(world.chunkManager.provideChunk(1, 1));
+			generator.generateMixedFloor(world.chunkManager.provideChunk(-1, 0));
+			generator.generateMixedFloor(world.chunkManager.provideChunk(0, -1));
+			generator.generateMixedFloor(world.chunkManager.provideChunk(-1, -1));
+			generator.generateMixedFloor(world.chunkManager.provideChunk(-1, 1));
+			generator.generateMixedFloor(world.chunkManager.provideChunk(1, -1));
+			
+			JFrame frame = new JFrame("Rand test");
+			//MyPanel panel = new MyPanel(.getSize(),testChunk.getSize(),testChunk);
+			//frame.add(panel);
+			//frame.setSize(testChunk.getSize()*25,testChunk.getSize()*25);
+			//frame.setVisible(true);
 		}
 
 	}
