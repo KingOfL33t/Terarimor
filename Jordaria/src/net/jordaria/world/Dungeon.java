@@ -13,7 +13,7 @@ public class Dungeon {
 	}
 	
 	public void generateLevel(int level){
-		Map map = new Map(jd.gameSettings.getMaxDungeonSize(), jd.gameSettings.getMaxDungeonSize());
+		Map map = new Map(jd.getGameSettings().getMaxDungeonSize(), jd.getGameSettings().getMaxDungeonSize());
 		map.setAllTiles(TileType.AIR);
 		
 	}

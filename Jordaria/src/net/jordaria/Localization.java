@@ -23,7 +23,7 @@ public class Localization {
 		
 		mappings.clear();
 		
-		BufferedReader reader = jd.fileIO.getBufferedReaderForFile(jd.gameSettings.homeDirectory.concat("\\Jordaria\\assets\\lang\\"+jd.gameSettings.language+".lang"));
+		BufferedReader reader = jd.fileIO.getBufferedReaderForFile(jd.getGameSettings().getHomeDirectory().concat("\\Jordaria\\assets\\lang\\"+jd.getGameSettings().getLanguage()+".lang"));
 		if (reader!=null){
 			String currentLine = "";
 			String[] parts;
@@ -38,7 +38,7 @@ public class Localization {
 			}
 		}
 		this.lockedForChanging = false;//allow it to be accessed
-		jd.eventManager.fireEvent(new LanguageChanged(jd.gameSettings.language));
+		jd.eventManager.fireEvent(new LanguageChanged(jd.getGameSettings().getLanguage()));
 	}
 	public String getLocalizedName(String name){
 		if (isLocked()){

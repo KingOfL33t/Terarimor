@@ -158,7 +158,11 @@ public class Jordaria implements Runnable, Listener{
 		eventManager.fireEvent(new ShuttingDown());
 		Display.destroy();
 	}
-
+	
+	//GETTERS
+	public GameSettings getGameSettings(){
+		return this.gameSettings;
+	}
 	//REGISTERING LISTENERS
 	public void registerListeners(){
 		if (config.getDebugActive()){

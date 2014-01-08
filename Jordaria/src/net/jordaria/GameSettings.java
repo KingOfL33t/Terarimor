@@ -65,8 +65,18 @@ public class GameSettings {
 	public int getMaxDungeonSize(){
 		return this.maxDungeonSize;
 	}
-
-
+	public String getLanguage(){
+		return this.language;
+	}
+	public String getHomeDirectory(){
+		return this.homeDirectory;
+	}
+	public float getMouseSensitivity() {
+		return mouseSensitivity;
+	}
+	public String getOS() {
+		return OS;
+	}
 	private void obtainOS(){
 		String osName = System.getProperty("os.name").toLowerCase();
 		String toSet = "UNKNOWN";
