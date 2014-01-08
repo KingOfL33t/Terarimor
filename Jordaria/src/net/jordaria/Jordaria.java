@@ -5,12 +5,10 @@ import javax.swing.JLabel;
 
 import net.jordaria.debug.DebugConsole;
 import net.jordaria.debug.DebugPanel;
-import net.jordaria.entity.Direction;
 import net.jordaria.entity.EntityLiving;
 import net.jordaria.entity.EntityPlayer;
 import net.jordaria.entity.NameGenerator;
 import net.jordaria.event.DebugMessage;
-import net.jordaria.event.EntityMoveRequest;
 import net.jordaria.event.Error;
 import net.jordaria.event.EventHandler;
 import net.jordaria.event.EventManager;
@@ -18,14 +16,10 @@ import net.jordaria.event.EventSystemStarted;
 import net.jordaria.event.GraphicsSystemStarted;
 import net.jordaria.event.Listener;
 import net.jordaria.event.ShuttingDown;
+import net.jordaria.event.Tick;
+import net.jordaria.gui.MainWindow;
 import net.jordaria.math.Random;
 import net.jordaria.world.World;
-
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.glu.GLU;
 
 
 public class Jordaria implements Runnable, Listener{
@@ -34,7 +28,6 @@ public class Jordaria implements Runnable, Listener{
 	public boolean running;
 	public static Configuration config;
 	DebugConsole console;
-	DisplayMode displayMode;
 	public EntityLiving renderViewEntity;
 	public EntityPlayer thePlayer;
 	EventManager eventManager;
@@ -43,6 +36,7 @@ public class Jordaria implements Runnable, Listener{
 	public int displayWidth;
 	public int displayHeight;
 	public Localization localization;
+	public MainWindow mainWindow;
 	public Random rand;
 	public Thread thread;
 	public World theWorld;
@@ -69,6 +63,8 @@ public class Jordaria implements Runnable, Listener{
 			rand.initializeGenerator((int)(Math.random()*1337));
 			gameSettings = new GameSettings(this);
 
+			mainWindow = new MainWindow(this);
+			
 			initEventManager();
 
 			fileIO = new FileIO(this);
@@ -106,11 +102,10 @@ public class Jordaria implements Runnable, Listener{
 	}
 	private void initGraphics(){
 		try {
-			createWindow();
+			mainWindow.createWindow();
 		} catch (Exception e) {
 			eventManager.fireEvent(new Error("Error creating Window"));
 		}
-		InitGL();
 		eventManager.fireEvent(new GraphicsSystemStarted());
 	}
 
@@ -145,23 +140,23 @@ public class Jordaria implements Runnable, Listener{
 		System.gc();
 	}
 	public void run(){
-		while (this.running && !Display.isCloseRequested()){
+		while (this.running){
 			try{
-				handleKeyboard();
-				Display.update();
-				Display.sync(60);
+				eventManager.fireEvent(new Tick());
 			}
 			catch(Exception e){
 				break;
 			}
 		}
-		eventManager.fireEvent(new ShuttingDown());
-		Display.destroy();
+		
 	}
 	
 	//GETTERS
 	public GameSettings getGameSettings(){
 		return this.gameSettings;
+	}
+	public EventManager getEventManager(){
+		return this.eventManager;
 	}
 	//REGISTERING LISTENERS
 	public void registerListeners(){
@@ -169,6 +164,7 @@ public class Jordaria implements Runnable, Listener{
 			try {
 				eventManager.registerEventListeners(console);
 				eventManager.registerEventListeners(this);
+				eventManager.registerEventListeners(mainWindow);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -188,88 +184,6 @@ public class Jordaria implements Runnable, Listener{
 	@EventHandler
 	public void onShutdown(ShuttingDown shutdown){
 		shutdown();
-	}
-
-	//INPUT
-	public void handleKeyboard(){
-		while (Keyboard.next()){
-			KeyBind.setKeyBindState(Keyboard.getEventKey(), Keyboard.getEventKeyState());
-			if (Keyboard.getEventKeyState())
-			{
-				KeyBind.onTick(Keyboard.getEventKey());
-			}
-
-			while (this.gameSettings.KEYBIND_MOVE_FORWARD.isPressed())
-			{
-				eventManager.fireEvent(new EntityMoveRequest(thePlayer, thePlayer.direction));
-				if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES())
-					eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_MOVE_FORWARD.keyDescription+")"));
-			}
-			while (this.gameSettings.KEYBIND_MOVE_BACKWARD.isPressed())
-			{
-				eventManager.fireEvent(new EntityMoveRequest(thePlayer, thePlayer.direction.getRelativeDirection(new Direction(180))));
-				if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES())
-					eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_MOVE_BACKWARD.keyDescription+")"));
-			}
-			while (this.gameSettings.KEYBIND_MOVE_LEFT.isPressed())
-			{
-				eventManager.fireEvent(new EntityMoveRequest(thePlayer, thePlayer.direction.getRelativeDirection(new Direction(90))));
-				if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES())
-					eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_MOVE_LEFT.keyDescription+")"));
-			}
-			while (this.gameSettings.KEYBIND_MOVE_RIGHT.isPressed())
-			{
-				eventManager.fireEvent(new EntityMoveRequest(thePlayer, thePlayer.direction.getRelativeDirection(new Direction(-90))));
-				if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES())
-					eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_MOVE_RIGHT.keyDescription+")"));
-			}
-			while (this.gameSettings.KEYBIND_WIREFRAME.isPressed())
-			{
-				this.gameSettings.toggleWireframe();
-				if (config.getDebugActive() && config.getDEBUG_SHOW_KEYPRESSES()){
-					eventManager.fireEvent(new DebugMessage("Key pressed! ("+gameSettings.KEYBIND_WIREFRAME.keyDescription+")"));
-
-				}
-			}
-
-		}
-	}
-
-	//GRAPHICS
-	public void createWindow() throws Exception{
-		Display.setFullscreen(false);
-		DisplayMode d[] = Display.getAvailableDisplayModes();
-		for (int i = 0; i < d.length; i++){
-			if (d[i].getWidth() == config.getWindow_width()
-					&& d[i].getHeight() == config.getWindow_height() 
-					&& d[i].getBitsPerPixel() == config.getDisplay_bitsPerPixel()){
-				displayMode = d[i];
-				break;
-			}
-		}
-		Display.setDisplayMode(displayMode);
-		Display.setTitle(config.getWindow_title());
-		Display.create();
-	}
-
-	private void InitGL(){
-		GL11.glEnable(GL11.GL_TEXTURE_2D);//enable mapping textures to faces or quads
-		GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
-		GL11.glEnableClientState(GL11.GL_COLOR_ARRAY);
-		GL11.glShadeModel(GL11.GL_SMOOTH);//makes surfaces prettier :3
-		GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);//Sets the background color
-		GL11.glClearDepth(1.0);//the depth used when the depth buffer is cleared
-		GL11.glEnable(GL11.GL_DEPTH_TEST);//allows depth testing, makes rendering more efficient
-		GL11.glDepthFunc(GL11.GL_LEQUAL);//what kind of depth testing to use
-
-		GL11.glMatrixMode(GL11.GL_PROJECTION);//modify pixel projection matrix
-		GL11.glLoadIdentity();
-
-		//set up the camera
-		GLU.gluPerspective(45.0f, (float)displayMode.getWidth()/ (float)displayMode.getHeight(), 0.1f, 10000.0f);
-
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);//modify the orientation and location matrix
-		GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
 	}
 
 }
