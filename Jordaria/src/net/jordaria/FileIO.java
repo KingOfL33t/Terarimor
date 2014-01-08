@@ -9,7 +9,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.Enumeration;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
+import net.jordaria.event.DebugMessage;
 import net.jordaria.event.Error;
 
 public class FileIO {
@@ -45,21 +51,49 @@ public class FileIO {
 	public void copyFilesToDisk(String homeDir){
 		try {
 			String seperator = File.separator;
-			System.out.println(seperator);
 			File lang_en_US = new File(homeDir.concat(seperator+"Jordaria"+seperator+"assets"+seperator+"lang"+seperator+"en_US.lang"));
 			try {
 				lang_en_US.createNewFile();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			InputStream en_US_stream = FileIO.class.getResourceAsStream(seperator+"Jordaria"+seperator+"assets"+seperator+"lang"+seperator+"en_US.lang");
-			BufferedReader en_US_reader = new BufferedReader(new InputStreamReader(en_US_stream, "UTF-8"));
+			
+			final String path = "assets/lang";
+			final File jarFile = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+
+			if(jarFile.isFile()) {  // Run with JAR file
+			    final JarFile jar = new JarFile(jarFile);
+			    final Enumeration<JarEntry> entries = jar.entries(); //gives ALL entries in jar
+			    while(entries.hasMoreElements()) {
+			        final String name = entries.nextElement().getName();
+			        if (name.startsWith(path + "/")) { //filter according to the path
+			            System.out.println(name);
+			            jd.eventManager.fireEvent(new DebugMessage(name));
+			        }
+			    }
+			    jar.close();
+			} else { // Run with IDE
+			    final URL url = FileIO.class.getResource("/" + path);
+			    if (url != null) {
+			        try {
+			            final File apps = new File(url.toURI());
+			            for (File app : apps.listFiles()) {
+			                System.out.println(app);
+			                jd.eventManager.fireEvent(new DebugMessage(app.getAbsolutePath()));
+			            }
+			        } catch (URISyntaxException ex) {
+			            // never happens
+			        }
+			    }
+			}
+			InputStream en_US_stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("/assets/lang/en_US.lang");
+			//BufferedReader en_US_reader = new BufferedReader(new InputStreamReader(en_US_stream, "UTF-8"));
 			BufferedWriter en_US_writer = new BufferedWriter(getBufferedWriterForFile(lang_en_US.getAbsolutePath()));
 
 
-			while(en_US_reader.ready()){
-				en_US_writer.write(en_US_reader.read());
-			}
+			//while(en_US_reader.ready()){
+			//	en_US_writer.write(en_US_reader.read());
+			//}
 		} catch (IOException e) {
 			jd.eventManager.fireEvent(new Error("Error copying file to disk ("+e.getMessage()+")"));
 		}
