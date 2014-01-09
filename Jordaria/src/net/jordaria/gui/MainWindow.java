@@ -22,7 +22,6 @@ public class MainWindow implements Listener{
 
 	public MainWindow(Jordaria jordaria){
 		this.jd = jordaria;
-		this.InitGL();
 	}
 
 	private void InitGL(){
@@ -59,6 +58,7 @@ public class MainWindow implements Listener{
 		Display.setDisplayMode(displayMode);
 		Display.setTitle(Jordaria.config.getWindow_title());
 		Display.create();
+		this.InitGL();
 	}
 
 	public void handleKeyboard(){
