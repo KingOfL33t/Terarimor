@@ -15,13 +15,16 @@ public class World {
 
 	public String worldName;
 	
-	public Map mainMap;
+	public Map currentMap;
+	
+	public WorldGen worldGen;
 
 	public World(String name){
 		this.worldName = name;
 		this.chunkManager = new ChunkManager(this);
 		this.rng = new Random();
 		rng.initializeGenerator((int)(Math.random()*1337));
+		this.worldGen = new WorldGen();
 	}
 
 	public void updateEntities(){
@@ -29,6 +32,15 @@ public class World {
 	public Chunk getChunkFromChunkCoords(int xPos, int yPos)
 	{
 		return this.chunkManager.provideChunk(xPos, yPos);
+	}
+	public Map getCurrentMap(){
+		return this.currentMap;
+	}
+	public void setCurrentMap(Map newMap){
+		this.currentMap = newMap;
+	}
+	public WorldGen getWorldGenerator(){
+		return worldGen;
 	}
 	
 

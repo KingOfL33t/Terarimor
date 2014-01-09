@@ -19,6 +19,7 @@ import net.jordaria.event.ShuttingDown;
 import net.jordaria.event.Tick;
 import net.jordaria.gui.MainWindow;
 import net.jordaria.math.Random;
+import net.jordaria.world.Map;
 import net.jordaria.world.World;
 
 
@@ -85,6 +86,10 @@ public class Jordaria implements Runnable, Listener{
 				panel.setJordariaVar(this);
 				eventManager.registerEventListeners(panel);
 			}
+			
+			//Create a small test map
+			theWorld.setCurrentMap(new Map(10, 10));
+			theWorld.getWorldGenerator().fillWithTown(theWorld.getCurrentMap());
 		}
 		catch(Exception e){
 			e.printStackTrace();

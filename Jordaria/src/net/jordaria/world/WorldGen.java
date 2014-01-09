@@ -42,69 +42,29 @@ public class WorldGen {
 				}
 			}
 		}
-
-		/*for (x=0; x < size; x++){
-			for (y=0; y < size; y++){
-				if (isSpecial[x][y]){
-					if (x==0&&y==0){//upper left corner
-						if (isSpecial[x+1][y]||isSpecial[x][y+1]||isSpecial[x+1][y+1]){
-							hasNeighbor[x][y]=true;
-						}
-					}
-					else if (x==0&&y==size-1){//lower left corner
-						if (isSpecial[x+1][y]||isSpecial[x][y-1]||isSpecial[x+1][y-1]){
-							hasNeighbor[x][y]=true;
-						}
-					}
-					else if (x==size-1&&y==0){//upper right corner
-						if (isSpecial[x-1][y]||isSpecial[x][y+1]||isSpecial[x-1][y+1]){
-							hasNeighbor[x][y]=true;
-						}
-					}
-					else if (x==size-1&&y==size-1){//lower right corner
-						if (isSpecial[x-1][y]||isSpecial[x][y-1]||isSpecial[x-1][y-1]){
-							hasNeighbor[x][y]=true;
-						}
-					}
-					else if (x==0){//left edge, not a corner
-						if (isSpecial[x][y-1]||isSpecial[x][y+1]||isSpecial[x+1][y]||isSpecial[x+1][y+1]||isSpecial[x+1][y-1]){
-							hasNeighbor[x][y]=true;
-						}
-					}
-					else if (x==size-1){//right edge, not a corner
-						if (isSpecial[x][y-1]||isSpecial[x][y+1]||isSpecial[x-1][y]||isSpecial[x-1][y+1]||isSpecial[x-1][y-1]){
-							hasNeighbor[x][y]=true;
-						}
-					}
-					else if (y==0){//top edge, not a corner
-						if (isSpecial[x-1][y]||isSpecial[x+1][y]||isSpecial[x][y+1]||isSpecial[x+1][y+1]||isSpecial[x-1][y+1]){
-							hasNeighbor[x][y]=true;
-						}
-					}
-					else if (y==size-1){//bottom edge, not a corner
-						if (isSpecial[x-1][y]||isSpecial[x+1][y]||isSpecial[x][y-1]||isSpecial[x+1][y-1]||isSpecial[x-1][y-1]){
-							hasNeighbor[x][y]=true;
-						}
-					}
-					else{//somewhere in the middle, not an edge or corner
-						if (isSpecial[x-1][y]||isSpecial[x+1][y]||isSpecial[x][y-1]||isSpecial[x][y+1]||isSpecial[x-1][y-1]||isSpecial[x-1][y+1]||isSpecial[x+1][y-1]||isSpecial[x+1][y+1]){
-							hasNeighbor[x][y]=true;
-						}
-						else{
-							hasNeighbor[x][y]=false;
-						}
-					}
-				}
-			}
+	}
+	
+	public void fillWithTown(Map map){
+		map.setAllTiles(TileType.FLOOR);
+		setOutsideWalls(map);
+	}
+	private void setOutsideWalls(Map map){
+		int width = map.getWidth();
+		int height = map.getHeight();
+		int x = 0;
+		int y = 0;
+		for (x=1; x<width-1; x++){
+			map.setTile(x, 0, TileType.WALL_S);
+			map.setTile(x, height-1, TileType.WALL_N);
 		}
-		for (x=0; x < size; x++){
-			for (y=0; y < size; y++){
-				if (hasNeighbor[x][y]){
-					chunk.setTile(x, y, TileType.FLOOR);
-				}
-			}
-		}*/
-
+		for (y=1; y<height-1; y++){
+			map.setTile(0, y, TileType.WALL_E);
+			map.setTile(width-1, y, TileType.WALL_W);
+		}
+		map.setTile(0, 0, TileType.WALL_ES);
+		map.setTile(width-1, 0, TileType.WALL_SW);
+		map.setTile(0, height-1, TileType.WALL_NE);
+		map.setTile(width-1, height-1, TileType.WALL_NW);
 	}
 
 }
