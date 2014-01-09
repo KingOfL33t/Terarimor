@@ -27,7 +27,6 @@ public class GameSettings {
 
 	public float mouseSensitivity = 0.5F;
 
-	public String language = "en_US";
 	public String OS;
 	public String homeDirectory;
 
@@ -64,9 +63,6 @@ public class GameSettings {
 	}
 	public int getMaxDungeonSize(){
 		return this.maxDungeonSize;
-	}
-	public String getLanguage(){
-		return this.language;
 	}
 	public String getHomeDirectory(){
 		return this.homeDirectory;

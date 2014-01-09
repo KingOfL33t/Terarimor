@@ -35,7 +35,6 @@ public class Jordaria implements Runnable, Listener{
 	public GameSettings gameSettings;
 	public int displayWidth;
 	public int displayHeight;
-	public Localization localization;
 	public MainWindow mainWindow;
 	public Random rand;
 	public Thread thread;
@@ -70,10 +69,7 @@ public class Jordaria implements Runnable, Listener{
 			fileIO = new FileIO(this);
 			fileIO.createMainDirectories(gameSettings.homeDirectory);
 			fileIO.copyFilesToDisk(gameSettings.homeDirectory);
-
-			localization = new Localization(this);
-			localization.loadLanguage();
-
+			
 			initGraphics();
 
 			theWorld = new World("Test");
