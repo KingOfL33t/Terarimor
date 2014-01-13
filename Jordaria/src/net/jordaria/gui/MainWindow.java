@@ -14,43 +14,18 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.glu.GLU;
 
 public class MainWindow implements Listener{
 	Jordaria jd;
 	DisplayMode displayMode;
+	int size = 20;
+	float r = 0;
+	float g = 0;
+	float b = 0;
 
 	public MainWindow(Jordaria jordaria){
 		this.jd = jordaria;
 	}
-
-	private void InitGL(){
-		GL11.glEnable(GL11.GL_TEXTURE_2D);//enable mapping textures to faces or quads
-		GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
-		GL11.glEnableClientState(GL11.GL_COLOR_ARRAY);
-		GL11.glShadeModel(GL11.GL_SMOOTH);//makes surfaces prettier :3
-		GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);//Sets the background color
-		GL11.glClearDepth(1.0);//the depth used when the depth buffer is cleared
-		GL11.glEnable(GL11.GL_DEPTH_TEST);//allows depth testing, makes rendering more efficient
-		GL11.glDepthFunc(GL11.GL_LEQUAL);//what kind of depth testing to use
-
-		GL11.glMatrixMode(GL11.GL_PROJECTION);//modify pixel projection matrix
-		GL11.glLoadIdentity();
-
-		//set up the camera
-		//this is a 3d camera
-		//GLU.gluPerspective(45.0f, (float)displayMode.getWidth()/ (float)displayMode.getHeight(), 0.1f, 10000.0f);
-		//this is an orthographic camera
-		GL11.glOrtho(-10,10, -10, 10, -1, 1);
-
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);//modify the orientation and location matrix
-		GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
-
-
-
-		Display.sync(60);
-	}
-
 	public void createWindow() throws Exception{
 		Display.setFullscreen(false);
 		DisplayMode d[] = Display.getAvailableDisplayModes();
@@ -67,7 +42,35 @@ public class MainWindow implements Listener{
 		Display.create();
 		this.InitGL();
 	}
+	private void fillRect(float posX, float posY, float width, float height, float r, float g, float b){
+		GL11.glBegin(GL11.GL_TRIANGLES);
+		
+		// top left
+		GL11.glColor3f(r, g, b);
+		GL11.glVertex2f(posX, posY);
 
+		// top right
+		GL11.glColor3f(r, g, b);
+		GL11.glVertex2f(posX+width, posY);
+
+		// bottom right
+		GL11.glColor3f(r, g, b);
+		GL11.glVertex2f(posX+width, posY+height);
+
+		// bottom right
+		GL11.glColor3f(r, g, b);
+		GL11.glVertex2f(posX+width, posY+height);
+
+		//bottom left
+		GL11.glColor3f(r, g, b);
+		GL11.glVertex2f(posX, posY+height);
+
+		//top left
+		GL11.glColor3f(r, g, b);
+		GL11.glVertex2f(posX, posY);
+		
+		GL11.glEnd();
+	}
 	public void handleKeyboard(){
 		while (Keyboard.next()){
 			KeyBind.setKeyBindState(Keyboard.getEventKey(), Keyboard.getEventKeyState());
@@ -110,50 +113,60 @@ public class MainWindow implements Listener{
 
 		}
 	}
+	
+	private void InitGL(){
+		GL11.glEnable(GL11.GL_TEXTURE_2D);//enable mapping textures to faces or quads
+		GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
+		GL11.glEnableClientState(GL11.GL_COLOR_ARRAY);
+		GL11.glShadeModel(GL11.GL_SMOOTH);//makes surfaces prettier :3
+		GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);//Sets the background color
+		GL11.glClearDepth(1.0);//the depth used when the depth buffer is cleared
+		GL11.glEnable(GL11.GL_DEPTH_TEST);//allows depth testing, makes rendering more efficient
+		GL11.glDepthFunc(GL11.GL_LEQUAL);//what kind of depth testing to use
+
+		GL11.glMatrixMode(GL11.GL_PROJECTION);//modify pixel projection matrix
+		GL11.glLoadIdentity();
+
+		//set up the camera
+		//this is a 3d camera
+		//GLU.gluPerspective(45.0f, (float)displayMode.getWidth()/ (float)displayMode.getHeight(), 0.1f, 10000.0f);
+		//this is an orthographic camera
+		GL11.glOrtho(0, size, 0, size, -1, 1);
+
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);//modify the orientation and location matrix
+		GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
+
+
+
+		Display.sync(60);
+	}
+	@EventHandler
+	public void onShutdown(ShuttingDown shutdown){
+		Display.destroy();
+	}
+	@EventHandler
+	public void onTick(Tick event){
+		this.tick();
+	}
 	public void tick(){
 		this.handleKeyboard();
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-
-		// Begin drawing
-		GL11.glBegin(GL11.GL_TRIANGLES);
-
-		// Top & Red
-		GL11.glColor3f(1.0f, 0.0f, 0.0f);
-		GL11.glVertex2f(0.0f, 1.0f);
-
-		// Right & Green
-		GL11.glColor3f(0.0f, 1.0f, 0.0f);
-		GL11.glVertex2f(1.0f, 1.0f);
-
-		// Left & Blue
-		GL11.glColor3f(0.0f, 0.0f, 1.0f);
-		GL11.glVertex2f(1.0f, -1.0f);
-
-	
-		GL11.glColor3f(0.0f, 0.0f, 1.0f);
-		GL11.glVertex2f(1.0f, -1.0f);
-
-		GL11.glColor3f(1.0f, 0.0f, 0.0f);
-		GL11.glVertex2f(0.0f, 1.0f);
-
-		GL11.glColor3f(0.0f, 1.0f, 0.0f);
-		GL11.glVertex2f(0.0f, -1.0f);
-
-		GL11.glEnd();
+		
+		int x,y;
+		for (x=0; x<size; x++){
+			for (y=0; y<size; y++){
+				r = jd.getRandom().nextFloat();
+				g = jd.getRandom().nextFloat();
+				b = jd.getRandom().nextFloat();
+				fillRect(x, y, 1.0f, 1.0f, r, g, b);
+			}
+		}
 
 		Display.update();
 
 		if (Display.isCloseRequested()){
 			jd.getEventManager().fireEvent(new ShuttingDown());
 		}
-	}
-	@EventHandler
-	public void onTick(Tick event){
-		this.tick();
-	}
-	@EventHandler
-	public void onShutdown(ShuttingDown shutdown){
-		Display.destroy();
 	}
 
 }

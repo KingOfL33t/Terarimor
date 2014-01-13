@@ -160,6 +160,9 @@ public class Jordaria implements Runnable, Listener{
 	public EventManager getEventManager(){
 		return this.eventManager;
 	}
+	public Random getRandom(){
+		return this.rand;
+	}
 	//REGISTERING LISTENERS
 	public void registerListeners(){
 		if (config.getDebugActive()){
