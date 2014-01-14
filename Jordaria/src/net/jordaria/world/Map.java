@@ -38,4 +38,15 @@ public class Map {
 	public int getHeight(){
 		return this.height;
 	}
+	public Tile getTile(int x, int y){
+		
+		if (tiles[x][y]==null){
+			Tile tile = new Tile();
+			tile.setTileType(TileType.ERROR);
+			return tile;
+		}
+		else{
+			return tiles[x][y];
+		}
+	}
 }

@@ -18,7 +18,7 @@ import org.lwjgl.opengl.GL11;
 public class MainWindow implements Listener{
 	Jordaria jd;
 	DisplayMode displayMode;
-	int size = 20;
+	int size = 10;
 	float r = 0;
 	float g = 0;
 	float b = 0;
@@ -44,7 +44,7 @@ public class MainWindow implements Listener{
 	}
 	private void fillRect(float posX, float posY, float width, float height, float r, float g, float b){
 		GL11.glBegin(GL11.GL_TRIANGLES);
-		
+
 		// top left
 		GL11.glColor3f(r, g, b);
 		GL11.glVertex2f(posX, posY);
@@ -68,7 +68,41 @@ public class MainWindow implements Listener{
 		//top left
 		GL11.glColor3f(r, g, b);
 		GL11.glVertex2f(posX, posY);
-		
+
+		GL11.glEnd();
+	}
+	private void fillTriangleTop(float posX, float posY, float width, float height, float r, float g, float b){
+		GL11.glBegin(GL11.GL_TRIANGLES);
+
+		// top left
+		GL11.glColor3f(r, g, b);
+		GL11.glVertex2f(posX, posY);
+
+		// top right
+		GL11.glColor3f(r, g, b);
+		GL11.glVertex2f(posX+width, posY);
+
+		// bottom right
+		GL11.glColor3f(r, g, b);
+		GL11.glVertex2f(posX+width, posY+height);
+
+		GL11.glEnd();
+	}
+	private void fillTriangleBottom(float posX, float posY, float width, float height, float r, float g, float b){
+		GL11.glBegin(GL11.GL_TRIANGLES);
+
+		// bottom right
+		GL11.glColor3f(r, g, b);
+		GL11.glVertex2f(posX+width, posY+height);
+
+		//bottom left
+		GL11.glColor3f(r, g, b);
+		GL11.glVertex2f(posX, posY+height);
+
+		//top left
+		GL11.glColor3f(r, g, b);
+		GL11.glVertex2f(posX, posY);
+
 		GL11.glEnd();
 	}
 	public void handleKeyboard(){
@@ -113,7 +147,7 @@ public class MainWindow implements Listener{
 
 		}
 	}
-	
+
 	private void InitGL(){
 		GL11.glEnable(GL11.GL_TEXTURE_2D);//enable mapping textures to faces or quads
 		GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
@@ -136,8 +170,6 @@ public class MainWindow implements Listener{
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);//modify the orientation and location matrix
 		GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
 
-
-
 		Display.sync(60);
 	}
 	@EventHandler
@@ -151,7 +183,7 @@ public class MainWindow implements Listener{
 	public void tick(){
 		this.handleKeyboard();
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-		
+
 		int x,y;
 		for (x=0; x<size; x++){
 			for (y=0; y<size; y++){

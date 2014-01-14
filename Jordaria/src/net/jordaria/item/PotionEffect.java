@@ -1,12 +1,12 @@
 package net.jordaria.item;
 
 public enum PotionEffect {
-	NOTHING(0, "potion.effect.nothing"),
-	DAMAGE(1, "potion.effect.damage"),
-	HEAL(2, "potion.effect.heal"),
-	POISON(3, "potion.effect.poison"),
-	CURE_POISON(4, "potion.effect.curepoison"),
-	MANA(5, "potion.effect.mana");
+	NOTHING(0, "Nothing"),
+	DAMAGE(1, "Damage Potion"),
+	HEAL(2, "Health Potion"),
+	POISON(3, "Poison"),
+	CURE_POISON(4, "Antidote"),
+	MANA(5, "Mana Potion");
 	
 	private int index;
 	private String name;
