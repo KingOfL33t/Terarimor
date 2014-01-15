@@ -3,6 +3,7 @@ package net.jordaria.world;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.jordaria.event.EventManager;
 import net.jordaria.math.Random;
 
 public class World {
@@ -18,8 +19,11 @@ public class World {
 	public Map currentMap;
 	
 	public WorldGen worldGen;
+	
+	public EventManager eventManager;
 
-	public World(String name){
+	public World(String name, EventManager manager){
+		this.eventManager = manager;
 		this.worldName = name;
 		this.chunkManager = new ChunkManager(this);
 		this.rng = new Random();
@@ -37,6 +41,7 @@ public class World {
 		return this.currentMap;
 	}
 	public void setCurrentMap(Map newMap){
+		manager.fireEvent new world changed //TODO fix errors
 		this.currentMap = newMap;
 	}
 	public WorldGen getWorldGenerator(){

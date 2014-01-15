@@ -88,7 +88,7 @@ public class DebugPanel implements ActionListener, Listener{
 			frame.setVisible(true);
 		}
 		else if (e.getSource().equals(b_testChunkGen)){
-			Chunk testChunk = new Chunk(new World("AlphaTestWorld"), 0, 0);
+			Chunk testChunk = new Chunk(new World("AlphaTestWorld", jd.getEventManager()), 0, 0);
 			WorldGen generator = new WorldGen();
 			generator.generateMixedFloor(testChunk);
 			JFrame frame = new JFrame("Rand test");

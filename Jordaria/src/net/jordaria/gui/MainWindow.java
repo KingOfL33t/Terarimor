@@ -18,7 +18,8 @@ import org.lwjgl.opengl.GL11;
 public class MainWindow implements Listener{
 	Jordaria jd;
 	DisplayMode displayMode;
-	int size = 10;
+	int height = 20;
+	int width = 20;
 	float r = 0;
 	float g = 0;
 	float b = 0;
@@ -50,23 +51,18 @@ public class MainWindow implements Listener{
 		GL11.glVertex2f(posX, posY);
 
 		// top right
-		GL11.glColor3f(r, g, b);
 		GL11.glVertex2f(posX+width, posY);
 
 		// bottom right
-		GL11.glColor3f(r, g, b);
 		GL11.glVertex2f(posX+width, posY+height);
 
 		// bottom right
-		GL11.glColor3f(r, g, b);
 		GL11.glVertex2f(posX+width, posY+height);
 
 		//bottom left
-		GL11.glColor3f(r, g, b);
 		GL11.glVertex2f(posX, posY+height);
 
 		//top left
-		GL11.glColor3f(r, g, b);
 		GL11.glVertex2f(posX, posY);
 
 		GL11.glEnd();
@@ -79,11 +75,9 @@ public class MainWindow implements Listener{
 		GL11.glVertex2f(posX, posY);
 
 		// top right
-		GL11.glColor3f(r, g, b);
 		GL11.glVertex2f(posX+width, posY);
 
 		// bottom right
-		GL11.glColor3f(r, g, b);
 		GL11.glVertex2f(posX+width, posY+height);
 
 		GL11.glEnd();
@@ -96,11 +90,9 @@ public class MainWindow implements Listener{
 		GL11.glVertex2f(posX+width, posY+height);
 
 		//bottom left
-		GL11.glColor3f(r, g, b);
 		GL11.glVertex2f(posX, posY+height);
 
 		//top left
-		GL11.glColor3f(r, g, b);
 		GL11.glVertex2f(posX, posY);
 
 		GL11.glEnd();
@@ -165,7 +157,7 @@ public class MainWindow implements Listener{
 		//this is a 3d camera
 		//GLU.gluPerspective(45.0f, (float)displayMode.getWidth()/ (float)displayMode.getHeight(), 0.1f, 10000.0f);
 		//this is an orthographic camera
-		GL11.glOrtho(0, size, 0, size, -1, 1);
+		GL11.glOrtho(0, width, 0, height, -1, 5);
 
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);//modify the orientation and location matrix
 		GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
@@ -183,13 +175,87 @@ public class MainWindow implements Listener{
 	public void tick(){
 		this.handleKeyboard();
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-
+		width = jd.getWorld().getCurrentMap().getWidth();
+		height = jd.getWorld().getCurrentMap().getHeight();
 		int x,y;
-		for (x=0; x<size; x++){
-			for (y=0; y<size; y++){
-				r = jd.getRandom().nextFloat();
-				g = jd.getRandom().nextFloat();
-				b = jd.getRandom().nextFloat();
+		for (x=0; x<width; x++){
+			for (y=0; y<height; y++){
+				//r = jd.getRandom().nextFloat();
+				//g = jd.getRandom().nextFloat();
+				//b = jd.getRandom().nextFloat();
+				switch (jd.getWorld().getCurrentMap().getTile(x, y).getTileType().getID()){
+				case -1: setColors(.8f, .21f, .43f);
+				break;
+				case 0: setColors(.01f, .01f, .05f);
+				break;
+				case 1: setColors(.7f, .3f, .1f);
+				break;
+				case 2: setColors(.7f, .3f, .3f);
+				break;
+				case 3: setColors(.7f, .3f, .4f);
+				break;
+				case 4: setColors(.7f, .3f, .6f);
+				break;
+				case 5: setColors(.7f, .3f, .8f);
+				break;
+				case 6: setColors(.7f, .5f, .8f);
+				break;
+				case 7: setColors(.2f, .2f, .2f);
+				break;
+				case 8: setColors(.2f, .4f, .4f);
+				break;
+				case 9: setColors(.4f, .4f, .4f);
+				break;
+				case 10: setColors(.4f, .2f, .2f);
+				break;
+				case 12: setColors(.4f, .2f, .4f);
+				break;
+				case 13: setColors(.4f, .4f, .2f);
+				break;
+				case 14: setColors(.3f, .3f, .3f);
+				break;
+				case 15: setColors(.4f, .2f, .3f);
+				break;
+				case 16: setColors(.4f, .8f, .5f);
+				break;
+				case 17: setColors(.5f, .4f, .8f);
+				break;
+				case 18: setColors(.8f, .4f, .1f);
+				break;
+				case 19: setColors(.2f, .7f, .3f);
+				break;
+				case 20: setColors(.2f, .7f, .3f);
+				break;
+				case 21: setColors(.3f, .2f, .8f);
+				break;
+				case 22: setColors(.1f, .9f, .9f);
+				break;
+				case 23: setColors(.1f, .7f, .9f);
+				break;
+				case 24: setColors(.1f, .5f, .9f);
+				break;
+				case 25: setColors(.1f, .3f, .9f);
+				break;
+				case 26: setColors(.6f, .2f, .9f);
+				break;
+				case 27: setColors(.2f, .2f, .8f);
+				break;
+				case 28: setColors(.2f, .8f, .8f);
+				break;
+				case 29: setColors(.8f, .8f, .2f);
+				break;
+				case 30: setColors(.8f, .8f, .8f);
+				break;
+				case 31: setColors(.5f, .1f, .1f);
+				break;
+				case 32: setColors(.1f, .5f, .5f);
+				break;
+				case 33: setColors(.5f, .6f, .5f);
+				break;
+				case 34: setColors(.5f, .6f, .6f);
+				break;
+				
+				}
 				fillRect(x, y, 1.0f, 1.0f, r, g, b);
 			}
 		}
@@ -199,6 +265,11 @@ public class MainWindow implements Listener{
 		if (Display.isCloseRequested()){
 			jd.getEventManager().fireEvent(new ShuttingDown());
 		}
+	}
+	private void setColors(float r, float g, float b){
+		this.r = r;
+		this.g = g;
+		this.b = b;
 	}
 
 }

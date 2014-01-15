@@ -73,7 +73,7 @@ public class Jordaria implements Runnable, Listener{
 			
 			initGraphics();
 
-			theWorld = new World("Test");
+			theWorld = new World("Test", this.getEventManager());
 			eventManager.fireEvent(new DebugMessage("World ("+theWorld.worldName+") created!"));
 
 			NameGenerator namegen = new NameGenerator();
@@ -88,8 +88,10 @@ public class Jordaria implements Runnable, Listener{
 			}
 			
 			//Create a small test map
-			theWorld.setCurrentMap(new Map(10, 10));
-			theWorld.getWorldGenerator().fillWithTown(theWorld.getCurrentMap());
+			Map map = new Map(10, 10);
+			theWorld.getWorldGenerator().fillWithTown(map);
+			theWorld.setCurrentMap(map);
+			
 			
 		}
 		catch(Exception e){
@@ -162,6 +164,9 @@ public class Jordaria implements Runnable, Listener{
 	}
 	public Random getRandom(){
 		return this.rand;
+	}
+	public World getWorld(){
+		return this.theWorld;
 	}
 	//REGISTERING LISTENERS
 	public void registerListeners(){
