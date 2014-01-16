@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.jordaria.event.EventManager;
+import net.jordaria.event.MapChanged;
 import net.jordaria.math.Random;
 
 public class World {
@@ -41,8 +42,8 @@ public class World {
 		return this.currentMap;
 	}
 	public void setCurrentMap(Map newMap){
-		manager.fireEvent new world changed //TODO fix errors
 		this.currentMap = newMap;
+		this.eventManager.fireEvent(new MapChanged(newMap.getWidth(), newMap.getHeight()));
 	}
 	public WorldGen getWorldGenerator(){
 		return worldGen;

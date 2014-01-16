@@ -7,6 +7,7 @@ import net.jordaria.event.DebugMessage;
 import net.jordaria.event.EntityMoveRequest;
 import net.jordaria.event.EventHandler;
 import net.jordaria.event.Listener;
+import net.jordaria.event.MapChanged;
 import net.jordaria.event.ShuttingDown;
 import net.jordaria.event.Tick;
 
@@ -18,8 +19,8 @@ import org.lwjgl.opengl.GL11;
 public class MainWindow implements Listener{
 	Jordaria jd;
 	DisplayMode displayMode;
-	int height = 20;
-	int width = 20;
+	int height = 100;
+	int width = 100;
 	float r = 0;
 	float g = 0;
 	float b = 0;
@@ -157,7 +158,7 @@ public class MainWindow implements Listener{
 		//this is a 3d camera
 		//GLU.gluPerspective(45.0f, (float)displayMode.getWidth()/ (float)displayMode.getHeight(), 0.1f, 10000.0f);
 		//this is an orthographic camera
-		GL11.glOrtho(0, width, 0, height, -1, 5);
+		GL11.glOrtho(0, width, height, 0, -1, 5);
 
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);//modify the orientation and location matrix
 		GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
@@ -172,17 +173,21 @@ public class MainWindow implements Listener{
 	public void onTick(Tick event){
 		this.tick();
 	}
+	@EventHandler
+	public void onMapChanged(MapChanged event){
+		width = jd.getWorld().getCurrentMap().getWidth();
+		height = jd.getWorld().getCurrentMap().getHeight();
+		jd.getWorld().eventManager.fireEvent(new DebugMessage("width:"+this.width + " height:"+this.height));
+		//GL11.glViewport(0, 0, width, height);
+		GL11.glOrtho(0, width, height, 0, -1, 5);
+	}
+	
 	public void tick(){
 		this.handleKeyboard();
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-		width = jd.getWorld().getCurrentMap().getWidth();
-		height = jd.getWorld().getCurrentMap().getHeight();
 		int x,y;
 		for (x=0; x<width; x++){
 			for (y=0; y<height; y++){
-				//r = jd.getRandom().nextFloat();
-				//g = jd.getRandom().nextFloat();
-				//b = jd.getRandom().nextFloat();
 				switch (jd.getWorld().getCurrentMap().getTile(x, y).getTileType().getID()){
 				case -1: setColors(.8f, .21f, .43f);
 				break;
@@ -256,7 +261,7 @@ public class MainWindow implements Listener{
 				break;
 				
 				}
-				fillRect(x, y, 1.0f, 1.0f, r, g, b);
+				fillRect(x*width, y*height, displayMode.getWidth()/width, displayMode.getHeight()/height, r, g, b);
 			}
 		}
 
