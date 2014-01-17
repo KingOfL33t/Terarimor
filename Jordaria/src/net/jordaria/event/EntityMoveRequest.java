@@ -18,6 +18,10 @@ public class EntityMoveRequest extends Event{
 		this.entity = entity;
 		this.direction = direction;
 	}
+	
+	public Direction getDirection(){
+		return this.direction;
+	}
 
 	@Override
 	public HandlerList getHandlers() {

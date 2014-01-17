@@ -24,6 +24,10 @@ public class MainWindow implements Listener{
 	float r = 0;
 	float g = 0;
 	float b = 0;
+	
+	float cameraX = 0;
+	float cameraY = 0;
+	float cameraSpeed = 5;
 
 	public MainWindow(Jordaria jordaria){
 		this.jd = jordaria;
@@ -158,7 +162,7 @@ public class MainWindow implements Listener{
 		//this is a 3d camera
 		//GLU.gluPerspective(45.0f, (float)displayMode.getWidth()/ (float)displayMode.getHeight(), 0.1f, 10000.0f);
 		//this is an orthographic camera
-		GL11.glOrtho(0, width, height, 0, -1, 5);
+		GL11.glOrtho(-10, width, height, -10, -1, 5);
 
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);//modify the orientation and location matrix
 		GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
@@ -172,6 +176,42 @@ public class MainWindow implements Listener{
 	@EventHandler
 	public void onTick(Tick event){
 		this.tick();
+	}
+	@EventHandler
+	public void onEntityMoveRequest(EntityMoveRequest event){
+		float angle = event.getDirection().getAngle();
+		boolean up = false;
+		boolean down = false;
+		boolean right = false;
+		boolean left = false;
+		if (angle>=0 && angle<=90){//first quadrant
+			right = true;
+			up = true;
+		}
+		else if (angle>90 && angle <=180){//fourth quadrant
+			right = true;
+			down = true;
+		}
+		else if (angle>180 && angle <=270){//third quadrant
+			down = true;
+			left = true;
+		}
+		else if (angle>270 && angle<0){//second quadrant
+			left = true;
+			up = true;
+		}
+		if (left){
+			this.cameraX-=cameraSpeed;
+		}
+		if (right){
+			this.cameraX+=cameraSpeed;
+		}
+		if (down){
+			this.cameraY+=cameraSpeed;
+		}
+		if (up){
+			t
+		}
 	}
 	@EventHandler
 	public void onMapChanged(MapChanged event){
@@ -261,7 +301,8 @@ public class MainWindow implements Listener{
 				break;
 				
 				}
-				fillRect(x*width, y*height, displayMode.getWidth()/width, displayMode.getHeight()/height, r, g, b);
+				//jd.getEventManager().fireEvent(new DebugMessage("X:"+x+" Y:"+y));
+				fillRect(x*width, y*height, width, height, r, g, b);
 			}
 		}
 
