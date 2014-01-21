@@ -53,7 +53,7 @@ public class WorldGen {
 		int height = map.getHeight();
 		int x = 0;
 		int y = 0;
-		for (x=1; x<width-1; x++){
+		/*for (x=1; x<width-1; x++){
 			map.setTile(x, 0, TileType.WALL_S);
 			map.setTile(x, height-1, TileType.WALL_N);
 		}
@@ -64,7 +64,15 @@ public class WorldGen {
 		map.setTile(0, 0, TileType.WALL_ES);
 		map.setTile(width-1, 0, TileType.WALL_SW);
 		map.setTile(0, height-1, TileType.WALL_NE);
-		map.setTile(width-1, height-1, TileType.WALL_NW);
+		map.setTile(width-1, height-1, TileType.WALL_NW);*/
+		for (x=0; x<width; x++){
+			map.setTile(x, 0, TileType.WALL);
+			map.setTile(x, height-1, TileType.WALL);
+		}
+		for (y=0; y<height; y++){
+			map.setTile(0, y, TileType.WALL);
+			map.setTile(width-1, y, TileType.WALL);
+		}
 	}
 
 }

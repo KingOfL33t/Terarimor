@@ -24,10 +24,10 @@ public class MainWindow implements Listener{
 	float r = 0;
 	float g = 0;
 	float b = 0;
-	
+
 	float cameraX = 0;
 	float cameraY = 0;
-	float cameraSpeed = 5;
+	float cameraSpeed = 20;
 
 	public MainWindow(Jordaria jordaria){
 		this.jd = jordaria;
@@ -111,37 +111,35 @@ public class MainWindow implements Listener{
 			}
 			while (jd.getGameSettings().KEYBIND_MOVE_FORWARD.isPressed())
 			{
+				this.cameraY-=cameraSpeed;
 				jd.getEventManager().fireEvent(new EntityMoveRequest(jd.thePlayer, jd.thePlayer.direction));
 				if (Jordaria.config.getDebugActive() && Jordaria.config.getDEBUG_SHOW_KEYPRESSES())
 					jd.getEventManager().fireEvent(new DebugMessage("Key pressed! ("+jd.getGameSettings().KEYBIND_MOVE_FORWARD.keyDescription+")"));
 			}
 			while (jd.getGameSettings().KEYBIND_MOVE_BACKWARD.isPressed())
 			{
+				this.cameraY+=cameraSpeed;
 				jd.getEventManager().fireEvent(new EntityMoveRequest(jd.thePlayer, jd.thePlayer.direction.getRelativeDirection(new Direction(180))));
 				if (Jordaria.config.getDebugActive() && Jordaria.config.getDEBUG_SHOW_KEYPRESSES())
 					jd.getEventManager().fireEvent(new DebugMessage("Key pressed! ("+jd.getGameSettings().KEYBIND_MOVE_BACKWARD.keyDescription+")"));
 			}
 			while (jd.getGameSettings().KEYBIND_MOVE_LEFT.isPressed())
 			{
-				jd.getEventManager().fireEvent(new EntityMoveRequest(jd.thePlayer, jd.thePlayer.direction.getRelativeDirection(new Direction(90))));
+				this.cameraX+=cameraSpeed;
+				if (jd.getGameSettings().KEYBIND_MOVE_LEFT.isPressed()){
+					jd.getEventManager().fireEvent(new DebugMessage("Key pressed"));
+				}
+				jd.getEventManager().fireEvent(new EntityMoveRequest(jd.thePlayer, jd.thePlayer.direction.getRelativeDirection(new Direction(270))));
 				if (Jordaria.config.getDebugActive() && Jordaria.config.getDEBUG_SHOW_KEYPRESSES())
 					jd.getEventManager().fireEvent(new DebugMessage("Key pressed! ("+jd.getGameSettings().KEYBIND_MOVE_LEFT.keyDescription+")"));
 			}
 			while (jd.getGameSettings().KEYBIND_MOVE_RIGHT.isPressed())
 			{
-				jd.getEventManager().fireEvent(new EntityMoveRequest(jd.thePlayer, jd.thePlayer.direction.getRelativeDirection(new Direction(-90))));
+				this.cameraX-=cameraSpeed;
+				jd.getEventManager().fireEvent(new EntityMoveRequest(jd.thePlayer, jd.thePlayer.direction.getRelativeDirection(new Direction(90))));
 				if (Jordaria.config.getDebugActive() && Jordaria.config.getDEBUG_SHOW_KEYPRESSES())
 					jd.getEventManager().fireEvent(new DebugMessage("Key pressed! ("+jd.getGameSettings().KEYBIND_MOVE_RIGHT.keyDescription+")"));
 			}
-			while (jd.getGameSettings().KEYBIND_WIREFRAME.isPressed())
-			{
-				jd.getGameSettings().toggleWireframe();
-				if (Jordaria.config.getDebugActive() && Jordaria.config.getDEBUG_SHOW_KEYPRESSES()){
-					jd.getEventManager().fireEvent(new DebugMessage("Key pressed! ("+jd.getGameSettings().KEYBIND_WIREFRAME.keyDescription+")"));
-
-				}
-			}
-
 		}
 	}
 
@@ -168,6 +166,8 @@ public class MainWindow implements Listener{
 		GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
 
 		Display.sync(60);
+
+		Keyboard.enableRepeatEvents(true);
 	}
 	@EventHandler
 	public void onShutdown(ShuttingDown shutdown){
@@ -177,22 +177,22 @@ public class MainWindow implements Listener{
 	public void onTick(Tick event){
 		this.tick();
 	}
-	@EventHandler
+	/*@EventHandler
 	public void onEntityMoveRequest(EntityMoveRequest event){
 		float angle = event.getDirection().getAngle();
 		boolean up = false;
 		boolean down = false;
 		boolean right = false;
 		boolean left = false;
-		if (angle>=0 && angle<=90){//first quadrant
+		if (angle>0 && angle<90){//first quadrant
 			right = true;
 			up = true;
 		}
-		else if (angle>90 && angle <=180){//fourth quadrant
+		else if (angle>90 && angle <180){//fourth quadrant
 			right = true;
 			down = true;
 		}
-		else if (angle>180 && angle <=270){//third quadrant
+		else if (angle>180 && angle <270){//third quadrant
 			down = true;
 			left = true;
 		}
@@ -200,28 +200,42 @@ public class MainWindow implements Listener{
 			left = true;
 			up = true;
 		}
+		else if (angle == 0){
+			up = true;
+		}
+		else if (angle == 90){
+			right = true;
+		}
+		else if (angle == 180){
+			down = true;
+		}
+		else if (angle == 270){
+			left = true;
+		}
 		if (left){
-			this.cameraX-=cameraSpeed;
+			this.cameraX+=cameraSpeed;
 		}
 		if (right){
-			this.cameraX+=cameraSpeed;
+			this.cameraX-=cameraSpeed;
 		}
 		if (down){
 			this.cameraY+=cameraSpeed;
 		}
 		if (up){
-			t
+			this.cameraY-=cameraSpeed;
 		}
-	}
+	}*/
 	@EventHandler
 	public void onMapChanged(MapChanged event){
 		width = jd.getWorld().getCurrentMap().getWidth();
 		height = jd.getWorld().getCurrentMap().getHeight();
 		jd.getWorld().eventManager.fireEvent(new DebugMessage("width:"+this.width + " height:"+this.height));
 		//GL11.glViewport(0, 0, width, height);
+		this.cameraX = 0;
+		this.cameraY = 0;
 		GL11.glOrtho(0, width, height, 0, -1, 5);
 	}
-	
+
 	public void tick(){
 		this.handleKeyboard();
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
@@ -299,10 +313,10 @@ public class MainWindow implements Listener{
 				break;
 				case 34: setColors(.5f, .6f, .6f);
 				break;
-				
+
 				}
 				//jd.getEventManager().fireEvent(new DebugMessage("X:"+x+" Y:"+y));
-				fillRect(x*width, y*height, width, height, r, g, b);
+				fillRect(x*width+cameraX, y*height+cameraY, width, height, r, g, b);
 			}
 		}
 
