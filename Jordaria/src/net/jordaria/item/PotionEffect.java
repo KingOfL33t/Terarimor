@@ -1,7 +1,7 @@
 package net.jordaria.item;
 
 public enum PotionEffect {
-	NOTHING(0, "Nothing"),
+	NOTHING(0, "Potion of Nothing"),
 	DAMAGE(1, "Damage Potion"),
 	HEAL(2, "Health Potion"),
 	POISON(3, "Poison"),

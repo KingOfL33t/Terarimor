@@ -19,4 +19,7 @@ public class Damage {
 			return 0;
 		}
 	}
+	public Map<Element, Integer> getDamages(){
+		return this.damageMap;
+	}
 }

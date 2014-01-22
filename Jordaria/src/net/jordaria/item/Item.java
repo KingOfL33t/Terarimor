@@ -14,4 +14,10 @@ public class Item {
 	public int getMaxStackSize(){
 		return 1;
 	}
+	public void setItemName(ColoredText name){
+		this.itemName = name;
+	}
+	public ColoredText getItemName(){
+		return this.itemName;
+	}
 }

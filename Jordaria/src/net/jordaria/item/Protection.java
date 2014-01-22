@@ -16,4 +16,18 @@ public class Protection {
 			return 0;
 		}
 	}
+	public Map<Element, Integer> getProtections(){
+		return this.protectionMap;
+	}
+	public Damage modifyDamage(Damage damage){
+		Damage output = new Damage();
+		int elementalDamage;
+		for (Element e: damage.getDamages().keySet()){
+			elementalDamage = damage.getDamage(e) - this.getProtection(e);
+			if (elementalDamage>0){
+				damage.addMapping(e, elementalDamage);
+			}
+		}
+		return output;
+	}
 }

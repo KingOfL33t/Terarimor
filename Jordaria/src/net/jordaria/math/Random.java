@@ -52,4 +52,16 @@ public class Random {
 	public int getIntBetween(int min, int max){
 		return min+(int)(nextFloat()*((max-min)+1));
 	}
+	
+	/*generates a boolean with a probability of being true
+	 * Probability is a float from 0.0f to 1.0f
+	 * with 0 as no chance of returning true and
+	 *  1 a 100% chance of returning true
+	 */
+	public boolean nextBoolean(float probablilty){
+		if (nextFloat()<probablilty){
+			return true;
+		}
+		return false;
+	}
 }

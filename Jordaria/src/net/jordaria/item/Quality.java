@@ -1,9 +1,11 @@
 package net.jordaria.item;
 
+import net.jordaria.text.Color;
+
 public enum Quality {
-	NORMAL(0.25f,0.1f,0.025f,0.01f,5,0.0333f),
-	RARE(0.5f,0.2f,0.05f,0.02f,10,0.0666f),
-	LEGENDARY(0.99f,0.75f,0.5f,0.25f,20,0.2f);
+	NORMAL(0.25f,0.1f,0.025f,0.01f,5,0.0333f, Color.WHITE),
+	RARE(0.5f,0.2f,0.05f,0.02f,10,0.0666f, Color.RED),
+	LEGENDARY(0.99f,0.75f,0.5f,0.25f,20,0.2f, Color.CYAN);
 	
 	private float firstTypeChance;//chance of having an elemental damage/protection
 	private float secondTypeChance;//chance of having a second elemental damage/protection
@@ -11,14 +13,16 @@ public enum Quality {
 	private float fourthTypeChance;//chance of having a fourth type of damage/protection
 	private int normalPower;//the normal damage or protection offered
 	private float criticalChance;//chance of critical hit
+	private Color color;
 	
-	private Quality(float firstType, float secondType, float thirdType, float fourthType, int normal, float crit){
+	private Quality(float firstType, float secondType, float thirdType, float fourthType, int normal, float crit, Color color){
 		this.firstTypeChance = firstType;
 		this.secondTypeChance = secondType;
 		this.thirdTypeChance = thirdType;
 		this.fourthTypeChance = fourthType;
 		this.normalPower = normal;
 		this.criticalChance = crit;
+		this.color = color;
 	}
 
 	public float getFirstTypeChance() {
@@ -43,5 +47,9 @@ public enum Quality {
 
 	public float getCriticalChance() {
 		return criticalChance;
+	}
+	
+	public Color getColor(){
+		return color;
 	}
 }
