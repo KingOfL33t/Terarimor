@@ -24,7 +24,7 @@ public class ItemGeneration {
 		switch (random.getIntBetween(0, 2)){
 		case 0: return generateWeapon();
 		case 1: return generateArmor();
-		case 3: return generatePotion();
+		case 2: return generatePotion();
 		default: return generateWeapon();
 		}
 	}
@@ -57,10 +57,12 @@ public class ItemGeneration {
 	private ColoredText generateWeaponName(ItemWeapon weapon){
 		//TODO finish me
 		String name = "";
-		
-		name += "Sword of ";
+
+		name += "Sword";
 		Element highestElement = getHighestElement(weapon.getDamage());
-		name +=highestElement.getName();
+		if (highestElement!=Element.NORMAL){
+			name = name.concat(" of "+ highestElement.getName());
+		}
 		return new ColoredText(name, weapon.getQuality().getColor());
 	}
 
@@ -95,11 +97,12 @@ public class ItemGeneration {
 		}
 
 		name += slotName;
-		name += " of ";
+		name += "";
 
 		Element highestElement = getHighestElement(item.getProtection());
-		
-		name +=highestElement.getName();
+		if (highestElement != Element.NORMAL){
+			name = name.concat(" of "+highestElement.getName());
+		}
 
 		return new ColoredText(name, item.getQuality().getColor());
 	}
@@ -124,11 +127,11 @@ public class ItemGeneration {
 	}
 	private ArmorSlot getRandomSlot(){
 		ArmorSlot[] slots = ArmorSlot.values();
-		return slots[random.getIntBetween(0, slots.length)];
+		return slots[random.getIntBetween(0, slots.length-1)];
 	}
 	private PotionEffect getRandomPotionEffect(){
 		PotionEffect[] effects = PotionEffect.values();
-		return effects[random.getIntBetween(0, effects.length)];
+		return effects[random.getIntBetween(0, effects.length-1)];
 	}
 	//create a random damage, based on quality of the weapon
 	private Damage generateDamage(ItemWeapon weapon){

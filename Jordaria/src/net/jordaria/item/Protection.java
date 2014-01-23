@@ -1,10 +1,14 @@
 package net.jordaria.item;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Protection {
 	public Map<Element, Integer> protectionMap;
 	
+	public Protection(){
+		this.protectionMap = new HashMap<Element, Integer>();
+	}
 	public void addMapping(Element element, int protection){
 		protectionMap.put(element, protection);
 	}

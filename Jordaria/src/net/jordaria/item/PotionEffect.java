@@ -11,7 +11,8 @@ public enum PotionEffect {
 	private int index;
 	private String name;
 	private PotionEffect(int index, String effectName){
-		
+		this.index = index;
+		this.name = effectName;
 	}
 	public int getIndex(){
 		return this.index;

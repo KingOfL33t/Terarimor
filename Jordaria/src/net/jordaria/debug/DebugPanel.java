@@ -12,13 +12,13 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import net.jordaria.Jordaria;
+import net.jordaria.event.Error;
 import net.jordaria.event.EventHandler;
 import net.jordaria.event.EventPriority;
 import net.jordaria.event.Listener;
 import net.jordaria.event.ShuttingDown;
 import net.jordaria.world.Chunk;
 import net.jordaria.world.Map;
-import net.jordaria.world.TileType;
 import net.jordaria.world.World;
 import net.jordaria.world.WorldGen;
 
@@ -35,20 +35,24 @@ public class DebugPanel implements ActionListener, Listener{
 	public JButton b_testRandomness;
 	public JButton b_testChunkGen;
 	public JButton b_testTownGen;
+	public JButton b_startItemTester;
 
 	public DebugPanel(){
 		frame = new JFrame("Debug Panel");
 		frame.setSize(350,250);
-		frame.setLayout(new GridLayout(1, 1));
+		frame.setLayout(new GridLayout(2, 2));
 		b_testRandomness = new JButton("Test Random generator");
 		b_testRandomness.addActionListener(this);
 		b_testChunkGen = new JButton("Test Chunk Generator");
 		b_testChunkGen.addActionListener(this);
 		b_testTownGen = new JButton("Test townGen");
 		b_testTownGen.addActionListener(this);
+		b_startItemTester = new JButton("Start Item Tester");
+		b_startItemTester.addActionListener(this);
 		frame.add(b_testRandomness);
 		frame.add(b_testChunkGen);
 		frame.add(b_testTownGen);
+		frame.add(b_startItemTester);
 		frame.setVisible(true);
 	}
 	public void setJordariaVar(Jordaria jordaria){
@@ -111,6 +115,14 @@ public class DebugPanel implements ActionListener, Listener{
 			frame.add(panel);
 			frame.setSize(map.getWidth()*size+30,map.getWidth()*size+60);
 			frame.setVisible(true);
+		}
+		else if (e.getSource().equals(b_startItemTester)){
+			DebugItemGenPanel itemPanel = new DebugItemGenPanel();
+			try {
+				jd.getEventManager().registerEventListeners(itemPanel);
+			} catch (Exception e1) {
+				jd.getEventManager().fireEvent(new Error("Failed to register itemTest panel"));
+			}
 		}
 
 	}
