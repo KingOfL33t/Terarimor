@@ -99,9 +99,11 @@ public class DebugConsole extends WindowAdapter implements Listener{
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onEntityMoveRequest(EntityMoveRequest event){
+		if (Configuration.DEBUG_SHOW_ENTITYMOVE){
 		if (event.entity instanceof EntityPlayer){
 			String direct = "("+event.direction.getAngle()+")";
 			this.appendMessage("Player move requested! "+direct);
+		}
 		}
 	}
 	

@@ -16,36 +16,52 @@ public class WorldGen {
 		int y;
 		int size = chunk.getSize();
 		int floorChance = 150;//increase this to increase the amount of normal floor (less than 5 and floor blocks dont spawn)
-		//Tile[][] tiles = chunk.getTiles();
-		//boolean[][] hasNeighbor = new boolean[size][size];
-		boolean[][] isSpecial = new boolean[size][size];
 		for (x=0; x < size; x++){
 			for (y=0; y < size; y++){
 				switch (random.getIntBetween(1, floorChance)){
 				case 1: chunk.setTile(x, y, TileType.FLOOR_ROCKY);
-				isSpecial[x][y]=true;
 				break;
 				case 2: chunk.setTile(x, y, TileType.FLOOR_CRACKED);
-				isSpecial[x][y]=true;
 				break;
 				case 3: chunk.setTile(x, y, TileType.FLOOR_PLANT);
-				isSpecial[x][y]=true;
 				break;
 				case 4: chunk.setTile(x, y, TileType.FLOOR_BROKEN);
-				isSpecial[x][y]=true;
 				break;
 				case 5: chunk.setTile(x, y, TileType.FLOOR_BLOOD);
-				isSpecial[x][y]=true;
 				break;
 				default: chunk.setTile(x, y, TileType.FLOOR);
-				isSpecial[x][y]=false;
+				}
+			}
+		}
+	}
+	public void generateMixedFloor(Map map){
+		int x;
+		int y;
+		int width = map.getWidth();
+		int height = map.getHeight();
+		int floorChance = 150;//increase this to increase the amount of normal floor (less than 5 and floor blocks dont spawn)
+		for (x=0; x < width; x++){
+			for (y=0; y < height; y++){
+				switch (random.getIntBetween(1, floorChance)){
+				case 1: map.setTile(x, y, TileType.FLOOR_ROCKY);
+				break;
+				case 2: map.setTile(x, y, TileType.FLOOR_CRACKED);
+				break;
+				case 3: map.setTile(x, y, TileType.FLOOR_PLANT);
+				break;
+				case 4: map.setTile(x, y, TileType.FLOOR_BROKEN);
+				break;
+				case 5: map.setTile(x, y, TileType.FLOOR_BLOOD);
+				break;
+				default: map.setTile(x, y, TileType.FLOOR);
 				}
 			}
 		}
 	}
 	
 	public void fillWithTown(Map map){
-		map.setAllTiles(TileType.FLOOR);
+		//map.setAllTiles(TileType.FLOOR);
+		generateMixedFloor(map);
 		setOutsideWalls(map);
 	}
 	private void setOutsideWalls(Map map){

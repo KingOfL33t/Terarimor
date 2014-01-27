@@ -47,6 +47,21 @@ public class MainWindow implements Listener{
 		Display.setTitle(Jordaria.config.getWindow_title());
 		Display.create();
 		this.InitGL();
+		
+		InputStream in = new FileInputStream("white_pixel.png");
+		try {
+		   PNGDecoder decoder = new PNGDecoder(in);
+
+		   System.out.println("width="+decoder.getWidth());
+		   System.out.println("height="+decoder.getHeight());
+
+		   ByteBuffer buf = ByteBuffer.allocateDirect(4*decoder.getWidth()*decoder.getHeight());
+		   decoder.decode(buf, decoder.getWidth()*4, Format.RGBA);
+		   buf.flip();
+		} finally {
+		   in.close();
+		}
+
 	}
 	private void fillRect(float posX, float posY, float width, float height, float r, float g, float b){
 		GL11.glBegin(GL11.GL_TRIANGLES);
