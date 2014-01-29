@@ -1,5 +1,10 @@
 package net.jordaria.gui;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.util.HashMap;
+
 import net.jordaria.Jordaria;
 import net.jordaria.KeyBind;
 import net.jordaria.entity.Direction;
@@ -15,6 +20,11 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.GL30;
+
+import de.matthiasmann.twl.utils.PNGDecoder;
+import de.matthiasmann.twl.utils.PNGDecoder.Format;
 
 public class MainWindow implements Listener{
 	Jordaria jd;
@@ -28,7 +38,10 @@ public class MainWindow implements Listener{
 	float cameraX = 0;
 	float cameraY = 0;
 	float cameraSpeed = 20;
-
+	
+	private int[] texIds = new int[] {0, 0};
+	TextureManager textureManager = new TextureManager();
+	
 	public MainWindow(Jordaria jordaria){
 		this.jd = jordaria;
 	}
@@ -48,21 +61,10 @@ public class MainWindow implements Listener{
 		Display.create();
 		this.InitGL();
 		
-		InputStream in = new FileInputStream("white_pixel.png");
-		try {
-		   PNGDecoder decoder = new PNGDecoder(in);
-
-		   System.out.println("width="+decoder.getWidth());
-		   System.out.println("height="+decoder.getHeight());
-
-		   ByteBuffer buf = ByteBuffer.allocateDirect(4*decoder.getWidth()*decoder.getHeight());
-		   decoder.decode(buf, decoder.getWidth()*4, Format.RGBA);
-		   buf.flip();
-		} finally {
-		   in.close();
-		}
+		textureManager.loadTexture("assets\\textures\\floor.png");
 
 	}
+	
 	private void fillRect(float posX, float posY, float width, float height, float r, float g, float b){
 		GL11.glBegin(GL11.GL_TRIANGLES);
 
@@ -86,6 +88,8 @@ public class MainWindow implements Listener{
 		GL11.glVertex2f(posX, posY);
 
 		GL11.glEnd();
+		
+		GL11.glColor3f(1,1,1);
 	}
 	private void fillTriangleTop(float posX, float posY, float width, float height, float r, float g, float b){
 		GL11.glBegin(GL11.GL_TRIANGLES);
@@ -192,54 +196,7 @@ public class MainWindow implements Listener{
 	public void onTick(Tick event){
 		this.tick();
 	}
-	/*@EventHandler
-	public void onEntityMoveRequest(EntityMoveRequest event){
-		float angle = event.getDirection().getAngle();
-		boolean up = false;
-		boolean down = false;
-		boolean right = false;
-		boolean left = false;
-		if (angle>0 && angle<90){//first quadrant
-			right = true;
-			up = true;
-		}
-		else if (angle>90 && angle <180){//fourth quadrant
-			right = true;
-			down = true;
-		}
-		else if (angle>180 && angle <270){//third quadrant
-			down = true;
-			left = true;
-		}
-		else if (angle>270 && angle<0){//second quadrant
-			left = true;
-			up = true;
-		}
-		else if (angle == 0){
-			up = true;
-		}
-		else if (angle == 90){
-			right = true;
-		}
-		else if (angle == 180){
-			down = true;
-		}
-		else if (angle == 270){
-			left = true;
-		}
-		if (left){
-			this.cameraX+=cameraSpeed;
-		}
-		if (right){
-			this.cameraX-=cameraSpeed;
-		}
-		if (down){
-			this.cameraY+=cameraSpeed;
-		}
-		if (up){
-			this.cameraY-=cameraSpeed;
-		}
-	}*/
+	
 	@EventHandler
 	public void onMapChanged(MapChanged event){
 		width = jd.getWorld().getCurrentMap().getWidth();
@@ -254,6 +211,7 @@ public class MainWindow implements Listener{
 	public void tick(){
 		this.handleKeyboard();
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+		
 		int x,y;
 		for (x=0; x<width; x++){
 			for (y=0; y<height; y++){
@@ -333,6 +291,7 @@ public class MainWindow implements Listener{
 				//jd.getEventManager().fireEvent(new DebugMessage("X:"+x+" Y:"+y));
 				fillRect(x*width+cameraX, y*height+cameraY, width, height, r, g, b);
 			}
+			GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGB, 20, 20, 0, GL11.GL_RGB, GL11.GL_UNSIGNED_BYTE, textureManager.getTextureBuffer("floor.png"));
 		}
 
 		Display.update();

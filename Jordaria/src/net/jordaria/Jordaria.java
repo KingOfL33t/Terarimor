@@ -108,6 +108,7 @@ public class Jordaria implements Runnable, Listener{
 		try {
 			mainWindow.createWindow();
 		} catch (Exception e) {
+			e.printStackTrace();
 			eventManager.fireEvent(new Error("Error creating Window"));
 		}
 		eventManager.fireEvent(new GraphicsSystemStarted());
