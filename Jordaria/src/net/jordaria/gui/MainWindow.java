@@ -1,10 +1,5 @@
 package net.jordaria.gui;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.util.HashMap;
-
 import net.jordaria.Jordaria;
 import net.jordaria.KeyBind;
 import net.jordaria.entity.Direction;
@@ -20,12 +15,13 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL30;
 
-import de.matthiasmann.twl.utils.PNGDecoder;
-import de.matthiasmann.twl.utils.PNGDecoder.Format;
-
+/**
+ * The main graphical window.
+ * 
+ * @author Ches Burks
+ *
+ */
 public class MainWindow implements Listener{
 	Jordaria jd;
 	DisplayMode displayMode;
@@ -39,12 +35,22 @@ public class MainWindow implements Listener{
 	float cameraY = 0;
 	float cameraSpeed = 20;
 	
-	private int[] texIds = new int[] {0, 0};
 	TextureManager textureManager = new TextureManager();
 	
+	/**
+	 * Construct a new MainWindow.
+	 * 
+	 * @param jordaria A reference to the main program
+	 */
 	public MainWindow(Jordaria jordaria){
 		this.jd = jordaria;
 	}
+	
+	/**
+	 * Creates the window for displaying.
+	 * 
+	 * @throws Exception If there is an error creating the window
+	 */
 	public void createWindow() throws Exception{
 		Display.setFullscreen(false);
 		DisplayMode d[] = Display.getAvailableDisplayModes();
@@ -65,6 +71,17 @@ public class MainWindow implements Listener{
 
 	}
 	
+	/**
+	 * Draws a filled rectangle on the screen with the specified data.
+	 * 
+	 * @param posX The x position to start in
+	 * @param posY The y position to start in
+	 * @param width The width of the rectangle
+	 * @param height The height of the rectangle
+	 * @param r The red color value
+	 * @param g The green color value
+	 * @param b The blue color value
+	 */
 	private void fillRect(float posX, float posY, float width, float height, float r, float g, float b){
 		GL11.glBegin(GL11.GL_TRIANGLES);
 
@@ -91,6 +108,18 @@ public class MainWindow implements Listener{
 		
 		GL11.glColor3f(1,1,1);
 	}
+	
+	/**
+	 * Draws a the top triangle of a rectangle on the screen with the specified data.
+	 * 
+	 * @param posX The x position to start in
+	 * @param posY The y position to start in
+	 * @param width The width of the rectangle
+	 * @param height The height of the rectangle
+	 * @param r The red color value
+	 * @param g The green color value
+	 * @param b The blue color value
+	 */
 	private void fillTriangleTop(float posX, float posY, float width, float height, float r, float g, float b){
 		GL11.glBegin(GL11.GL_TRIANGLES);
 
@@ -106,6 +135,18 @@ public class MainWindow implements Listener{
 
 		GL11.glEnd();
 	}
+	
+	/**
+	 * Draws a the bottom triangle of a rectangle on the screen with the specified data.
+	 * 
+	 * @param posX The x position to start in
+	 * @param posY The y position to start in
+	 * @param width The width of the rectangle
+	 * @param height The height of the rectangle
+	 * @param r The red color value
+	 * @param g The green color value
+	 * @param b The blue color value
+	 */
 	private void fillTriangleBottom(float posX, float posY, float width, float height, float r, float g, float b){
 		GL11.glBegin(GL11.GL_TRIANGLES);
 
@@ -121,6 +162,10 @@ public class MainWindow implements Listener{
 
 		GL11.glEnd();
 	}
+	
+	/**
+	 * Set keybinds and execute commands based on key states.
+	 */
 	public void handleKeyboard(){
 		while (Keyboard.next()){
 			KeyBind.setKeyBindState(Keyboard.getEventKey(), Keyboard.getEventKeyState());
@@ -162,6 +207,9 @@ public class MainWindow implements Listener{
 		}
 	}
 
+	/**
+	 * Initialize OpenGL and set up the camera
+	 */
 	private void InitGL(){
 		GL11.glEnable(GL11.GL_TEXTURE_2D);//enable mapping textures to faces or quads
 		GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
@@ -188,15 +236,32 @@ public class MainWindow implements Listener{
 
 		Keyboard.enableRepeatEvents(true);
 	}
+	
+	/**
+	 * Destroys the display.
+	 * 
+	 * @param shutdown The event fired
+	 */
 	@EventHandler
 	public void onShutdown(ShuttingDown shutdown){
 		Display.destroy();
 	}
+	
+	/**
+	 * Calls the {@link #tick() tick} method.
+	 * 
+	 * @param event The event fired
+	 */
 	@EventHandler
 	public void onTick(Tick event){
 		this.tick();
 	}
 	
+	/**
+	 * Sets the window and camera up for the new map.
+	 * 
+	 * @param event The event fired
+	 */
 	@EventHandler
 	public void onMapChanged(MapChanged event){
 		width = jd.getWorld().getCurrentMap().getWidth();
@@ -208,6 +273,9 @@ public class MainWindow implements Listener{
 		GL11.glOrtho(0, width, height, 0, -1, 5);
 	}
 
+	/**
+	 * Handles keyboard, draws in the window, and checks for window shutdown.
+	 */
 	public void tick(){
 		this.handleKeyboard();
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
@@ -300,6 +368,14 @@ public class MainWindow implements Listener{
 			jd.getEventManager().fireEvent(new ShuttingDown());
 		}
 	}
+	
+	/**
+	 * Sets the current colors.
+	 * 
+	 * @param r The red value
+	 * @param g The green value
+	 * @param b The blue value
+	 */
 	private void setColors(float r, float g, float b){
 		this.r = r;
 		this.g = g;

@@ -8,13 +8,28 @@ import java.util.HashMap;
 import de.matthiasmann.twl.utils.PNGDecoder;
 import de.matthiasmann.twl.utils.PNGDecoder.Format;
 
+/**
+ * Handles loading, storing, and retrieving textures.
+ * 
+ * @author Ches Burks
+ *
+ */
 public class TextureManager {
 
 	HashMap<String, ByteBuffer> textures = new HashMap<String, ByteBuffer>();
 
+	/**
+	 * Constructs a new TextureManager and loads a test png.
+	 */
 	public TextureManager() {
 		loadTexture("assets\\textures\\test.png");
 	}
+	
+	/**
+	 * Loads the texture located in the given path.
+	 * 
+	 * @param path The path of the file to load
+	 */
 	public void loadTexture(String path){
 
 		InputStream in;
@@ -35,6 +50,12 @@ public class TextureManager {
 		}
 	}
 	
+	/**
+	 * Gets the {@link ByteBuffer ByteBuffer} of the specified image name.
+	 * 
+	 * @param name The name of the image
+	 * @return The ByteBuffer for the image
+	 */
 	public ByteBuffer getTextureBuffer(String name){
 		if (textures.containsKey(name)){
 			return textures.get(name);

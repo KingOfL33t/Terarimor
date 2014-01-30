@@ -3,15 +3,28 @@ package net.jordaria.entity;
 import net.jordaria.item.ItemNothing;
 import net.jordaria.item.ItemStack;
 
+/**
+ * A slot for an {@link ItemStack ItemStack}.
+ * 
+ * @author Ches Burks
+ *
+ */
 public class InventorySlot {
 	public boolean isEmpty;
 	public ItemStack itemStack;
 
+	/**
+	 * Constructs an empty InventorySlot.
+	 */
 	public InventorySlot(){
 		this.setEmpty();
 	}
 
-	//sets the current stack to nothing and returns the old stack if it exists
+	/**
+	 * Sets the current stack to nothing and returns the old stack if it exists.
+	 * 
+	 * @return The old stack. This may not contain items.
+	 */
 	public ItemStack setEmpty(){
 		ItemStack oldStack = this.itemStack;
 		if (oldStack == null){
@@ -23,11 +36,21 @@ public class InventorySlot {
 
 		return oldStack;
 	}
+	
+	/**
+	 * Returns true if this is empty, false otherwise.
+	 * @return True if this is empty, false otherwise
+	 */
 	public boolean isEmpty(){
 		return this.isEmpty;
 	}
 
-	//sets the itemstack and returns the old one
+	/**
+	 * Sets the ItemStack to the specified ItemStack and returns the old stack.
+	 * 
+	 * @param newStack The stack to replace the old one
+	 * @return The stack that was replaced. This may not contain items.
+	 */
 	public ItemStack setItemStack(ItemStack newStack){
 		ItemStack oldStack;//the old stack to be returned
 		ItemStack toStore;//the new stack, which may or may not end up the same as newStack
@@ -53,14 +76,22 @@ public class InventorySlot {
 		return oldStack;
 	}
 
-	//returns the pointer to the itemstack object
+	/**
+	 * Returns the pointer to the ItemStack object.
+	 * 
+	 * @return The current ItemStack
+	 */
 	public ItemStack getItemStack(){
 		return this.itemStack;
 	}
 
-	/* Tries to take the requested amount of items from the stack
+	/**
+	 * Tries to take the requested amount of items from the stack
 	 * and return it in a new stack. If too many items are requested
-	 * then it will return as many as the stack currently has
+	 * then it will return as many as the stack currently has. 
+	 * The items are removed from this stack after they are taken.
+	 * 
+	 * @param count The amount of items to take
 	 */
 	public ItemStack takeItems(int count){
 		ItemStack toReturn;
@@ -83,7 +114,11 @@ public class InventorySlot {
 		return toReturn;
 	}
 	
-	/* Try to combine this item stack with another. Returns success
+	/**
+	 * Try to combine this item stack with another. Returns true if it succeeded, false if not.
+	 * 
+	 * @param toAdd The stack to combine with this stack
+	 * @return True if it succeeded, false otherwise.
 	 */
 	public boolean combineItemStacks(ItemStack toAdd){
 		if (canCombineStacksWith(toAdd)){
@@ -93,8 +128,12 @@ public class InventorySlot {
 		return false;
 	}
 	
-	/*returns true if the other stack is the same type as the current one
-	 * and the items can be combined into one stack
+	/**
+	 * Returns true if the other stack is the same type as the current one 
+	 * and the items can be combined into one stack.
+	 * 
+	 * @param other The stack to test combining with
+	 * @return True if the stacks can be combined, false otherwise
 	 */
 	public boolean canCombineStacksWith(ItemStack other){
 		if (!(this.itemStack.getItem().canStackWith(other.getItem()))){

@@ -1,6 +1,5 @@
 package net.jordaria.event;
 
-import net.jordaria.exception.EventException;
 
 public class EventListener {
 	private final Listener listener;

@@ -23,6 +23,13 @@ import net.jordaria.event.PhysicsSystemStarted;
 import net.jordaria.event.ShuttingDown;
 import net.jordaria.event.SoundSystemStarted;
 
+/**
+ * A console for showing processes and events that occur in the program.
+ * What is shown is configurable.
+ * 
+ * @author Ches Burks
+ *
+ */
 public class DebugConsole extends WindowAdapter implements Listener{
 
 	private String window_title = "Debug Console";
@@ -32,6 +39,9 @@ public class DebugConsole extends WindowAdapter implements Listener{
 	private JFrame frame;
 	private JTextArea textArea;
 
+	/**
+	 * Constructs a new debug console and sets up components.
+	 */
 	public DebugConsole(){
 		frame = new JFrame(window_title);
 		frame.setSize(width, height);
@@ -49,7 +59,12 @@ public class DebugConsole extends WindowAdapter implements Listener{
 		frame.setVisible(true);
 	}
 
-	//Adds the message to the screen and checks if it needs to remove the top line
+	/**
+	 * Adds the message to the last line of the window and removes the top line if it exceeds 
+	 * the maximum line count.
+	 * 
+	 * @param message The message to append
+	 */
 	public void appendMessage(String message){
 		this.textArea.append(message+"\n");
 
@@ -64,11 +79,22 @@ public class DebugConsole extends WindowAdapter implements Listener{
 		}
 	}
 
+	/**
+	 * Appends the events message to the text area.
+	 * 
+	 * @param event The event that was fired
+	 */
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onDebugMessage(DebugMessage event){
 		this.appendMessage(event.getMessage());
 	}
 
+	/**
+	 * If starting systems are set to display, 
+	 * appends a message informing of the startup.
+	 * 
+	 * @param event The event that was fired
+	 */
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onEventSystemStarted(EventSystemStarted event){
 		if (Configuration.DEBUG_SHOW_STARTINGSYSTEMS){
@@ -76,6 +102,12 @@ public class DebugConsole extends WindowAdapter implements Listener{
 		}
 	}
 	
+	/**
+	 * If starting systems are set to display, 
+	 * appends a message informing of the startup.
+	 * 
+	 * @param event The event that was fired
+	 */
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onGraphicsSystemStarted(GraphicsSystemStarted event){
 		if (Configuration.DEBUG_SHOW_STARTINGSYSTEMS){
@@ -83,6 +115,12 @@ public class DebugConsole extends WindowAdapter implements Listener{
 		}
 	}
 	
+	/**
+	 * If starting systems are set to display, 
+	 * appends a message informing of the startup.
+	 * 
+	 * @param event The event that was fired
+	 */
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPhysicsSystemStarted(PhysicsSystemStarted event){
 		if (Configuration.DEBUG_SHOW_STARTINGSYSTEMS){
@@ -90,13 +128,24 @@ public class DebugConsole extends WindowAdapter implements Listener{
 		}
 	}
 	
+	/**
+	 * If starting systems are set to display, 
+	 * appends a message informing of the startup.
+	 * 
+	 * @param event The event that was fired
+	 */
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onSoundSystemStarted(SoundSystemStarted event){
 		if (Configuration.DEBUG_SHOW_STARTINGSYSTEMS){
 			this.appendMessage("Sound system started");
 		}
 	}
-	
+	/**
+	 * If moving events are set to display, 
+	 * appends a message informing of the movement and direction.
+	 * 
+	 * @param event The event that was fired
+	 */
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onEntityMoveRequest(EntityMoveRequest event){
 		if (Configuration.DEBUG_SHOW_ENTITYMOVE){
@@ -107,6 +156,13 @@ public class DebugConsole extends WindowAdapter implements Listener{
 		}
 	}
 	
+	/**
+	 * Removes all components, hides the frame, 
+	 * and removes the reference to the frame for 
+	 * garbage collection to clear out.
+	 * 
+	 * @param event The event that was fired
+	 */
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onShutdown(ShuttingDown event){
 		this.frame.removeAll();

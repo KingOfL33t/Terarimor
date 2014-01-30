@@ -1,12 +1,17 @@
 package net.jordaria.math;
 
-/*
- * A Mersenne twister algorithm
+/**
+ * A Mersenne twister algorithm.
  */
 public class Random {
 	int[] mt = new int[624];
 	int index = 0;
 
+	/**
+	 * Initialize the generator with the given seed.
+	 * 
+	 * @param seed The seed to use
+	 */
 	public void initializeGenerator(int seed){
 		this.index = 0;
 		this.mt[0] = seed;
@@ -16,6 +21,10 @@ public class Random {
 			this.mt[i] = 1812433253 * (mt[i-1] ^ (mt[i-1]>>30)) +i;
 		}
 	}
+	
+	/**
+	 * Refill the array with generated numbers.
+	 */
 	private void generateNumbers(){
 		int i;
 		for (i = 0; i< 623; i++) {
@@ -27,6 +36,11 @@ public class Random {
 		}
 	}
 
+	/**
+	 * Returns the next random {@link Integer integer}.
+	 *
+	 * @return The next int
+	 */
 	public int getNext(){
 		if (index == 0){
 			this.generateNumbers();
@@ -42,21 +56,45 @@ public class Random {
 
 		return y;
 	}
+	
+	/**
+	 * Returns the next random {@link Boolean boolean}.
+	 *
+	 * @return The next boolean
+	 */
 	public boolean nextBoolean(){
 		return (getNext()>>30)!=0;
 	}
+	
+	/**
+	 * Returns the next random {@link Float float}.
+	 *
+	 * @return The next float
+	 */
 	public float nextFloat() {
 		return (getNext()>>7) / ((float)(1 << 24));
 	}
 
+	/**
+	 * Returns a random {@link Integer int} between the given values, 
+	 * inclusive.
+	 * 
+	 * @param min The minimum number
+	 * @param max The maximum number
+	 * @return The generated int
+	 */
 	public int getIntBetween(int min, int max){
 		return min+(int)(nextFloat()*((max-min)+1));
 	}
 	
-	/*generates a boolean with a probability of being true
-	 * Probability is a float from 0.0f to 1.0f
-	 * with 0 as no chance of returning true and
-	 *  1 a 100% chance of returning true
+	/**
+	 * Generates a {@link Boolean boolean} with a given probability of being true.
+	 * The probability is a float from 0.0f to 1.0f, 
+	 * with 0 being no chance of returning true and 
+	 * 1 being a 100% chance of returning true.
+	 *  
+	 *  @param probablilty The chance of returning true
+	 *  @return The generated boolean
 	 */
 	public boolean nextBoolean(float probablilty){
 		if (nextFloat()<probablilty){

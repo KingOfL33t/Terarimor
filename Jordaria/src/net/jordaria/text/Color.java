@@ -1,5 +1,10 @@
 package net.jordaria.text;
 
+/**
+ * An enum of colors and their rgb values.
+ * 
+ * @author Ches Burks
+ */
 public enum Color {
 	RED(255,0,0),
 	LIME(0,255,0),
@@ -25,17 +30,42 @@ public enum Color {
 	private int g;
 	private int b;
 	
+	/**
+	 * Constructs a new color with the given values.
+	 * 
+	 * @param red The red value
+	 * @param green The green value
+	 * @param blue The blue value
+	 */
 	private Color(int red, int green, int blue){
 		this.r = red;
 		this.g = green;
 		this.b = blue;
 	}
+	
+	/**
+	 * Returns the colors red value. This is from 0 to 255.
+	 * 
+	 * @return The red value
+	 */
 	public int getR(){
 		return r;
 	}
+	
+	/**
+	 * Returns the colors green value. This is from 0 to 255.
+	 * 
+	 * @return The green value
+	 */
 	public int getG(){
 		return g;
 	}
+	
+	/**
+	 * Returns the colors blue value. This is from 0 to 255.
+	 * 
+	 * @return The blue value
+	 */
 	public int getB(){
 		return b;
 	}

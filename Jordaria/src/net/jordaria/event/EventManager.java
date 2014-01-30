@@ -6,8 +6,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import net.jordaria.exception.EventException;
-
 public class EventManager {
 
 	public void registerEventListeners(Listener listener) throws Exception {

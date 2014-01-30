@@ -2,38 +2,28 @@ package net.jordaria.world;
 
 import net.jordaria.math.Random;
 
+/**
+ * A class for generating maps and worlds.
+ * 
+ * @author Ches Burks
+ *
+ */
 public class WorldGen {
 	Random random;
+	
+	/**
+	 * Constructs a new WorldGen and initializes the {@link Random RNG}.
+	 */
 	public WorldGen(){
 		random = new Random();
 		random.initializeGenerator((int)(Math.random()*1337));
 	}
-	public void generateSolidFloor(Chunk chunk){
-		chunk.setAllTiles(TileType.FLOOR);
-	}
-	public void generateMixedFloor(Chunk chunk){
-		int x;
-		int y;
-		int size = chunk.getSize();
-		int floorChance = 150;//increase this to increase the amount of normal floor (less than 5 and floor blocks dont spawn)
-		for (x=0; x < size; x++){
-			for (y=0; y < size; y++){
-				switch (random.getIntBetween(1, floorChance)){
-				case 1: chunk.setTile(x, y, TileType.FLOOR_ROCKY);
-				break;
-				case 2: chunk.setTile(x, y, TileType.FLOOR_CRACKED);
-				break;
-				case 3: chunk.setTile(x, y, TileType.FLOOR_PLANT);
-				break;
-				case 4: chunk.setTile(x, y, TileType.FLOOR_BROKEN);
-				break;
-				case 5: chunk.setTile(x, y, TileType.FLOOR_BLOOD);
-				break;
-				default: chunk.setTile(x, y, TileType.FLOOR);
-				}
-			}
-		}
-	}
+	
+	/**
+	 * Sets the {@link Map maps} floor to a mixed floor.
+	 * 
+	 * @param map The map to use
+	 */
 	public void generateMixedFloor(Map map){
 		int x;
 		int y;
@@ -59,11 +49,22 @@ public class WorldGen {
 		}
 	}
 	
+	/**
+	 * Fills the {@link Map map} with a town.
+	 * 
+	 * @param map The map to use
+	 */
 	public void fillWithTown(Map map){
 		//map.setAllTiles(TileType.FLOOR);
 		generateMixedFloor(map);
 		setOutsideWalls(map);
 	}
+	
+	/**
+	 * Surrounds the outside of the {@link Map map} with walls.
+	 * 
+	 * @param map The map to use
+	 */
 	private void setOutsideWalls(Map map){
 		int width = map.getWidth();
 		int height = map.getHeight();

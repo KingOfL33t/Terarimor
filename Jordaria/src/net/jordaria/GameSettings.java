@@ -2,8 +2,10 @@ package net.jordaria;
 
 import org.lwjgl.input.Keyboard;
 
-/*
- * Settings for use in the game. These eventually will be able to be set, saved and loaded
+/**
+ * Settings for use in the game. 
+ * 
+ * @author Ches Burks
  */
 public class GameSettings {
 
@@ -16,61 +18,78 @@ public class GameSettings {
 	public KeyBind KEYBIND_MOVE_RIGHT = new KeyBind("Right", Keyboard.KEY_D);
 	public KeyBind[] keyBindings;
 
-	//floats
-	public boolean showAdvancedInfo;//for later use in showing biome info (humidity, magic, etc) on screen
-	public boolean wireframe;
-
-	public int renderDistance;
 	public int maxDungeonSize;
-
-	public float mouseSensitivity = 0.5F;
 
 	public String OS;
 	public String homeDirectory;
 
+	/**
+	 * Constructs a new GameSettings and loads default settings.
+	 * 
+	 * @param jordaria A reference to the main program
+	 */
 	public GameSettings(Jordaria jordaria)
 	{
 		this.keyBindings = new KeyBind[] {this.KEYBIND_MOVE_FORWARD, this.KEYBIND_MOVE_BACKWARD, this.KEYBIND_MOVE_LEFT, this.KEYBIND_MOVE_RIGHT};
 		this.jd = jordaria;
 		this.loadDefaults();
 	}
+	
+	/**
+	 * Loads default settings and obtains system info.
+	 */
 	private void loadDefaults(){
 		this.obtainOS();
 		this.setHomeDir();
-		this.showAdvancedInfo = false;
-		this.renderDistance = 10;
-		this.wireframe = false;
 		this.maxDungeonSize = 100;
 	}
+	
+	/**
+	 * Returns the key binding array.
+	 * 
+	 * @return The keybinding array
+	 */
 	public KeyBind[] getKeyBindings() {
 		return keyBindings;
 	}
-	public boolean isShowAdvancedInfo() {
-		return showAdvancedInfo;
-	}
 
-	public boolean isWireframe() {
-		return wireframe;
-	}
-	public boolean toggleWireframe(){//toggles wireframe and returns the new value
-		wireframe = !wireframe;
-		return wireframe;
-	}
-	public int getRenderDistance() {
-		return renderDistance;
-	}
+	/**
+	 * Returns the maximum size of a dungeon.
+	 * 
+	 * @return The max size of a dungeon.
+	 */
 	public int getMaxDungeonSize(){
 		return this.maxDungeonSize;
 	}
+	
+	/**
+	 * Returns the path of the directory for application data.
+	 * 
+	 * @return The path of the directory for app data
+	 */
 	public String getHomeDirectory(){
 		return this.homeDirectory;
 	}
-	public float getMouseSensitivity() {
-		return mouseSensitivity;
-	}
+	
+	/**
+	 * Returns the OS name.
+	 * Possible OS names are:
+	 * <ul>
+	 * <li>WINDOWS</li>
+	 * <li>MAC</li>
+	 * <li>LINUX</li>
+	 * <li>UNKNOWN</li>
+	 * </ul>
+	 * 
+	 * @return The name of the OS
+	 */
 	public String getOS() {
 		return OS;
 	}
+	
+	/**
+	 * Determines what operating system is running and sets the OS string.
+	 */
 	private void obtainOS(){
 		String osName = System.getProperty("os.name").toLowerCase();
 		String toSet = "UNKNOWN";
@@ -89,6 +108,11 @@ public class GameSettings {
 		}
 		this.OS = toSet;
 	}
+	
+	/**
+	 * Determines the application data based on the OS type.
+	 * Sets the home dir string to the folder path.
+	 */
 	private void setHomeDir(){
 		String theDir = "";
 		if (OS == "WINDOWS"){

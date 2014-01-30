@@ -5,12 +5,10 @@ public class Location {
 	
 	public double posX;
 	public double posY;
-	public double posZ;
 
-	public Location(double xPos, double yPos, double zPos){
+	public Location(double xPos, double yPos){
 		this.posX = xPos;
 		this.posY = yPos;
-		this.posZ = zPos;
 	}
 
 	public double getPosX() {
@@ -29,17 +27,9 @@ public class Location {
 		this.posY = posY;
 	}
 
-	public double getPosZ() {
-		return posZ;
-	}
-
-	public void setPosZ(double posZ) {
-		this.posZ = posZ;
-	}
-	public void setPositions(double posX, double posY, double posZ){
-		this.posX = posZ;
+	public void setPositions(double posX, double posY){
+		this.posX = posX;
 		this.posY = posY;
-		this.posZ = posZ;
 	}
 	
 }

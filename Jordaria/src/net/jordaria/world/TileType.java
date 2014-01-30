@@ -1,5 +1,11 @@
 package net.jordaria.world;
 
+/**
+ * An enum of different types of tiles and the associated id.
+ * 
+ * @author Ches Burks
+ *
+ */
 public enum TileType {
 	AIR(0),
 	FLOOR(1),
@@ -24,9 +30,21 @@ public enum TileType {
 	STAIRS_W(20),
 	ERROR(-1);
 	private int tileID;
+	
+	/**
+	 * Constructs a new TileType with the given ID.
+	 * 
+	 * @param id The ID to use
+	 */
 	private TileType(int id){
 		this.tileID = id;
 	}
+	
+	/**
+	 * Returns the ID of the tile.
+	 * 
+	 * @return The ID
+	 */
 	public int getID(){
 		return tileID;
 	}

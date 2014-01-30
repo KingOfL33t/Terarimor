@@ -7,8 +7,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Enumeration;
@@ -18,14 +16,30 @@ import java.util.jar.JarFile;
 import net.jordaria.event.DebugMessage;
 import net.jordaria.event.Error;
 
+/**
+ * Controls file input and output.
+ * 
+ * @author Ches Burks
+ *
+ */
 public class FileIO {
 
 	private Jordaria jd;
 
+	/**
+	 * Constructs a new fileIO.
+	 * 
+	 * @param jordaria A reference to the main program
+	 */
 	public FileIO(Jordaria jordaria){
 		this.jd = jordaria;
 	}
 
+	/**
+	 * Creates folders in the application data for storing data.
+	 * 
+	 * @param homeDir The directory where app data is stored
+	 */
 	public void createMainDirectories(String homeDir){
 		String seperator = File.separator;
 		File jdRootDir = new File(homeDir.concat(seperator+"Jordaria"+seperator));
@@ -48,17 +62,18 @@ public class FileIO {
 
 	}
 
+	/**
+	 * Copies files to the folders created in the Jordaria app data folder.
+	 * Fires an error event if there is a problem.
+	 * 
+	 * @param homeDir The directory where app data is stored
+	 */
 	public void copyFilesToDisk(String homeDir){
 		try {
 			String seperator = File.separator;
-			File lang_en_US = new File(homeDir.concat(seperator+"Jordaria"+seperator+"assets"+seperator+"lang"+seperator+"en_US.lang"));
-			try {
-				lang_en_US.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 			
-			final String path = "assets/lang";
+			
+			final String path = "assets"+seperator+"textures";
 			final File jarFile = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
 
 			if(jarFile.isFile()) {  // Run with JAR file
@@ -66,14 +81,14 @@ public class FileIO {
 			    final Enumeration<JarEntry> entries = jar.entries(); //gives ALL entries in jar
 			    while(entries.hasMoreElements()) {
 			        final String name = entries.nextElement().getName();
-			        if (name.startsWith(path + "/")) { //filter according to the path
+			        if (name.startsWith(path + seperator)) { //filter according to the path
 			            System.out.println(name);
 			            jd.eventManager.fireEvent(new DebugMessage(name));
 			        }
 			    }
 			    jar.close();
 			} else { // Run with IDE
-			    final URL url = FileIO.class.getResource("/" + path);
+			    final URL url = FileIO.class.getResource(seperator+ path);
 			    if (url != null) {
 			        try {
 			            final File apps = new File(url.toURI());
@@ -86,22 +101,18 @@ public class FileIO {
 			        }
 			    }
 			}
-			InputStream en_US_stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("/assets/lang/en_US.lang");
-			//BufferedReader en_US_reader = new BufferedReader(new InputStreamReader(en_US_stream, "UTF-8"));
-			BufferedWriter en_US_writer = new BufferedWriter(getBufferedWriterForFile(lang_en_US.getAbsolutePath()));
-
-
-			//while(en_US_reader.ready()){
-			//	en_US_writer.write(en_US_reader.read());
-			//}
 		} catch (IOException e) {
 			jd.eventManager.fireEvent(new Error("Error copying file to disk ("+e.getMessage()+")"));
 		}
 
 	}
 
-	/*
-	 * Creates a bufferedReader for the specified file, and returns it or null if it cannot be found
+	/**
+	 * Creates a bufferedReader for the specified file, and returns it or null if it cannot be found.
+	 * Fires an error event if the file is not found.
+	 * 
+	 * @param filepath The path to the file to open a BufferedReader to
+	 * @return A bufferedReader for the file requested
 	 */
 	public BufferedReader getBufferedReaderForFile(String filepath){
 		BufferedReader reader = null;
@@ -113,8 +124,12 @@ public class FileIO {
 		}
 		return reader;
 	}
-	/*
-	 * Creates a bufferedReader for the specified file, and returns it or null if it cannot be found
+	/**
+	 * Creates a BufferedWriter for the specified file, and returns it or null if it cannot be found.
+	 * Fires an error event if the file is not found.
+	 * 
+	 * @param filepath The path to the file to open a BufferedWriter to
+	 * @return A bufferedWriter for the file requested
 	 */
 	public BufferedWriter getBufferedWriterForFile(String filepath){
 		BufferedWriter writer = null;

@@ -17,15 +17,16 @@ import net.jordaria.event.EventHandler;
 import net.jordaria.event.EventPriority;
 import net.jordaria.event.Listener;
 import net.jordaria.event.ShuttingDown;
-import net.jordaria.world.Chunk;
 import net.jordaria.world.Map;
 import net.jordaria.world.World;
 import net.jordaria.world.WorldGen;
 
-/*
+/**
  * This is a very volatile class which contains
- * A jframe with buttons on for use testing various
- * parts of the game and engines
+ * a JFrame with buttons for use in testing various
+ * parts of the game and engines.
+ * 
+ * @author Ches Burks
  */
 public class DebugPanel implements ActionListener, Listener{
 
@@ -33,32 +34,44 @@ public class DebugPanel implements ActionListener, Listener{
 
 	public JFrame frame;
 	public JButton b_testRandomness;
-	public JButton b_testChunkGen;
 	public JButton b_testTownGen;
 	public JButton b_startItemTester;
 
+	/**
+	 * Constructs a new DebugPanel and sets up components.
+	 */
 	public DebugPanel(){
 		frame = new JFrame("Debug Panel");
 		frame.setSize(350,250);
 		frame.setLayout(new GridLayout(2, 2));
 		b_testRandomness = new JButton("Test Random generator");
 		b_testRandomness.addActionListener(this);
-		b_testChunkGen = new JButton("Test Chunk Generator");
-		b_testChunkGen.addActionListener(this);
 		b_testTownGen = new JButton("Test townGen");
 		b_testTownGen.addActionListener(this);
 		b_startItemTester = new JButton("Start Item Tester");
 		b_startItemTester.addActionListener(this);
 		frame.add(b_testRandomness);
-		frame.add(b_testChunkGen);
 		frame.add(b_testTownGen);
 		frame.add(b_startItemTester);
 		frame.setVisible(true);
 	}
+	
+	/**
+	 * Sets the reference to the main program.
+	 * 
+	 * @param jordaria A reference to the main program
+	 */
 	public void setJordariaVar(Jordaria jordaria){
 		this.jd = jordaria;
 	}
 
+	/**
+	 * Removes all components, hides the frame, 
+	 * and removes the reference to the frame for 
+	 * garbage collection to clear out.
+	 * 
+	 * @param event The event that was fired
+	 */
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onShutdown(ShuttingDown event){
 		this.jd = null;
@@ -67,6 +80,12 @@ public class DebugPanel implements ActionListener, Listener{
 		this.frame = null;
 	}
 
+	/**
+	 * Determines what action was performed, and 
+	 * executes the requested test
+	 * 
+	 * @param e The ActionEvent that occurred
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
@@ -81,7 +100,7 @@ public class DebugPanel implements ActionListener, Listener{
 			for (i = 0; i< size; i++){
 				for (j = 0; j< size; j++){
 					//System.out.print(jd.rand.nextBoolean()+ " ");
-					pixels[i][j] = jd.rand.nextBoolean();
+					pixels[i][j] = jd.getRandomGenerator().nextBoolean();
 				}
 			}
 			//}
@@ -89,16 +108,6 @@ public class DebugPanel implements ActionListener, Listener{
 			MyPanel panel = new MyPanel(pixels,size,size);
 			frame.add(panel);
 			frame.setSize(size,size);
-			frame.setVisible(true);
-		}
-		else if (e.getSource().equals(b_testChunkGen)){
-			Chunk testChunk = new Chunk(new World("AlphaTestWorld", jd.getEventManager()), 0, 0);
-			WorldGen generator = new WorldGen();
-			generator.generateMixedFloor(testChunk);
-			JFrame frame = new JFrame("Rand test");
-			MyPanel panel = new MyPanel(testChunk.getSize(),testChunk.getSize(),testChunk);
-			frame.add(panel);
-			frame.setSize(testChunk.getSize()*25,testChunk.getSize()*25);
 			frame.setVisible(true);
 		}
 		else if (e.getSource().equals(b_testTownGen)){
@@ -126,14 +135,26 @@ public class DebugPanel implements ActionListener, Listener{
 		}
 
 	}
+	
+	/**
+	 * A multi-purpose JPanel for showing various graphical versions of data for testing.
+	 * 
+	 * @author Ches Burks
+	 *
+	 */
 	class MyPanel extends JPanel {
 		private static final long serialVersionUID = 2555986089994974943L;
 		Boolean[][] floats;
 		int w;
 		int h;
 		int testcase;
-		Chunk chunk;
 		Map map;
+		/**
+		 * Creates a panel for displaying booleans
+		 * @param bools A 2d array of booleans
+		 * @param w How wide the array of booleans is
+		 * @param h How tall the array of booleans is
+		 */
 		public MyPanel(Boolean[][] bools,int w, int h) {
 			this.testcase = 1;
 			this.floats = bools;
@@ -141,19 +162,23 @@ public class DebugPanel implements ActionListener, Listener{
 			this.h = h;
 			setBorder(BorderFactory.createLineBorder(Color.black));
 		}
-		public MyPanel(int w, int h, Chunk chunk){
-			this.testcase = 2;
-			this.w = w;
-			this.h = h;
-			this.chunk = chunk;
-		}
+		
+		/**
+		 * Creates a panel for showing a map
+		 * @param w The width (in tiles) of the map
+		 * @param h The height (in tiles) of the map
+		 * @param map The map to show
+		 */
 		public MyPanel(int w, int h, Map map){
-			this.testcase = 3;
+			this.testcase = 2;
 			this.w = w;
 			this.h = h;
 			this.map = map;
 		}
 
+		/**
+		 * Paint the data on the screen.
+		 */
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			if (testcase == 1){
@@ -169,34 +194,6 @@ public class DebugPanel implements ActionListener, Listener{
 				}
 			}
 			else if (testcase == 2){
-				int x;
-				int y;
-				int scale = 20;
-				for (y=0;y<h*scale;y+=scale){
-					for (x=0;x<w*scale;x+=scale){
-						switch (chunk.getTile(x/scale, y/scale).getTileType().getID()) {
-						case 1: g.setColor(Color.orange);
-						break;
-						case 2 : g.setColor(Color.blue);
-						break;
-						case 3 : g.setColor(Color.green);
-						break;
-						case 4 : g.setColor(Color.yellow);
-						break;
-						case 5 : g.setColor(Color.darkGray);
-						break;
-						case 6 : g.setColor(Color.cyan);
-						break;
-						case -1 : g.setColor(Color.red);
-						break;
-						default: g.setColor(Color.black);
-						break;
-						}
-						g.fillRect(x, y, scale, scale);
-					}
-				}
-			}
-			else if (testcase == 3){
 				int x;
 				int y;
 				int scale_W = map.getWidth();

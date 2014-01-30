@@ -24,6 +24,12 @@ import net.jordaria.item.ItemWeapon;
 import net.jordaria.item.Quality;
 import net.jordaria.math.ItemGeneration;
 
+/**
+ * A panel for testing generation of various items.
+ * 
+ * @author Ches Burks
+ *
+ */
 public class DebugItemGenPanel implements ActionListener, Listener{
 
 	public Jordaria jd;
@@ -49,6 +55,9 @@ public class DebugItemGenPanel implements ActionListener, Listener{
 	public Item item;
 	public ItemGeneration generator;
 
+	/**
+	 * Constructs a new DebugItemGenPanel and sets up the components.
+	 */
 	public DebugItemGenPanel(){
 		frame = new JFrame("Debug Panel");
 		frame.setSize(400,500);
@@ -99,10 +108,23 @@ public class DebugItemGenPanel implements ActionListener, Listener{
 
 		frame.setVisible(true);
 	}
+	
+	/**
+	 * Sets the reference to the main program.
+	 * 
+	 * @param jordaria A reference to the main program
+	 */
 	public void setJordariaVar(Jordaria jordaria){
 		this.jd = jordaria;
 	}
 
+	/**
+	 * Removes all components, hides the frame, 
+	 * and removes the reference to the frame for 
+	 * garbage collection to clear out.
+	 * 
+	 * @param event The event that was fired
+	 */
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onShutdown(ShuttingDown event){
 		this.jd = null;
@@ -111,6 +133,13 @@ public class DebugItemGenPanel implements ActionListener, Listener{
 		this.frame = null;
 	}
 
+	/**
+	 * Determines what action was performed, and 
+	 * generates the requested item if a button was 
+	 * pressed
+	 * 
+	 * @param e The ActionEvent that occurred
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
@@ -133,12 +162,9 @@ public class DebugItemGenPanel implements ActionListener, Listener{
 
 	}
 
-	/*
-		JTextField t_itemName;
-		JTextArea t_itemDamage;
-		JTextField t_itemQuality;//these are here for reference
-		JTextArea t_itemLore;
-		JTextField t_itemType;
+
+	/**
+	 * Updates all fields to contain their respective values
 	 */
 	private void updateFields(){
 		String type = "Nothing";
@@ -197,6 +223,10 @@ public class DebugItemGenPanel implements ActionListener, Listener{
 			t_itemType.setText("Potion");
 		}
 	}
+	
+	/**
+	 * Resets all text fields
+	 */
 	private void resetFields(){
 		t_itemName.setText("");
 		t_itemDamage.setText("");
