@@ -112,7 +112,8 @@ public class Jordaria implements Runnable, Listener{
 
 	/**
 	 * Starts the event manager and registers listeners.
-	 * Fires an EventSystemStarted event on completion.
+	 * Fires an {@link EventSystemStarted EventSystemStarted} event on completion.
+	 * 
 	 */
 	private void initEventManager(){
 		eventManager = new EventManager();
@@ -122,7 +123,7 @@ public class Jordaria implements Runnable, Listener{
 	
 	/**
 	 * Initializes graphics subsystem and creates the main window.
-	 * Fires an GraphicsSystemStarted event on completion.
+	 * Fires an {@link GraphicsSystemStarted GraphicsSystemStarted} event on completion.
 	 */
 	private void initGraphics(){
 		try {
@@ -207,7 +208,7 @@ public class Jordaria implements Runnable, Listener{
 	}
 	
 	/**
-	 * Returns the Random number generator for the game.
+	 * Returns the {@link Random Random number generator} for the game.
 	 * 
 	 * @return Random number generator for the main program
 	 */

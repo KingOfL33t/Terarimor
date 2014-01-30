@@ -6,14 +6,29 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Manages events and listeners.
+ */
 public class EventManager {
 
+	/**
+	 * Registers event listeners in the supplied listener.
+	 * 
+	 * @param listener The listener to register
+	 * @throws Exception If there is an error registering
+	 */
 	public void registerEventListeners(Listener listener) throws Exception {
 		for (Map.Entry<Class<? extends Event>, Set<EventListener>> entry : createRegisteredListeners(listener).entrySet()) {
 			getEventListeners(getRegistrationClass(entry.getKey())).registerAll(entry.getValue());
 		}
 	}
 
+	/**
+	 * Returns a {@link HandlerList} for a give event type
+	 * 
+	 * @param type The type of event to find handlers for
+	 * @throws Exception If an exception occurred
+	 */
 	private HandlerList getEventListeners(Class<? extends Event> type)
 			throws Exception {
 		try {
@@ -25,6 +40,12 @@ public class EventManager {
 		}
 	}
 
+	/**
+	 * Gets the registration class for the {@link Event}.
+	 * 
+	 * @param eventClass The class to find handlers for
+	 * @throws Exception If a handler list cannot be found
+	 */
 	private Class<? extends Event> getRegistrationClass(
 			Class<? extends Event> eventClass) throws Exception {
 		try {
@@ -43,6 +64,11 @@ public class EventManager {
 		}
 	}
 
+	/**
+	 * Sends the {@link Event event} to all of its listeners.
+	 * 
+	 * @param event The event to fire
+	 */
 	public void fireEvent(Event event) {
 		HandlerList handlers = event.getHandlers();
 		EventListener[] listeners = handlers.getRegisteredListeners();
@@ -57,6 +83,12 @@ public class EventManager {
 		}
 	}
 
+	/**
+	 * Creates {@link EventListener EventListeners} for a given listener
+	 * 
+	 * @param listener The listener to create EventListenrs for
+	 * @return A map of events to a set of EventListeners belonging to it
+	 */
 	public Map<Class<? extends Event>, Set<EventListener>> createRegisteredListeners(Listener listener) {
 
 		Map<Class<? extends Event>, Set<EventListener>> toReturn = new HashMap<Class<? extends Event>, Set<EventListener>>();
