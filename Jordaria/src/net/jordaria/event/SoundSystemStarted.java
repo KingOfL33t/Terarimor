@@ -1,11 +1,16 @@
 package net.jordaria.event;
 
-/*
- * The sound system has been initialized and is now working
+/**
+ * Fired when the sound system has been initialized and is now working.
+ * 
+ * @author Ches Burks
  */
 public class SoundSystemStarted extends Event{
 	private static final HandlerList handlers = new HandlerList();
 
+	/**
+	 * Constructs a new {@link SoundSystemStarted}.
+	 */
 	public SoundSystemStarted(){
 
 	}

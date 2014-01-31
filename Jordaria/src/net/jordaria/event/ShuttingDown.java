@@ -1,12 +1,17 @@
 package net.jordaria.event;
 
-/*
- * The program is shutting down
+/**
+ * Fired when the program is shutting down.
+ * 
+ * @author Ches Burks
  */
 public class ShuttingDown extends Event{
 
 	private static final HandlerList handlers = new HandlerList();
 
+	/**
+	 * Constructs a new {@link ShuttingDown}.
+	 */
 	public ShuttingDown(){
 
 	}

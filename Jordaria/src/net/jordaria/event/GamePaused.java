@@ -1,11 +1,16 @@
 package net.jordaria.event;
 
-/*
- * The game has been paused
+/**
+ * Fired when the game has been paused.
+ * 
+ * @author Ches Burks
  */
 public class GamePaused extends Event{
 	private static final HandlerList handlers = new HandlerList();
 
+	/**
+	 * Constructs a new {@link GamePaused}.
+	 */
 	public GamePaused(){
 
 	}

@@ -7,14 +7,17 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map.Entry;
 
-//Stores handlers per event. Based on lahwran's fevents.
+/**
+ * Stores handlers per event. 
+ * Based on lahwran's fevents.
+ */
 public class HandlerList {
 
 	//Handler array. This field being an array is the key to the system's speed.
 	private volatile EventListener[] handlers = null;
 
 	/*
-	 * * Dynamic handler lists. These change when register() and unregister() 
+	 * Dynamic handler lists. These change when register() and unregister() 
 	 * and are automatically baked to the handlers array any time they have changed.
 	 */
 	private final EnumMap<EventPriority, ArrayList<EventListener>> handlerslots;
@@ -24,8 +27,8 @@ public class HandlerList {
 	private static ArrayList<HandlerList> allLists = new ArrayList<HandlerList>();
 
 
-	/*
-	 * * Bake all handler lists. Best used just after all normal event
+	/**
+	 * Bake all handler lists. Best used just after all normal event
 	 * registration is complete.
 	 */
 	public static void bakeAll() {
@@ -36,6 +39,9 @@ public class HandlerList {
 		}
 	}
 
+	/**
+	 * Unregisters all handlers
+	 */
 	public static void unregisterAll() {
 		synchronized (allLists) {
 			for (HandlerList h : allLists) {
@@ -49,9 +55,10 @@ public class HandlerList {
 		}
 	}
 
-	/*
-	 * * Unregister a specific listener from all handler lists.
-	 * listener is the listener to unregister
+	/**
+	 * Unregister a specific listener from all handler lists.
+	 * 
+	 * @param listener The listener to unregister
 	 */
 	public static void unregisterAll(Listener listener) {
 		synchronized (allLists) {
@@ -61,9 +68,9 @@ public class HandlerList {
 		}
 	}
 
-	/*
-	 * * Create a new handler list and initialize using an EventPriority 
-	 * TheHandlerList is then added to meta-list for use in bakeAll()
+	/**
+	 * Create a new handler list and initialize using an EventPriority.
+	 * The HandlerList is then added to meta-list for use in bakeAll().
 	 */
 	public HandlerList() {
 		handlerslots = new EnumMap<EventPriority, ArrayList<EventListener>>(EventPriority.class);
@@ -75,8 +82,10 @@ public class HandlerList {
 		}
 	}
 
-	/*
-	 * * Register a new listener in this handler list
+	/**
+	 * Register a new listener in this handler list.
+	 * 
+	 * @param listener The listener to register
 	 */
 	public synchronized void register(EventListener listener) {
 		if (handlerslots.get(listener.getPriority()).contains(listener))
@@ -87,8 +96,10 @@ public class HandlerList {
 		handlerslots.get(listener.getPriority()).add(listener);
 	}
 
-	/*
-	 * * Register a collection of new listeners in this handler list
+	/**
+	 * Register a collection of new listeners in this handler list.
+	 * 
+	 * @param listeners The collection to register
 	 */
 	public void registerAll(Collection<EventListener> listeners) {
 		for (EventListener listener : listeners) {
@@ -96,8 +107,10 @@ public class HandlerList {
 		}
 	}
 
-	/*
-	 * * Remove a listener from a specific order slot
+	/**
+	 * Remove a listener from a specific order slot.
+	 * 
+	 * @param listener The listener to unregister
 	 */
 	public synchronized void unregister(EventListener listener) {
 		if (handlerslots.get(listener.getPriority()).remove(listener)) {
@@ -106,8 +119,8 @@ public class HandlerList {
 	}
 
 
-	/*
-	 * * Remove a specific listener from this handler 
+	/**
+	 * Remove a specific listener from this handler 
 	 */
 	public synchronized void unregister(Listener listener) {
 		boolean changed = false;
@@ -123,7 +136,9 @@ public class HandlerList {
 			handlers = null;
 	}
 
-	/*     * Bake HashMap and ArrayLists to 2d array - does nothing if not necessary    */    
+	/**
+	 *  Bake HashMap and ArrayLists to 2d array - does nothing if not necessary    
+	 */    
 	public synchronized void bake() {        
 		if (handlers != null) return; // don't re-bake when still valid        
 		List<EventListener> entries = new ArrayList<EventListener>();        
@@ -133,7 +148,11 @@ public class HandlerList {
 		handlers = entries.toArray(new EventListener[entries.size()]);
 	}
 
-	//Get the baked registered listeners associated with this handler list
+	/**
+	 * Get the baked registered listeners associated with this handler list
+	 * 
+	 * @return The listeners registered
+	 */
 	public EventListener[] getRegisteredListeners() {        
 		EventListener[] handlers;
 		while ((handlers = this.handlers) == null) bake(); // This prevents fringe cases of returning null
@@ -141,8 +160,10 @@ public class HandlerList {
 	}
 
 
-	/*Get a list of all handler lists for every event type
-	 *returns the list of all handler lists     
+	/**
+	 * Get a list of all handler lists for every event type.
+	 * 
+	 * @return The list of all handler lists
 	 */   
 	@SuppressWarnings("unchecked")
 	public static ArrayList<HandlerList> getHandlerLists() {

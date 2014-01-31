@@ -84,7 +84,7 @@ public class EventManager {
 	}
 
 	/**
-	 * Creates {@link EventListener EventListeners} for a given listener
+	 * Creates {@link EventListener EventListeners} for a given {@link Listener listener}.
 	 * 
 	 * @param listener The listener to create EventListenrs for
 	 * @return A map of events to a set of EventListeners belonging to it

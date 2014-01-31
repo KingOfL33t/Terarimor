@@ -1,11 +1,16 @@
 package net.jordaria.event;
 
-/*
- * A human view has been attached, and is now working
+/**
+ * Fired when a human view has been attached, and is now working.
+ * 
+ * @author Ches Burks
  */
 public class HumanViewAttached extends Event{
 	private static final HandlerList handlers = new HandlerList();
 
+	/**
+	 * Constructs a new {@link HumanViewAttached}.
+	 */
 	public HumanViewAttached(){
 
 	}

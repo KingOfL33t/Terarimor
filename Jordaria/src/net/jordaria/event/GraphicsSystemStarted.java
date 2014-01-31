@@ -1,11 +1,16 @@
 package net.jordaria.event;
 
-/*
- * The graphics system has been initialized and is now running
+/**
+ * Fired when the graphics system has been initialized and is now running.
+ * 
+ * @author Ches Burks
  */
 public class GraphicsSystemStarted extends Event{
 	private static final HandlerList handlers = new HandlerList();
 
+	/**
+	 * Constructs a new {@link GraphicsSystemStarted}.
+	 */
 	public GraphicsSystemStarted(){
 
 	}

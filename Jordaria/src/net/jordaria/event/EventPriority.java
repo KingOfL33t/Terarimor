@@ -1,5 +1,9 @@
 package net.jordaria.event;
 
+/**
+ * An enum of priorities for events. Listeners with higher priorities 
+ * are called later, and can override the lower priority listeners.
+ */
 public enum EventPriority {
 	LOWEST(0),
 	LOW(1),
@@ -9,10 +13,21 @@ public enum EventPriority {
 	MONITOR(5);
 
 	private final int priority;
+	
+	/**
+	 * Constructs a new {@link EventPriority}.
+	 * @param priority
+	 */
 	private EventPriority(int priority){
 		this.priority = priority;
 	}
-	private int getPriority(){
+	
+	/**
+	 * Returns the priority of the event.
+	 * 
+	 * @return The priority
+	 */
+	public int getPriority(){
 		return priority;
 	}
 }
