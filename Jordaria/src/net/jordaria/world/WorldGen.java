@@ -1,6 +1,7 @@
 package net.jordaria.world;
 
 import net.jordaria.math.Random;
+import net.jordaria.physics.AxisAlignedBoundingBox;
 
 /**
  * A class for generating maps and worlds.
@@ -10,7 +11,7 @@ import net.jordaria.math.Random;
  */
 public class WorldGen {
 	Random random;
-	
+
 	/**
 	 * Constructs a new WorldGen and initializes the {@link Random RNG}.
 	 */
@@ -18,9 +19,9 @@ public class WorldGen {
 		random = new Random();
 		random.initializeGenerator((int)(Math.random()*1337));
 	}
-	
+
 	/**
-	 * Sets the {@link Map maps} floor to a mixed floor.
+	 * Sets the {@link Map map's} floor to a mixed floor.
 	 * 
 	 * @param map The map to use
 	 */
@@ -48,18 +49,22 @@ public class WorldGen {
 			}
 		}
 	}
-	
+
 	/**
 	 * Fills the {@link Map map} with a town.
 	 * 
 	 * @param map The map to use
 	 */
 	public void fillWithTown(Map map){
-		//map.setAllTiles(TileType.FLOOR);
 		generateMixedFloor(map);
 		setOutsideWalls(map);
+		for (int i = 0; i < 10; i++){
+			if (!generateHouse(map)){
+				i--;
+			}
+		}
 	}
-	
+
 	/**
 	 * Surrounds the outside of the {@link Map map} with walls.
 	 * 
@@ -70,18 +75,6 @@ public class WorldGen {
 		int height = map.getHeight();
 		int x = 0;
 		int y = 0;
-		/*for (x=1; x<width-1; x++){
-			map.setTile(x, 0, TileType.WALL_S);
-			map.setTile(x, height-1, TileType.WALL_N);
-		}
-		for (y=1; y<height-1; y++){
-			map.setTile(0, y, TileType.WALL_E);
-			map.setTile(width-1, y, TileType.WALL_W);
-		}
-		map.setTile(0, 0, TileType.WALL_ES);
-		map.setTile(width-1, 0, TileType.WALL_SW);
-		map.setTile(0, height-1, TileType.WALL_NE);
-		map.setTile(width-1, height-1, TileType.WALL_NW);*/
 		for (x=0; x<width; x++){
 			map.setTile(x, 0, TileType.WALL);
 			map.setTile(x, height-1, TileType.WALL);
@@ -90,6 +83,82 @@ public class WorldGen {
 			map.setTile(0, y, TileType.WALL);
 			map.setTile(width-1, y, TileType.WALL);
 		}
+	}
+
+	/**
+	 * Attempts to generate a house of a random size in the {@link Map map}. 
+	 * Returns true if it succeeds, false otherwise.
+	 * 
+	 * @param map The map to use
+	 * @return True on success, false otherwise
+	 */
+	private boolean generateHouse(Map map){
+		Structure house = new Structure();
+
+		int width = random.getIntBetween(3,7);
+		int height = random.getIntBetween(2,4);
+
+		Tile[][] houseTiles = new Tile[height][width];
+		int x,y;
+
+		for (y = 0; y < height; y++){
+			for (x = 0; x < width; x++){
+				houseTiles[y][x] = new Tile();
+				if (y<=(height/2)){
+					houseTiles[y][x].setTileType(TileType.ROOF);
+				}
+				else {
+					houseTiles[y][x].setTileType(TileType.WALL);
+				}
+			}
+		}
+		houseTiles[height-1][width/2].setTileType(TileType.DOOR_N);
+
+		house.setTiles(houseTiles);
+
+		int locX = random.getIntBetween(0, map.getWidth());
+		int locY = random.getIntBetween(0, map.getHeight());
+
+		if (isValidPosition(map, house, locX, locY, true)){
+			map.addStructure(house, locX, locY);
+			return true;
+		}
+
+
+		return false;
+	}
+
+	/**
+	 * Tests if the structure is valid in the given position. If it requires a perimeter, then 1 tile on 
+	 * each side will need to be available as well.
+	 * 
+	 * @param map The map to test
+	 * @param struct The structure to be tested
+	 * @param posX The x pos in the map of the structures upper left corner
+	 * @param posY The y pos in the map of the structures upper left corner
+	 * @param requiresPerimeter If there should be a 1 tile perimeter
+	 * @return If it is a valid position
+	 */
+	private boolean isValidPosition(Map map, Structure struct, int posX, int posY, boolean requiresPerimeter){
+		//create an AABB with the maps dimensions
+		AxisAlignedBoundingBox mapAABB = new AxisAlignedBoundingBox(0, 0, map.getWidth()-1, map.getHeight()-1);
+
+		AxisAlignedBoundingBox structAABB = new AxisAlignedBoundingBox(posX, posY, posX+struct.getWidth(), posY+struct.getHeight());
+
+		if (requiresPerimeter){
+			structAABB.expand(1, 1);
+		}
+
+		if (!(mapAABB.intersectsWith(structAABB))){
+			return false;//Outside the map
+		}
+
+		for (AxisAlignedBoundingBox aabb : map.getCollisionBoxes()){
+			if (aabb.intersectsWith(structAABB)){
+				return false;//It intersected with something in the map
+			}
+		}
+		return true;
 	}
 
 }

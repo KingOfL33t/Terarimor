@@ -14,12 +14,12 @@ public enum TileType {
 	FLOOR_BROKEN(4),
 	FLOOR_BLOOD(5),
 	FLOOR_PLANT(6),
-	WALL(7),
-	LEDGE_N(8),
-	LEDGE_NW(9),
-	LEDGE_NE(10),
-	LEDGE_E(11),
-	LEDGE_W(12),
+	WALL(7, true),
+	LEDGE_N(8, true),
+	LEDGE_NW(9, true),
+	LEDGE_NE(10, true),
+	LEDGE_E(11, true),
+	LEDGE_W(12, true),
 	DOOR_N(13),
 	DOOR_E(14),
 	DOOR_S(15),
@@ -28,16 +28,32 @@ public enum TileType {
 	STAIRS_E(18),
 	STAIRS_S(19),
 	STAIRS_W(20),
+	ROOF(21, true),
 	ERROR(-1);
+	
 	private int tileID;
+	private boolean isSolid;
 	
 	/**
-	 * Constructs a new TileType with the given ID.
+	 * Constructs a new {@link TileType} with the given ID.
 	 * 
 	 * @param id The ID to use
 	 */
 	private TileType(int id){
 		this.tileID = id;
+		this.isSolid = false;
+	}
+	
+	/**
+	 * Constructs a new {@link TileType} with the given ID. 
+	 * The tile may also be solid.
+	 * 
+	 * @param id The ID to use
+	 * @param isSolid If the tile causes collision
+	 */
+	private TileType(int id, boolean isSolid){
+		this.tileID = id;
+		this.isSolid = isSolid;
 	}
 	
 	/**
@@ -47,5 +63,14 @@ public enum TileType {
 	 */
 	public int getID(){
 		return tileID;
+	}
+	
+	/**
+	 * Returns true if the tile causes collision.
+	 * 
+	 * @return True if it is solid, false otherwise
+	 */
+	public boolean isSolid(){
+		return isSolid;
 	}
 }
