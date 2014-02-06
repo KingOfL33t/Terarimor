@@ -21,6 +21,7 @@ import net.jordaria.event.EventHandler;
 import net.jordaria.event.EventSystemStarted;
 import net.jordaria.event.Listener;
 import net.jordaria.event.ShuttingDown;
+import net.jordaria.event.Tick;
 
 /**
  * The main window for the program. 
@@ -86,7 +87,7 @@ public class SwingMainWindow extends WindowAdapter implements Listener, KeyListe
 		
 		
 		GridBagConstraints c = new GridBagConstraints();
-		c.fill = GridBagConstraints.HORIZONTAL;
+		c.fill = GridBagConstraints.BOTH;
 		c.gridwidth = 2;
 		c.gridheight = 1;
 		c.gridx = 0;
@@ -104,7 +105,6 @@ public class SwingMainWindow extends WindowAdapter implements Listener, KeyListe
 		c.gridy = 2;
 		frame.add(textArea, c);
 		
-		
 		frame.setVisible(true);
 
 	}
@@ -117,6 +117,11 @@ public class SwingMainWindow extends WindowAdapter implements Listener, KeyListe
 	@EventHandler
 	public void onEventShutdown(ShuttingDown event){
 		frame.dispose();
+	}
+	
+	@EventHandler
+	public void onTick(Tick event){
+		this.textArea.appendMessage("Ticked!");
 	}
 	
 	/**

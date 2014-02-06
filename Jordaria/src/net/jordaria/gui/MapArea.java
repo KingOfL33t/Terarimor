@@ -18,7 +18,7 @@ import net.jordaria.world.Map;
 public class MapArea extends JPanel implements Listener{
 
 	private static final long serialVersionUID = -6525651076156323158L;
-	
+
 	private int tileWidth = 20;//how many tiles fit horizontally
 	private int tileHeight = 20;//how many tiles fit vertically
 	private Map currentMap;
@@ -26,7 +26,7 @@ public class MapArea extends JPanel implements Listener{
 	private Jordaria jordaria;
 	private int cameraX = 0;//how far the map is offset x
 	private int cameraY = 0;//how far the map is offset y
-	
+
 	/**
 	 * Constructs a new {@link MapArea} with the given 
 	 * {@link Jordaria} reference.
@@ -38,11 +38,12 @@ public class MapArea extends JPanel implements Listener{
 		this.eventManager = jordaria.getEventManager();
 		resetCamera();
 	}
-	
-	
+
+
 	@EventHandler
 	public void onMapChange(MapChanged event){
-		//TODO handle map change
+		currentMap = event.getMap();
+		resetCamera();
 	}
 	/**
 	 * Moves the camera by the given amount.
@@ -54,7 +55,7 @@ public class MapArea extends JPanel implements Listener{
 		this.cameraX+=x;
 		this.cameraY+=y;
 	}
-	
+
 	/**
 	 * Resets the camera offsets to zero.
 	 */
@@ -62,7 +63,7 @@ public class MapArea extends JPanel implements Listener{
 		this.cameraX = 0;
 		this.cameraY = 0;
 	}
-	
+
 	/**
 	 * Sets the cameras x position to the supplied pos.
 	 * 
@@ -71,7 +72,7 @@ public class MapArea extends JPanel implements Listener{
 	public void setCameraX(int x){
 		this.cameraX = x;
 	}
-	
+
 	/**
 	 * Sets the cameras y position to the supplied pos.
 	 * 
@@ -80,7 +81,7 @@ public class MapArea extends JPanel implements Listener{
 	public void setCameraY(int y){
 		this.cameraY = y;
 	}
-	
+
 	/**
 	 * Sets the cameras position to the supplied position.
 	 * 
@@ -91,5 +92,5 @@ public class MapArea extends JPanel implements Listener{
 		setCameraX(x);
 		setCameraY(y);
 	}
-	
+
 }

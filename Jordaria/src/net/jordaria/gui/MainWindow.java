@@ -227,7 +227,7 @@ public class MainWindow implements Listener{
 		//this is a 3d camera
 		//GLU.gluPerspective(45.0f, (float)displayMode.getWidth()/ (float)displayMode.getHeight(), 0.1f, 10000.0f);
 		//this is an orthographic camera
-		GL11.glOrtho(-10, width, height, -10, -1, 5);
+		GL11.glOrtho(-10, width,-10, height, -1, 5);
 
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);//modify the orientation and location matrix
 		GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
@@ -270,7 +270,7 @@ public class MainWindow implements Listener{
 		//GL11.glViewport(0, 0, width, height);
 		this.cameraX = 0;
 		this.cameraY = 0;
-		GL11.glOrtho(0, width, height, 0, -1, 5);
+		GL11.glOrtho(0, width, 0, height, -1, 5);
 	}
 
 	/**

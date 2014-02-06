@@ -57,7 +57,7 @@ public class World {
 	 */
 	public void setCurrentMap(Map newMap){
 		this.currentMap = newMap;
-		this.eventManager.fireEvent(new MapChanged(newMap.getWidth(), newMap.getHeight()));
+		this.eventManager.fireEvent(new MapChanged(newMap, newMap.getWidth(), newMap.getHeight()));
 	}
 	
 	/**

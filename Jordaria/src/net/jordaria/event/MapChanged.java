@@ -1,5 +1,7 @@
 package net.jordaria.event;
 
+import net.jordaria.world.Map;
+
 /**
  * Fired when the map has changed.
  * 
@@ -11,6 +13,7 @@ public class MapChanged extends Event{
 
 	int width;
 	int height;
+	Map map;
 
 	/**
 	 * Constructs a new {@link MapChanged} with the given 
@@ -19,7 +22,7 @@ public class MapChanged extends Event{
 	 * @param width The new width
 	 * @param height The new height
 	 */
-	public MapChanged(int width, int height){
+	public MapChanged(Map map, int width, int height){
 		this.width = width;
 		this.height = height;
 	}
@@ -40,6 +43,15 @@ public class MapChanged extends Event{
 	 */
 	public int getHeight(){
 		return this.height;
+	}
+	
+	/**
+	 * Returns the new map.
+	 * 
+	 * @return The map reference
+	 */
+	public Map getMap(){
+		return this.map;
 	}
 	
 	@Override
