@@ -17,6 +17,7 @@ import net.jordaria.event.Listener;
 import net.jordaria.event.ShuttingDown;
 import net.jordaria.event.Tick;
 import net.jordaria.gui.MainWindow;
+import net.jordaria.gui.SwingMainWindow;
 import net.jordaria.math.Random;
 import net.jordaria.world.Map;
 import net.jordaria.world.World;
@@ -41,6 +42,7 @@ public class Jordaria implements Runnable, Listener{
 	public MainWindow mainWindow;
 	public Random rand;//The random number generator for the main program
 	public World theWorld;//The current world
+	public SwingMainWindow swingMainWindow;
 
 	/**
 	 * The main method. Creates and starts a new game.
@@ -75,6 +77,7 @@ public class Jordaria implements Runnable, Listener{
 			gameSettings = new GameSettings(this);
 
 			mainWindow = new MainWindow(this);
+			swingMainWindow = new SwingMainWindow(this);
 			
 			initEventManager();
 
@@ -199,6 +202,7 @@ public class Jordaria implements Runnable, Listener{
 	public GameSettings getGameSettings(){
 		return this.gameSettings;
 	}
+	
 	/**
 	 * Returns the event manager.
 	 * @return Event manager for the game
@@ -233,6 +237,7 @@ public class Jordaria implements Runnable, Listener{
 				eventManager.registerEventListeners(console);
 				eventManager.registerEventListeners(this);
 				eventManager.registerEventListeners(mainWindow);
+				eventManager.registerEventListeners(swingMainWindow);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
