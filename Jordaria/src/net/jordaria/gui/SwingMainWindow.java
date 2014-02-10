@@ -1,6 +1,5 @@
 package net.jordaria.gui;
 
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -14,9 +13,9 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JScrollPane;
 
 import net.jordaria.Jordaria;
-import net.jordaria.event.Error;
 import net.jordaria.event.EventHandler;
 import net.jordaria.event.EventSystemStarted;
 import net.jordaria.event.Listener;
@@ -103,7 +102,7 @@ public class SwingMainWindow extends WindowAdapter implements Listener, KeyListe
 		c.gridwidth = 2;
 		c.gridx = 0;
 		c.gridy = 2;
-		frame.add(textArea, c);
+		frame.add(new JScrollPane(textArea), c);
 		
 		frame.setVisible(true);
 

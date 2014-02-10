@@ -1,5 +1,7 @@
 package net.jordaria.gui;
 
+import java.awt.Graphics;
+
 import javax.swing.JPanel;
 
 import net.jordaria.Jordaria;
@@ -21,12 +23,14 @@ public class MapArea extends JPanel implements Listener{
 
 	private int tileWidth = 20;//how many tiles fit horizontally
 	private int tileHeight = 20;//how many tiles fit vertically
+	private int mapWidth = 0;
+	private int mapHeight = 0;
 	private Map currentMap;
 	private EventManager eventManager;
 	private Jordaria jordaria;
 	private int cameraX = 0;//how far the map is offset x
 	private int cameraY = 0;//how far the map is offset y
-
+	
 	/**
 	 * Constructs a new {@link MapArea} with the given 
 	 * {@link Jordaria} reference.
@@ -38,11 +42,18 @@ public class MapArea extends JPanel implements Listener{
 		this.eventManager = jordaria.getEventManager();
 		resetCamera();
 	}
-
-
+	
+	protected void paintComponent(Graphics g) {
+		if (currentMap == null || mapWidth<=0 || mapHeight<=0){
+			return;//the map is not valid, so dont try to repaint the component
+		}
+		
+	}
 	@EventHandler
 	public void onMapChange(MapChanged event){
 		currentMap = event.getMap();
+		this.mapHeight = currentMap.getHeight();
+		this.mapWidth = currentMap.getWidth();
 		resetCamera();
 	}
 	/**
