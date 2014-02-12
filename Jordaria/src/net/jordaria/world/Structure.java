@@ -93,7 +93,7 @@ public class Structure {
 	 * 
 	 * @param x The x value
 	 * @param y The y value
-	 * @return
+	 * @return The tile at the given position
 	 */
 	public Tile getTileAt(int x, int y){
 		

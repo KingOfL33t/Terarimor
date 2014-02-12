@@ -30,7 +30,7 @@ public class EventException extends Exception {
 	 * Constructs a new {@link EventException} with the given 
 	 * {@link Throwable} and message.
 	 * 
-	 * @param throwable The throwable that was thrown
+	 * @param cause The throwable that was thrown
 	 * @param message The detail message
 	 */
 	public EventException(Throwable cause, String message) {

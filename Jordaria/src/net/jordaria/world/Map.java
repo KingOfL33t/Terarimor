@@ -1,6 +1,7 @@
 package net.jordaria.world;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import net.jordaria.physics.AxisAlignedBoundingBox;
 
@@ -14,7 +15,12 @@ public class Map {
 	public Tile[][] tiles;//arranged as [height][width]
 	public int width;
 	public int height;
-
+	/* An array of collision AABB's which is updated 
+	 * whenever the map is changed.
+	 */
+	private HashSet<AxisAlignedBoundingBox> collisionBoxes;
+	
+	
 	/**
 	 * Construct a new Map with the given width and height.
 	 * 
@@ -23,6 +29,7 @@ public class Map {
 	 */
 	public Map(int width, int height){
 		this.tiles = new Tile[height][width];
+		this.collisionBoxes = new HashSet<AxisAlignedBoundingBox>();
 		this.width = width;
 		this.height = height;
 		this.initTileArray();
@@ -64,7 +71,7 @@ public class Map {
 	 * @param type The type to set
 	 */
 	public void setTile(int x, int y, TileType type){
-		tiles[y][x].setTileType(type);;
+		tiles[y][x].setTileType(type);
 	}
 
 	/**
@@ -106,6 +113,7 @@ public class Map {
 
 	/**
 	 * Adds the structure to the map. This will replace anything already placed.
+	 * This methods automatically repopulates the collision boxes after placing.
 	 * 
 	 * @param struct The structure to add
 	 * @param x The x position to start at
@@ -118,17 +126,16 @@ public class Map {
 				setTile(i+x, j+y, struct.getTileAt(i, j).getTileType());
 			}
 		}
+		repopulateCollisionBoxes();
 	}
 
 	/**
-	 * Returns an array of collision boxes for solid tiles.
+	 * Populates the array of collision boxes for solid tiles.
 	 * This creates {@link AxisAlignedBoundingBox AABB's} for each tile, 
 	 * and tries to create the largest AABB for groups of solid tiles as it can.
-	 * This may be empty.
-	 * 
-	 * @return The array of collision boxes
+	 * This may not find any boxes.
 	 */
-	public AxisAlignedBoundingBox[] getCollisionBoxes(){
+	public void repopulateCollisionBoxes(){
 		ArrayList<AxisAlignedBoundingBox> boxes = new ArrayList<AxisAlignedBoundingBox>();
 		AxisAlignedBoundingBox tmp = new AxisAlignedBoundingBox(0, 0, 0, 0);
 		//true if the block at that pos is solid, false otherwise.
@@ -156,11 +163,9 @@ public class Map {
 				}
 			}
 		}
-		AxisAlignedBoundingBox[] toReturn = new AxisAlignedBoundingBox[boxes.size()];
-		for (int boxIndex = 0; boxIndex < boxes.size(); boxIndex++){
-			toReturn[boxIndex] = boxes.get(boxIndex);
-		}
-		return toReturn;
+		
+		clearCollisionBoxes();//Clears out the AABB's
+		this.collisionBoxes.addAll(boxes);//Add all of the boxes to the map's list
 	}
 	/**
 	 * Finds and returns the largest AABB that has the corner at the given pos.
@@ -243,5 +248,39 @@ public class Map {
 
 		return largestRect;
 
+	}
+	
+	/**
+	 * Clears out the {@link HashSet} of collision boxes.
+	 */
+	public void clearCollisionBoxes(){
+		this.collisionBoxes.clear();
+	}
+	
+	/**
+	 * Returns the array of collision boxes for solid tiles.
+	 * This may be empty.
+	 * 
+	 * @return The array of collision boxes
+	 */
+	public AxisAlignedBoundingBox[] getCollisionBoxes(){
+		AxisAlignedBoundingBox[] toReturn = new AxisAlignedBoundingBox[collisionBoxes.size()];
+		int index = 0;
+		for (AxisAlignedBoundingBox box : collisionBoxes){
+			toReturn[index] = box;
+			index++;
+		}
+		return toReturn;
+	}
+	
+	/**
+	 * Returns the {@link HashSet} of collision boxes for solid tiles.
+	 * This may be empty. This method is faster than {@link #getCollisionBoxes()}, 
+	 * as it is stored internally as a hashset and thus does not need conversion.
+	 * 
+	 * @return The array of collision boxes
+	 */
+	public HashSet<AxisAlignedBoundingBox> getCollisionBoxesHashSet(){
+		return collisionBoxes;
 	}
 }

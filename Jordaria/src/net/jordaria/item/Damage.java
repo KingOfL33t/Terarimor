@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * A map of {@link Element elements} and their respective damage value.
  * 
- * @author EISD
+ * @author Ches Burks
  *
  */
 public class Damage {
@@ -35,7 +35,7 @@ public class Damage {
 	 * If the element is not assigned to a value, then 
 	 * zero is returned.
 	 * 
-	 * @param element The element to return damage for
+	 * @param element The element for which to return damage
 	 * @return The damage
 	 */
 	public int getDamage(Element element){

@@ -34,9 +34,10 @@ public class Item {
 	}
 	
 	/**
-	 * Returns the maximum stack size for the item.
+	 * Returns The maximum size of an {@link ItemStack} containing the item.
 	 * 
-	 * @return The maximum size of an itemstack
+	 * 
+	 * @return The maximum stack size for the item.
 	 */
 	public int getMaxStackSize(){
 		return 1;
