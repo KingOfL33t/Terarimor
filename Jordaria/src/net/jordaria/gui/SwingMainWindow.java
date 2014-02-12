@@ -4,7 +4,10 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
+import java.util.EventListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -14,6 +17,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 
 import net.jordaria.Jordaria;
+import net.jordaria.KeyBind;
 import net.jordaria.debug.DebugPanel;
 import net.jordaria.event.EventHandler;
 import net.jordaria.event.Listener;
@@ -28,7 +32,7 @@ import net.jordaria.event.events.Tick;
  * @author Ches Burks
  *
  */
-public class SwingMainWindow extends WindowAdapter implements Listener, ActionListener{
+public class SwingMainWindow extends WindowAdapter implements Listener, ActionListener, KeyListener{
 	//This windows frame
 	JFrame frame;
 	//The menu bar for the window
@@ -65,6 +69,7 @@ public class SwingMainWindow extends WindowAdapter implements Listener, ActionLi
 		frame = new JFrame(Jordaria.config.getWindow_title());
 		frame.setSize(Jordaria.config.getWindow_width(), Jordaria.config.getWindow_height());
 		frame.setLayout(new GridBagLayout());
+		
 
 		//menus
 		menuBar = new JMenuBar();
@@ -90,6 +95,10 @@ public class SwingMainWindow extends WindowAdapter implements Listener, ActionLi
 
 		mapArea = new MapArea(jordaria);
 		mapArea.setBorder(BorderFactory.createEtchedBorder());
+		
+		menuBar.addKeyListener(this);
+		mapArea.addKeyListener(this);
+		textArea.addKeyListener(this);
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
@@ -131,6 +140,9 @@ public class SwingMainWindow extends WindowAdapter implements Listener, ActionLi
 	public void onTick(Tick event){
 		if (!registered){
 			registerEventListeners();
+		}
+		if (!frame.isVisible()){
+			jordaria.getEventManager().fireEvent(new ShuttingDown());
 		}
 	}
 
@@ -174,4 +186,19 @@ public class SwingMainWindow extends WindowAdapter implements Listener, ActionLi
 			}
 		}
 	}
+	
+	@Override
+	public void keyPressed(KeyEvent e) {
+		System.out.println(e.getExtendedKeyCode());
+		KeyBind.setKeyBindState(e.getKeyCode(), true);
+		KeyBind.onTick(e.getKeyCode());
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		KeyBind.setKeyBindState(e.getKeyCode(), false);
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {}
 }

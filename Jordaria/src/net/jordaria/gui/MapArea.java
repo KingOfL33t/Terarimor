@@ -2,12 +2,8 @@ package net.jordaria.gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 import javax.swing.JPanel;
 
@@ -15,7 +11,6 @@ import net.jordaria.Jordaria;
 import net.jordaria.event.EventHandler;
 import net.jordaria.event.EventManager;
 import net.jordaria.event.Listener;
-import net.jordaria.event.events.DebugMessage;
 import net.jordaria.event.events.MapChanged;
 import net.jordaria.event.events.Tick;
 import net.jordaria.world.Map;
@@ -68,8 +63,30 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 	@EventHandler
 	public void onTick(Tick event){
 		repaint();
+		handleKeyboard();
 	}
 
+	/**
+	 * Handles input from the keyboard
+	 */
+	public void handleKeyboard(){
+		while (jordaria.getGameSettings().KEYBIND_MOVE_FORWARD.isPressed() && this.cameraY > 0)
+		{
+			this.cameraY-=1;
+		}
+		while (jordaria.getGameSettings().KEYBIND_MOVE_BACKWARD.isPressed() && this.cameraY < mapHeight)
+		{
+			this.cameraY+=1;
+		}
+		while (jordaria.getGameSettings().KEYBIND_MOVE_LEFT.isPressed() && this.cameraX < mapWidth)
+		{
+			this.cameraX+=1;
+		}
+		while (jordaria.getGameSettings().KEYBIND_MOVE_RIGHT.isPressed() && this.cameraX > 0)
+		{
+			this.cameraX-=1;
+		}
+	}
 	/**
 	 * Repaints the component
 	 */
@@ -81,8 +98,8 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 			}
 
 			int x,y;
-			for (y = 0; y < tileHeight; y++){
-				for (x = 0; x < tileWidth; x++){
+			for (y = 0+cameraY; y < tileHeight+cameraY; y++){
+				for (x = 0+cameraX; x < tileWidth+cameraX; x++){
 					g.setColor(tmpGetColorForTile(currentMap.getTile(x, y).getTileType().getID()));
 					g.fillRect(x*scale, y*scale, scale, scale);
 				}
