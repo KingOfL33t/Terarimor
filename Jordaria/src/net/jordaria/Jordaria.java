@@ -4,19 +4,17 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 
 import net.jordaria.debug.DebugConsole;
-import net.jordaria.debug.DebugPanel;
 import net.jordaria.entity.EntityPlayer;
 import net.jordaria.entity.NameGenerator;
-import net.jordaria.event.DebugMessage;
-import net.jordaria.event.Error;
 import net.jordaria.event.EventHandler;
 import net.jordaria.event.EventManager;
-import net.jordaria.event.EventSystemStarted;
-import net.jordaria.event.GraphicsSystemStarted;
 import net.jordaria.event.Listener;
-import net.jordaria.event.ShuttingDown;
-import net.jordaria.event.Tick;
-import net.jordaria.gui.MainWindow;
+import net.jordaria.event.events.DebugMessage;
+import net.jordaria.event.events.Error;
+import net.jordaria.event.events.EventSystemStarted;
+import net.jordaria.event.events.GraphicsSystemStarted;
+import net.jordaria.event.events.ShuttingDown;
+import net.jordaria.event.events.Tick;
 import net.jordaria.gui.SwingMainWindow;
 import net.jordaria.math.Random;
 import net.jordaria.world.Map;
@@ -39,7 +37,7 @@ public class Jordaria implements Runnable, Listener{
 	public GameSettings gameSettings;
 	public int displayWidth;
 	public int displayHeight;
-	public MainWindow mainWindow;
+	//public MainWindow mainWindow;
 	public Random rand;//The random number generator for the main program
 	public World theWorld;//The current world
 	public SwingMainWindow swingMainWindow;
@@ -66,7 +64,7 @@ public class Jordaria implements Runnable, Listener{
 			console = new DebugConsole();
 		}
 	}
-	
+
 	/**
 	 * Sets up subsystems and prepares them for starting the game.
 	 */
@@ -76,15 +74,15 @@ public class Jordaria implements Runnable, Listener{
 			rand.initializeGenerator((int)(Math.random()*1337));
 			gameSettings = new GameSettings(this);
 
-			mainWindow = new MainWindow(this);
+			//mainWindow = new MainWindow(this);
 			swingMainWindow = new SwingMainWindow(this);
-			
+
 			initEventManager();
 
 			fileIO = new FileIO(this);
 			fileIO.createMainDirectories(gameSettings.homeDirectory);
 			fileIO.copyFilesToDisk(gameSettings.homeDirectory);
-			
+
 			initGraphics();
 
 			theWorld = new World("Test", this.getEventManager());
@@ -95,18 +93,14 @@ public class Jordaria implements Runnable, Listener{
 
 			eventManager.fireEvent(new DebugMessage("Player ("+thePlayer.getUsername()+") created!"));
 
-			if (config.getDebugActive()){
-				DebugPanel panel = new DebugPanel();
-				panel.setJordariaVar(this);
-				eventManager.registerEventListeners(panel);
-			}
 			
+
 			//Create a small test map
 			Map map = new Map(50, 50);
 			theWorld.getWorldGenerator().fillWithTown(map);
 			theWorld.setCurrentMap(map);
-			
-			
+
+
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -123,14 +117,14 @@ public class Jordaria implements Runnable, Listener{
 		registerListeners();
 		eventManager.fireEvent(new EventSystemStarted());
 	}
-	
+
 	/**
 	 * Initializes graphics subsystem and creates the main window.
 	 * Fires an {@link GraphicsSystemStarted GraphicsSystemStarted} event on completion.
 	 */
 	private void initGraphics(){
 		try {
-			mainWindow.createWindow();
+			//mainWindow.createWindow();
 		} catch (Exception e) {
 			e.printStackTrace();
 			eventManager.fireEvent(new Error("Error creating Window"));
@@ -156,7 +150,7 @@ public class Jordaria implements Runnable, Listener{
 		}
 
 	}
-	
+
 	/**
 	 * Clears references, garbage collects, 
 	 * and calls System.exit(0).
@@ -178,7 +172,7 @@ public class Jordaria implements Runnable, Listener{
 	public void garbageCollect(){
 		System.gc();
 	}
-	
+
 	/**
 	 * Fires Tick events while the game is running.
 	 */
@@ -191,9 +185,9 @@ public class Jordaria implements Runnable, Listener{
 				break;
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * Returns the game settings for the current instance.
 	 * 
@@ -202,7 +196,7 @@ public class Jordaria implements Runnable, Listener{
 	public GameSettings getGameSettings(){
 		return this.gameSettings;
 	}
-	
+
 	/**
 	 * Returns the event manager.
 	 * @return Event manager for the game
@@ -210,7 +204,7 @@ public class Jordaria implements Runnable, Listener{
 	public EventManager getEventManager(){
 		return this.eventManager;
 	}
-	
+
 	/**
 	 * Returns the {@link Random Random number generator} for the game.
 	 * 
@@ -219,7 +213,7 @@ public class Jordaria implements Runnable, Listener{
 	public Random getRandomGenerator(){
 		return this.rand;
 	}
-	
+
 	/**
 	 * Returns the current world for the game.
 	 * @return Current world for the game
@@ -227,20 +221,21 @@ public class Jordaria implements Runnable, Listener{
 	public World getWorld(){
 		return this.theWorld;
 	}
-	
+
 	/**
 	 * Registers listeners for various parts of the program.
 	 */
 	public void registerListeners(){
-		if (config.getDebugActive()){
-			try {
+
+		try {
+			if (config.getDebugActive()){
 				eventManager.registerEventListeners(console);
-				eventManager.registerEventListeners(this);
-				eventManager.registerEventListeners(mainWindow);
-				eventManager.registerEventListeners(swingMainWindow);
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
+			eventManager.registerEventListeners(this);
+			//eventManager.registerEventListeners(mainWindow);
+			eventManager.registerEventListeners(swingMainWindow);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 	}
@@ -258,7 +253,7 @@ public class Jordaria implements Runnable, Listener{
 		errorDialog.add(new JLabel(error.getMessage()));
 		errorDialog.setVisible(true);
 	}
-	
+
 	/**
 	 * Calls the {@link #shutdown() shutdown} method.
 	 * 

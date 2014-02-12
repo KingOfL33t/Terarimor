@@ -1,17 +1,21 @@
-package net.jordaria.event;
+package net.jordaria.event.events;
+
+import net.jordaria.event.Event;
+import net.jordaria.event.HandlerList;
 
 /**
- * Fired when the Event system has been started and is now running.
+ * Fired when the program is shutting down.
  * 
  * @author Ches Burks
  */
-public class EventSystemStarted extends Event{
+public class ShuttingDown extends Event{
+
 	private static final HandlerList handlers = new HandlerList();
 
 	/**
-	 * Constructs a new {@link EventSystemStarted}.
+	 * Constructs a new {@link ShuttingDown}.
 	 */
-	public EventSystemStarted(){
+	public ShuttingDown(){
 
 	}
 

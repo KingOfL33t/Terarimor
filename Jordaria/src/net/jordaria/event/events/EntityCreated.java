@@ -1,7 +1,9 @@
-package net.jordaria.event;
+package net.jordaria.event.events;
 
 import net.jordaria.entity.Entity;
 import net.jordaria.entity.Location;
+import net.jordaria.event.Event;
+import net.jordaria.event.HandlerList;
 
 /**
  * Fired when an {@link Entity entity} is created.

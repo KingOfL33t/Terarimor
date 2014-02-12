@@ -12,16 +12,16 @@ import javax.swing.text.DefaultCaret;
 
 import net.jordaria.Configuration;
 import net.jordaria.entity.EntityPlayer;
-import net.jordaria.event.DebugMessage;
-import net.jordaria.event.EntityMoveRequest;
 import net.jordaria.event.EventHandler;
 import net.jordaria.event.EventPriority;
-import net.jordaria.event.EventSystemStarted;
-import net.jordaria.event.GraphicsSystemStarted;
 import net.jordaria.event.Listener;
-import net.jordaria.event.PhysicsSystemStarted;
-import net.jordaria.event.ShuttingDown;
-import net.jordaria.event.SoundSystemStarted;
+import net.jordaria.event.events.DebugMessage;
+import net.jordaria.event.events.EntityMoveRequest;
+import net.jordaria.event.events.EventSystemStarted;
+import net.jordaria.event.events.GraphicsSystemStarted;
+import net.jordaria.event.events.PhysicsSystemStarted;
+import net.jordaria.event.events.ShuttingDown;
+import net.jordaria.event.events.SoundSystemStarted;
 
 /**
  * A console for showing processes and events that occur in the program.

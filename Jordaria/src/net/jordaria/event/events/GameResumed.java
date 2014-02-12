@@ -1,4 +1,7 @@
-package net.jordaria.event;
+package net.jordaria.event.events;
+
+import net.jordaria.event.Event;
+import net.jordaria.event.HandlerList;
 
 /**
  * Fired when the game has been resumed.

@@ -9,7 +9,7 @@ package net.jordaria;
 public class Configuration {
 	//GUI settings
 	public static int window_height = 480;
-	public static int window_width = 640;
+	public static int window_width = 480;
 	public static int display_bitsPerPixel = 32;
 	public static String window_title = "Jordaria!";
 	

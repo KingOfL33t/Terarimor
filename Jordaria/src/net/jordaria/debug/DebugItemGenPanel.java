@@ -14,7 +14,7 @@ import net.jordaria.Jordaria;
 import net.jordaria.event.EventHandler;
 import net.jordaria.event.EventPriority;
 import net.jordaria.event.Listener;
-import net.jordaria.event.ShuttingDown;
+import net.jordaria.event.events.ShuttingDown;
 import net.jordaria.item.Element;
 import net.jordaria.item.Item;
 import net.jordaria.item.ItemArmor;

@@ -3,13 +3,13 @@ package net.jordaria.gui;
 import net.jordaria.Jordaria;
 import net.jordaria.KeyBind;
 import net.jordaria.entity.Direction;
-import net.jordaria.event.DebugMessage;
-import net.jordaria.event.EntityMoveRequest;
 import net.jordaria.event.EventHandler;
 import net.jordaria.event.Listener;
-import net.jordaria.event.MapChanged;
-import net.jordaria.event.ShuttingDown;
-import net.jordaria.event.Tick;
+import net.jordaria.event.events.DebugMessage;
+import net.jordaria.event.events.EntityMoveRequest;
+import net.jordaria.event.events.MapChanged;
+import net.jordaria.event.events.ShuttingDown;
+import net.jordaria.event.events.Tick;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;

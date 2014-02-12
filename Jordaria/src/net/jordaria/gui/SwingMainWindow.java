@@ -4,8 +4,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 
 import javax.swing.BorderFactory;
@@ -16,11 +14,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 
 import net.jordaria.Jordaria;
+import net.jordaria.debug.DebugPanel;
 import net.jordaria.event.EventHandler;
-import net.jordaria.event.EventSystemStarted;
 import net.jordaria.event.Listener;
-import net.jordaria.event.ShuttingDown;
-import net.jordaria.event.Tick;
+import net.jordaria.event.events.EventSystemStarted;
+import net.jordaria.event.events.ShuttingDown;
+import net.jordaria.event.events.Tick;
 
 /**
  * The main window for the program. 
@@ -29,7 +28,7 @@ import net.jordaria.event.Tick;
  * @author Ches Burks
  *
  */
-public class SwingMainWindow extends WindowAdapter implements Listener, KeyListener, ActionListener{
+public class SwingMainWindow extends WindowAdapter implements Listener, ActionListener{
 	//This windows frame
 	JFrame frame;
 	//The menu bar for the window
@@ -38,12 +37,14 @@ public class SwingMainWindow extends WindowAdapter implements Listener, KeyListe
 	JMenuItem menuItemFileExit;//File.exit menu item.
 	JMenu menuSettings;//The settings menu
 	JMenu menuDebug;//The debug menu. Disabled if debug is not active
+	JMenuItem menuItemDebugPanel;//starts the debug panel
 	//The text area
 	ScrollingTextArea textArea;
 	//The area for displaying the map
 	MapArea mapArea;
 	//A reference to the main jordaria class
 	Jordaria jordaria;
+	private boolean registered;//True if the event system has registered. A bit of a hack.
 
 
 	/**
@@ -56,12 +57,15 @@ public class SwingMainWindow extends WindowAdapter implements Listener, KeyListe
 		this.jordaria = jd;
 		this.init();
 	}
+	/**
+	 * Initializes the frame for use.
+	 */
 	public void init(){
 		//frame
 		frame = new JFrame(Jordaria.config.getWindow_title());
 		frame.setSize(Jordaria.config.getWindow_width(), Jordaria.config.getWindow_height());
 		frame.setLayout(new GridBagLayout());
-		
+
 		//menus
 		menuBar = new JMenuBar();
 		menuFile = new JMenu("File");
@@ -69,6 +73,8 @@ public class SwingMainWindow extends WindowAdapter implements Listener, KeyListe
 		menuDebug = new JMenu("Debug");
 		menuItemFileExit = new JMenuItem("Exit");
 		menuItemFileExit.addActionListener(this);
+		menuItemDebugPanel = new JMenuItem("Debug panel");
+		menuItemDebugPanel.addActionListener(this);
 
 		menuDebug.setEnabled(Jordaria.config.getDebugActive());
 
@@ -76,15 +82,15 @@ public class SwingMainWindow extends WindowAdapter implements Listener, KeyListe
 		menuBar.add(menuSettings);
 		menuBar.add(menuDebug);
 		menuFile.add(menuItemFileExit);
-		
+		menuDebug.add(menuItemDebugPanel);
+
 		textArea = new ScrollingTextArea();
 		textArea.setMaxHistory(50);
 		textArea.setBorder(BorderFactory.createEtchedBorder());
-		
+
 		mapArea = new MapArea(jordaria);
 		mapArea.setBorder(BorderFactory.createEtchedBorder());
-		
-		
+
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
 		c.gridwidth = 2;
@@ -95,19 +101,22 @@ public class SwingMainWindow extends WindowAdapter implements Listener, KeyListe
 		c.weighty = GridBagConstraints.REMAINDER;
 		frame.add(menuBar, c);
 		c.gridwidth = 1;
+		c.gridheight = 4;
 		c.gridx = 0;
 		c.gridy = 1;
-		c.weighty = .5;
+		c.weighty = 4;
 		frame.add(mapArea, c);
 		c.gridwidth = 2;
+		c.gridheight = 1;
 		c.gridx = 0;
-		c.gridy = 2;
+		c.gridy = 5;
+		c.weighty = .5;
 		frame.add(new JScrollPane(textArea), c);
-		
+
 		frame.setVisible(true);
 
 	}
-	
+
 	/**
 	 * Disposes of the frame and components
 	 * 
@@ -117,12 +126,14 @@ public class SwingMainWindow extends WindowAdapter implements Listener, KeyListe
 	public void onEventShutdown(ShuttingDown event){
 		frame.dispose();
 	}
-	
+
 	@EventHandler
 	public void onTick(Tick event){
-		this.textArea.appendMessage("Ticked!");
+		if (!registered){
+			registerEventListeners();
+		}
 	}
-	
+
 	/**
 	 * Registers listeners once the event system is running.
 	 * This prevents possible issues with registering when the 
@@ -140,18 +151,27 @@ public class SwingMainWindow extends WindowAdapter implements Listener, KeyListe
 	private void registerEventListeners(){
 		try {
 			jordaria.getEventManager().registerEventListeners(mapArea);
+			mapArea.setEventManager();
+			registered = true;
 		} catch (Exception e) {
 			e.printStackTrace();
-			
+
 		}
 	}
-	@Override
-	public void keyPressed(KeyEvent arg0) {}
-	@Override
-	public void keyReleased(KeyEvent arg0) {}
-	@Override
-	public void keyTyped(KeyEvent arg0) {}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == menuItemFileExit){
+			jordaria.getEventManager().fireEvent(new ShuttingDown());
+		}
+		else if (e.getSource() == menuItemDebugPanel){
+			DebugPanel panel = new DebugPanel();
+			panel.setJordariaVar(jordaria);
+			try {
+				jordaria.getEventManager().registerEventListeners(panel);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		}
 	}
 }

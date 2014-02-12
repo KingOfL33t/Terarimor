@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.jordaria.event.EventManager;
-import net.jordaria.event.MapChanged;
+import net.jordaria.event.events.MapChanged;
 import net.jordaria.math.Random;
 
 /**

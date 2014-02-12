@@ -149,7 +149,7 @@ public class WorldGen {
 			structAABB.expand(1, 1);
 		}
 
-		if (!(mapAABB.intersectsWith(structAABB))){
+		if (!(structAABB.isInside(mapAABB))){
 			return false;//Outside the map
 		}
 

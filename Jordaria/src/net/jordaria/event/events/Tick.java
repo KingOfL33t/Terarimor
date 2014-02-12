@@ -1,17 +1,21 @@
-package net.jordaria.event;
+package net.jordaria.event.events;
+
+import net.jordaria.event.Event;
+import net.jordaria.event.HandlerList;
 
 /**
- * Fired when a human view has been attached, and is now working.
+ * Fired to tick subsystems.
  * 
  * @author Ches Burks
+ *
  */
-public class HumanViewAttached extends Event{
+public class Tick extends Event{
 	private static final HandlerList handlers = new HandlerList();
 
 	/**
-	 * Constructs a new {@link HumanViewAttached}.
+	 * Constructs a new {@link Tick}.
 	 */
-	public HumanViewAttached(){
+	public Tick(){
 
 	}
 

@@ -88,6 +88,18 @@ public class AxisAlignedBoundingBox {
 		return other.maxX > this.minX && other.minX < this.maxX 
 				? (other.maxY > this.minY && other.minY < this.maxY) : false;
 	}
+	
+	/**
+	 * Returns true if this is inside the other AABB, false otherwise.
+	 * 
+	 * @param other The other AABB to test collision with
+	 * @return True if this is completely inside the other, false otherwise
+	 */
+	public boolean isInside(AxisAlignedBoundingBox other)
+	{
+		return other.maxX > this.maxX && other.minX < this.minX 
+				? (other.maxY > this.maxY && other.minY < this.minY) : false;
+	}
 
 	/**
 	 * Copy the values from the other AABB to this AABB.

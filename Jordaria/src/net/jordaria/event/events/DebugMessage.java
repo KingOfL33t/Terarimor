@@ -1,28 +1,39 @@
-package net.jordaria.event;
+package net.jordaria.event.events;
+
+import net.jordaria.event.Event;
+import net.jordaria.event.HandlerList;
 
 /**
- * Fired when an error occurs.
+ * Fired when a message is sent to the console.
  * 
  * @author Ches Burks
- *
  */
-public class Error extends Event{
+public class DebugMessage extends Event{
+
 	private static final HandlerList handlers = new HandlerList();
 
 	String message;
 
 	/**
-	 * Constructs a new {@link Error Error} with the 
-	 * given message.
+	 * Constructs a new {@link DebugMessage DebugMessage} with 
+	 * the given message.
 	 * 
-	 * @param theMessage The message to display
+	 * @param theMessage The message to use
 	 */
-	public Error(String theMessage){
+	public DebugMessage(String theMessage){
+		this();
 		this.message = theMessage;
+	}
+	
+	/**
+	 * Constructs a new empty {@link DebugMessage DebugMessage}.
+	 */
+	public DebugMessage(){
+
 	}
 
 	/**
-	 * Returns the message or an empty string if no message was supplied.
+	 * Returns the message contained.
 	 * 
 	 * @return The message
 	 */
@@ -34,7 +45,7 @@ public class Error extends Event{
 			return this.message;
 		}
 	}
-
+	
 	/**
 	 * Returns the {@link HandlerList handler list}.
 	 * 
@@ -46,6 +57,7 @@ public class Error extends Event{
 		return handlers;
 	}
 
+
 	/**
 	 * Returns the {@link HandlerList handler list}.
 	 * 
@@ -55,4 +67,5 @@ public class Error extends Event{
 	public static HandlerList getHandlerList() {
 		return handlers;
 	}
+
 }

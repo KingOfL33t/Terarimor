@@ -1,5 +1,7 @@
-package net.jordaria.event;
+package net.jordaria.event.events;
 
+import net.jordaria.event.Event;
+import net.jordaria.event.HandlerList;
 import net.jordaria.world.Map;
 
 /**
@@ -25,6 +27,7 @@ public class MapChanged extends Event{
 	public MapChanged(Map map, int width, int height){
 		this.width = width;
 		this.height = height;
+		this.map = map;
 	}
 
 	/**

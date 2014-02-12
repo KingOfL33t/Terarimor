@@ -12,11 +12,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import net.jordaria.Jordaria;
-import net.jordaria.event.Error;
 import net.jordaria.event.EventHandler;
 import net.jordaria.event.EventPriority;
 import net.jordaria.event.Listener;
-import net.jordaria.event.ShuttingDown;
+import net.jordaria.event.events.Error;
+import net.jordaria.event.events.ShuttingDown;
 import net.jordaria.world.Map;
 import net.jordaria.world.World;
 import net.jordaria.world.WorldGen;

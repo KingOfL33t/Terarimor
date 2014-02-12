@@ -1,5 +1,6 @@
 package net.jordaria.gui;
 
+
 /**
  * Displays an inventory and allows inspecting items.
  * 
@@ -7,5 +8,5 @@ package net.jordaria.gui;
  *
  */
 public class InventoryArea {
-
+	
 }

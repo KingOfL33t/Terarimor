@@ -1,7 +1,9 @@
-package net.jordaria.event;
+package net.jordaria.event.events;
 
 import net.jordaria.entity.Direction;
 import net.jordaria.entity.Entity;
+import net.jordaria.event.Event;
+import net.jordaria.event.HandlerList;
 
 /**
  * Fired when an interface requests that an {@link Entity entity} move. The direction is the actual direction to move,

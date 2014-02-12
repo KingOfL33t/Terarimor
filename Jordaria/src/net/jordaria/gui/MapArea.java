@@ -1,6 +1,13 @@
 package net.jordaria.gui;
 
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JPanel;
 
@@ -8,7 +15,9 @@ import net.jordaria.Jordaria;
 import net.jordaria.event.EventHandler;
 import net.jordaria.event.EventManager;
 import net.jordaria.event.Listener;
-import net.jordaria.event.MapChanged;
+import net.jordaria.event.events.DebugMessage;
+import net.jordaria.event.events.MapChanged;
+import net.jordaria.event.events.Tick;
 import net.jordaria.world.Map;
 
 /**
@@ -17,20 +26,24 @@ import net.jordaria.world.Map;
  * @author Ches Burks
  *
  */
-public class MapArea extends JPanel implements Listener{
+public class MapArea extends JPanel implements Listener, ComponentListener{
 
 	private static final long serialVersionUID = -6525651076156323158L;
 
 	private int tileWidth = 20;//how many tiles fit horizontally
 	private int tileHeight = 20;//how many tiles fit vertically
-	private int mapWidth = 0;
-	private int mapHeight = 0;
+	private int defaultTileWidth = 20;
+	private int defaultTileHeight = 20;
+	private int mapWidth = 0;//how wide the map is
+	private int mapHeight = 0;//how tall the map is
+	private int scale = 1;//how large a tile should be drawn on the map area
 	private Map currentMap;
 	private EventManager eventManager;
 	private Jordaria jordaria;
 	private int cameraX = 0;//how far the map is offset x
 	private int cameraY = 0;//how far the map is offset y
-	
+	private boolean eventManagerValid = false;
+
 	/**
 	 * Constructs a new {@link MapArea} with the given 
 	 * {@link Jordaria} reference.
@@ -39,21 +52,115 @@ public class MapArea extends JPanel implements Listener{
 	 */
 	public MapArea(Jordaria jordaria){
 		this.jordaria = jordaria;
-		this.eventManager = jordaria.getEventManager();
 		resetCamera();
+		addComponentListener(this);
+	}
+
+	/**
+	 * Sets the event manager to jordarias. This is called after the 
+	 * Event system is set up to prevent null references
+	 */
+	public void setEventManager(){
+		this.eventManager = jordaria.getEventManager();
+		this.eventManagerValid = true;
 	}
 	
-	protected void paintComponent(Graphics g) {
-		if (currentMap == null || mapWidth<=0 || mapHeight<=0){
-			return;//the map is not valid, so dont try to repaint the component
-		}
-		
+	@EventHandler
+	public void onTick(Tick event){
+		repaint();
 	}
+
+	/**
+	 * Repaints the component
+	 */
+	public void paint(Graphics g) {
+		super.paint(g);
+		if (eventManagerValid){
+			if (currentMap == null || mapWidth<=0 || mapHeight<=0){
+				return;//the map is not valid, so dont try to repaint the component
+			}
+
+			int x,y;
+			for (y = 0; y < tileHeight; y++){
+				for (x = 0; x < tileWidth; x++){
+					g.setColor(tmpGetColorForTile(currentMap.getTile(x, y).getTileType().getID()));
+					g.fillRect(x*scale, y*scale, scale, scale);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Temporary method. finds the color for a given tiletype.
+	 */
+	private Color tmpGetColorForTile(int id){
+		switch (id){
+		case -1: return new Color(.8f, .21f, .43f);
+		case 0: return new Color(.01f, .01f, .05f);
+		case 1: return new Color(.7f, .3f, .1f);
+		case 2: return new Color(.7f, .3f, .3f);
+		case 3: return new Color(.7f, .3f, .4f);
+		case 4: return new Color(.7f, .3f, .6f);
+		case 5: return new Color(.7f, .3f, .8f);
+		case 6: return new Color(.7f, .5f, .8f);
+		case 7: return new Color(.2f, .2f, .2f);
+		case 8: return new Color(.2f, .4f, .4f);
+		case 9: return new Color(.4f, .4f, .4f);
+		case 10: return new Color(.4f, .2f, .2f);
+		case 12: return new Color(.4f, .2f, .4f);
+		case 13: return new Color(.4f, .4f, .2f);
+		case 14: return new Color(.3f, .3f, .3f);
+		case 15: return new Color(.4f, .2f, .3f);
+		case 16: return new Color(.4f, .8f, .5f);
+		case 17: return new Color(.5f, .4f, .8f);
+		case 18: return new Color(.8f, .4f, .1f);
+		case 19: return new Color(.2f, .7f, .3f);
+		case 20: return new Color(.2f, .7f, .3f);
+		case 21: return new Color(.3f, .2f, .8f);
+		case 22: return new Color(.1f, .9f, .9f);
+		case 23: return new Color(.1f, .7f, .9f);
+		case 24: return new Color(.1f, .5f, .9f);
+		case 25: return new Color(.1f, .3f, .9f);
+		case 26: return new Color(.6f, .2f, .9f);
+		case 27: return new Color(.2f, .2f, .8f);
+		case 28: return new Color(.2f, .8f, .8f);
+		case 29: return new Color(.8f, .8f, .2f);
+		case 30: return new Color(.8f, .8f, .8f);
+		case 31: return new Color(.5f, .1f, .1f);
+		case 32: return new Color(.1f, .5f, .5f);
+		case 33: return new Color(.5f, .6f, .5f);
+		case 34: return new Color(.5f, .6f, .6f);
+		}
+		return new Color(.8f, .21f, .43f);
+	}
+	/**
+	 * Resets this map to the new one and resets the camera.
+	 * 
+	 * @param event The event fired
+	 */
 	@EventHandler
 	public void onMapChange(MapChanged event){
 		currentMap = event.getMap();
 		this.mapHeight = currentMap.getHeight();
 		this.mapWidth = currentMap.getWidth();
+		
+		/*
+		 * If the maps are smaller than the default size, 
+		 * then the tile width should be set to the maps size
+		 * to prevent invalid indexes
+		 */
+		if (this.defaultTileHeight > this.mapHeight){
+			this.tileHeight = this.mapHeight;
+		}
+		else{
+			this.tileHeight = this.defaultTileHeight;
+		}
+		if (this.defaultTileWidth > this.mapWidth){
+			this.tileWidth = this.mapWidth;
+		}
+		else{
+			this.tileWidth = this.defaultTileWidth;
+		}
 		resetCamera();
 	}
 	/**
@@ -103,5 +210,35 @@ public class MapArea extends JPanel implements Listener{
 		setCameraX(x);
 		setCameraY(y);
 	}
+
+	/**
+	 * Recalculates the scale of the tiles to fit the screen.
+	 * 
+	 */
+	public void recalculateScale(){
+		if (this.getWidth()>this.getHeight()){
+			//WIDE so limited by the height
+			scale = getHeight()/tileHeight;
+			
+		}
+		else{
+			//TALL so limited by width
+			scale = getWidth()/tileWidth;
+		}
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {}
+
+	@Override
+	public void componentResized(ComponentEvent e) {
+		recalculateScale();
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {}
 
 }

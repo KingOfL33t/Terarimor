@@ -13,8 +13,8 @@ import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import net.jordaria.event.DebugMessage;
-import net.jordaria.event.Error;
+import net.jordaria.event.events.DebugMessage;
+import net.jordaria.event.events.Error;
 
 /**
  * Controls file input and output.
