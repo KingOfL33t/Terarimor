@@ -1,6 +1,5 @@
 package net.jordaria;
 
-import org.lwjgl.input.Keyboard;
 
 /**
  * Settings for use in the game. 
@@ -12,10 +11,10 @@ public class GameSettings {
 	protected Jordaria jd;
 
 	//control keybinds
-	public KeyBind KEYBIND_MOVE_FORWARD = new KeyBind("Forward", Keyboard.KEY_W);
-	public KeyBind KEYBIND_MOVE_LEFT = new KeyBind("Left", Keyboard.KEY_A);
-	public KeyBind KEYBIND_MOVE_BACKWARD = new KeyBind("Back", Keyboard.KEY_S);
-	public KeyBind KEYBIND_MOVE_RIGHT = new KeyBind("Right", Keyboard.KEY_D);
+	public KeyBind KEYBIND_MOVE_FORWARD = new KeyBind("Forward", AsciiValue.W_UPPERCASE.value());
+	public KeyBind KEYBIND_MOVE_LEFT = new KeyBind("Left", AsciiValue.A_UPPERCASE.value());
+	public KeyBind KEYBIND_MOVE_BACKWARD = new KeyBind("Back", AsciiValue.S_UPPERCASE.value());
+	public KeyBind KEYBIND_MOVE_RIGHT = new KeyBind("Right", AsciiValue.D_UPPERCASE.value());
 	public KeyBind[] keyBindings;
 
 	public int maxDungeonSize;

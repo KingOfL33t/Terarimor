@@ -96,7 +96,7 @@ public class Jordaria implements Runnable, Listener{
 			
 
 			//Create a small test map
-			Map map = new Map(50, 50);
+			Map map = new Map(30, 30);
 			theWorld.getWorldGenerator().fillWithTown(map);
 			theWorld.setCurrentMap(map);
 

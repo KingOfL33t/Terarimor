@@ -59,7 +59,7 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 		this.eventManager = jordaria.getEventManager();
 		this.eventManagerValid = true;
 	}
-	
+
 	@EventHandler
 	public void onTick(Tick event){
 		repaint();
@@ -74,18 +74,19 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 		{
 			this.cameraY-=1;
 		}
-		while (jordaria.getGameSettings().KEYBIND_MOVE_BACKWARD.isPressed() && this.cameraY < mapHeight)
+		while (jordaria.getGameSettings().KEYBIND_MOVE_BACKWARD.isPressed() && this.cameraY+tileHeight < mapHeight)
 		{
 			this.cameraY+=1;
 		}
-		while (jordaria.getGameSettings().KEYBIND_MOVE_LEFT.isPressed() && this.cameraX < mapWidth)
-		{
-			this.cameraX+=1;
-		}
-		while (jordaria.getGameSettings().KEYBIND_MOVE_RIGHT.isPressed() && this.cameraX > 0)
+		while (jordaria.getGameSettings().KEYBIND_MOVE_LEFT.isPressed() && this.cameraX > 0)
 		{
 			this.cameraX-=1;
 		}
+		while (jordaria.getGameSettings().KEYBIND_MOVE_RIGHT.isPressed() && this.cameraX+tileWidth < mapWidth)
+		{
+			this.cameraX+=1;
+		}
+
 	}
 	/**
 	 * Repaints the component
@@ -93,15 +94,24 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 	public void paint(Graphics g) {
 		super.paint(g);
 		if (eventManagerValid){
-			if (currentMap == null || mapWidth<=0 || mapHeight<=0){
+			if(currentMap == null){
+				System.out.println("Null map");
+				return;
+			}
+			if (mapWidth<=0){
+				System.out.println("width <= 0");
 				return;//the map is not valid, so dont try to repaint the component
+			}
+			if ( mapHeight<=0){
+				System.out.println("height <=0");
+				return;
 			}
 
 			int x,y;
 			for (y = 0+cameraY; y < tileHeight+cameraY; y++){
 				for (x = 0+cameraX; x < tileWidth+cameraX; x++){
 					g.setColor(tmpGetColorForTile(currentMap.getTile(x, y).getTileType().getID()));
-					g.fillRect(x*scale, y*scale, scale, scale);
+					g.fillRect(x*scale-cameraX*scale, y*scale-cameraY*scale, scale, scale);
 				}
 			}
 		}
@@ -160,7 +170,7 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 		currentMap = event.getMap();
 		this.mapHeight = currentMap.getHeight();
 		this.mapWidth = currentMap.getWidth();
-		
+
 		/*
 		 * If the maps are smaller than the default size, 
 		 * then the tile width should be set to the maps size
@@ -178,6 +188,7 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 		else{
 			this.tileWidth = this.defaultTileWidth;
 		}
+
 		resetCamera();
 	}
 	/**
@@ -236,7 +247,7 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 		if (this.getWidth()>this.getHeight()){
 			//WIDE so limited by the height
 			scale = getHeight()/tileHeight;
-			
+
 		}
 		else{
 			//TALL so limited by width

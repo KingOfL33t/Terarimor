@@ -189,7 +189,6 @@ public class SwingMainWindow extends WindowAdapter implements Listener, ActionLi
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
-		System.out.println(e.getExtendedKeyCode());
 		KeyBind.setKeyBindState(e.getKeyCode(), true);
 		KeyBind.onTick(e.getKeyCode());
 	}
