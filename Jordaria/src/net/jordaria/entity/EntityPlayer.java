@@ -8,10 +8,10 @@ import net.jordaria.world.World;
  * @author Ches Burks
  *
  */
-public class EntityPlayer extends EntityLiving{
+public class EntityPlayer extends EntityLiving implements CurrencyHolder{
 
 	protected final String username;
-
+	private int currency = 0;
 	/**
 	 * Constructs a new EntityPlayer in the given world with the 
 	 * specified username.
@@ -41,5 +41,38 @@ public class EntityPlayer extends EntityLiving{
 		super.entityInit();
 	}
 
+	@Override
+	public int getCurrency() {
+		return currency;
+	}
 
+	@Override
+	public void setCurrency(int amount) {
+		this.currency = amount;
+	}
+	
+	@Override
+	public void addCurency(int amount) {
+		this.currency += amount;
+	}
+
+	@Override
+	public void removeCurrency(int amount) {
+		this.currency -= amount;
+		if (this.currency < 0){
+			this.currency = 0;
+		}
+	}
+
+	@Override
+	public void transferCurrencyFrom(CurrencyHolder other, int amount) {
+		other.removeCurrency(amount);
+		addCurency(amount);
+	}
+
+	@Override
+	public void transferCurrencyTo(CurrencyHolder other, int amount) {
+		removeCurrency(amount);
+		other.addCurency(amount);
+	}
 }

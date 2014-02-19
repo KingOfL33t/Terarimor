@@ -2,6 +2,8 @@ package net.jordaria.gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.TexturePaint;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
@@ -38,6 +40,8 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 	private int cameraX = 0;//how far the map is offset x
 	private int cameraY = 0;//how far the map is offset y
 	private boolean eventManagerValid = false;
+	private TexturePaint texturePaint;
+	private TextureManager textureManager;
 
 	/**
 	 * Constructs a new {@link MapArea} with the given 
@@ -49,6 +53,7 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 		this.jordaria = jordaria;
 		resetCamera();
 		addComponentListener(this);
+		textureManager = new TextureManager();
 	}
 
 	/**
@@ -107,9 +112,14 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 				return;
 			}
 
+			
 			int x,y;
 			for (y = 0+cameraY; y < tileHeight+cameraY; y++){
 				for (x = 0+cameraX; x < tileWidth+cameraX; x++){
+					if (currentMap.getTile(x, y).getTileType().getName().equals("floor")){
+						texturePaint = new TexturePaint(textureManager.getTextureBuffer(currentMap.getTile(x, y).getTileType().getName()), new Rectangle(x*scale-cameraX*scale, y*scale-cameraY*scale, scale, scale));
+						//TODO paint the texture
+					}
 					g.setColor(tmpGetColorForTile(currentMap.getTile(x, y).getTileType().getID()));
 					g.fillRect(x*scale-cameraX*scale, y*scale-cameraY*scale, scale, scale);
 				}

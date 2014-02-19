@@ -1,9 +1,12 @@
 package net.jordaria.gui;
 
+import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
+
+import javax.imageio.ImageIO;
 
 import de.matthiasmann.twl.utils.PNGDecoder;
 import de.matthiasmann.twl.utils.PNGDecoder.Format;
@@ -16,13 +19,14 @@ import de.matthiasmann.twl.utils.PNGDecoder.Format;
  */
 public class TextureManager {
 
-	HashMap<String, ByteBuffer> textures = new HashMap<String, ByteBuffer>();
+	HashMap<String, BufferedImage> textures = new HashMap<String, BufferedImage>();
 
 	/**
 	 * Constructs a new TextureManager and loads a test png.
 	 */
 	public TextureManager() {
-		loadTexture("assets\\textures\\test.png");
+		loadTexture("test.png");
+		loadTexture("floor.png");
 	}
 	
 	/**
@@ -31,19 +35,10 @@ public class TextureManager {
 	 * @param path The path of the file to load
 	 */
 	public void loadTexture(String path){
-
-		InputStream in;
 		try {
-			in = new FileInputStream(path);		
-
-			PNGDecoder decoder = new PNGDecoder(in);
-
-			ByteBuffer buf = ByteBuffer.allocateDirect(4*decoder.getWidth()*decoder.getHeight());
-			decoder.decode(buf, decoder.getWidth()*4, Format.RGBA);
-			buf.flip();
-			textures.put(path.substring(path.lastIndexOf("\\")+1), buf);
-			
-			in.close();
+			BufferedImage img;
+			img = ImageIO.read(this.getClass().getResource(path));
+			textures.put("floor", img);
 		}
 		catch (Exception e){
 			e.printStackTrace();
@@ -56,7 +51,7 @@ public class TextureManager {
 	 * @param name The name of the image
 	 * @return The ByteBuffer for the image
 	 */
-	public ByteBuffer getTextureBuffer(String name){
+	public BufferedImage getTextureBuffer(String name){
 		if (textures.containsKey(name)){
 			return textures.get(name);
 		}
