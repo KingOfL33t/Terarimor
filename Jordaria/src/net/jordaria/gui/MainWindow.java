@@ -359,7 +359,7 @@ public class MainWindow implements Listener{
 				//jd.getEventManager().fireEvent(new DebugMessage("X:"+x+" Y:"+y));
 				fillRect(x*width+cameraX, y*height+cameraY, width, height, r, g, b);
 			}
-			GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGB, 20, 20, 0, GL11.GL_RGB, GL11.GL_UNSIGNED_BYTE, textureManager.getTextureBuffer("floor.png"));
+			//GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGB, 20, 20, 0, GL11.GL_RGB, GL11.GL_UNSIGNED_BYTE, textureManager.getTextureBuffer("floor.png"));
 		}
 
 		Display.update();

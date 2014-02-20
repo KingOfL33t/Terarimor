@@ -73,22 +73,25 @@ public class FileIO {
 			String seperator = File.separator;
 			
 			
-			final String path = "assets"+seperator+"textures";
+			final String path;
+			
 			final File jarFile = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
-
+			jd.eventManager.fireEvent(new DebugMessage(getClass().getProtectionDomain().getCodeSource().getLocation().getPath()));
 			if(jarFile.isFile()) {  // Run with JAR file
+				path = seperator+"assets"+seperator+"textures"+seperator;
 			    final JarFile jar = new JarFile(jarFile);
 			    final Enumeration<JarEntry> entries = jar.entries(); //gives ALL entries in jar
 			    while(entries.hasMoreElements()) {
 			        final String name = entries.nextElement().getName();
-			        if (name.startsWith(path + seperator)) { //filter according to the path
+			        if (name.startsWith(path)) { //filter according to the path
 			            System.out.println(name);
 			            jd.eventManager.fireEvent(new DebugMessage(name));
 			        }
 			    }
 			    jar.close();
 			} else { // Run with IDE
-			    final URL url = FileIO.class.getResource(seperator+ path);
+				path = "net"+seperator+"Jordaria"+seperator+"assets"+seperator+"textures";
+			    final URL url = FileIO.class.getResource(path);
 			    if (url != null) {
 			        try {
 			            final File apps = new File(url.toURI());

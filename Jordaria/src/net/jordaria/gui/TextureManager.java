@@ -25,20 +25,21 @@ public class TextureManager {
 	 * Constructs a new TextureManager and loads a test png.
 	 */
 	public TextureManager() {
-		loadTexture("test.png");
-		loadTexture("floor.png");
+		loadTexture("test");
+		loadTexture("floor");
 	}
 	
 	/**
 	 * Loads the texture located in the given path.
+	 * Assumes .png filetype.
 	 * 
-	 * @param path The path of the file to load
+	 * @param name The name of the file to load
 	 */
-	public void loadTexture(String path){
+	public void loadTexture(String name){
 		try {
 			BufferedImage img;
-			img = ImageIO.read(this.getClass().getResource(path));
-			textures.put("floor", img);
+			//img = ImageIO.read(this.getClass().getResource("/Jordaria/assets/textures/"+name+".png"));
+			//textures.put(name, img);
 		}
 		catch (Exception e){
 			e.printStackTrace();

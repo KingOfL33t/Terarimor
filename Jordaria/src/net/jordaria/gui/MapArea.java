@@ -2,10 +2,12 @@ package net.jordaria.gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.TexturePaint;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
@@ -98,6 +100,7 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 	 */
 	public void paint(Graphics g) {
 		super.paint(g);
+		Graphics2D g2d = (Graphics2D) g;
 		if (eventManagerValid){
 			if(currentMap == null){
 				System.out.println("Null map");
@@ -112,16 +115,20 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 				return;
 			}
 
-			
+
 			int x,y;
 			for (y = 0+cameraY; y < tileHeight+cameraY; y++){
 				for (x = 0+cameraX; x < tileWidth+cameraX; x++){
 					if (currentMap.getTile(x, y).getTileType().getName().equals("floor")){
-						texturePaint = new TexturePaint(textureManager.getTextureBuffer(currentMap.getTile(x, y).getTileType().getName()), new Rectangle(x*scale-cameraX*scale, y*scale-cameraY*scale, scale, scale));
-						//TODO paint the texture
+						BufferedImage img = textureManager.getTextureBuffer(currentMap.getTile(x, y).getTileType().getName());
+						//texturePaint = new TexturePaint(img, new Rectangle(0, 0, img.getWidth(), img.getHeight()));
+						g2d.setPaint(texturePaint);
+						g2d.drawRect(x*scale-cameraX*scale, y*scale-cameraY*scale, scale, scale);
 					}
-					g.setColor(tmpGetColorForTile(currentMap.getTile(x, y).getTileType().getID()));
-					g.fillRect(x*scale-cameraX*scale, y*scale-cameraY*scale, scale, scale);
+					else{
+						g.setColor(tmpGetColorForTile(currentMap.getTile(x, y).getTileType().getID()));
+						g.fillRect(x*scale-cameraX*scale, y*scale-cameraY*scale, scale, scale);
+					}
 				}
 			}
 		}
