@@ -70,40 +70,49 @@ public class FileIO {
 	 */
 	public void copyFilesToDisk(String homeDir){
 		try {
-			String seperator = File.separator;
-			
-			
+			String seperator = "\\";//File.separator;
+
+
 			final String path;
-			
+
 			final File jarFile = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
-			jd.eventManager.fireEvent(new DebugMessage(getClass().getProtectionDomain().getCodeSource().getLocation().getPath()));
+			//jd.eventManager.fireEvent(new DebugMessage(getClass().getProtectionDomain().getCodeSource().getLocation().getPath()));
 			if(jarFile.isFile()) {  // Run with JAR file
-				path = seperator+"assets"+seperator+"textures"+seperator;
-			    final JarFile jar = new JarFile(jarFile);
-			    final Enumeration<JarEntry> entries = jar.entries(); //gives ALL entries in jar
-			    while(entries.hasMoreElements()) {
-			        final String name = entries.nextElement().getName();
-			        if (name.startsWith(path)) { //filter according to the path
-			            System.out.println(name);
-			            jd.eventManager.fireEvent(new DebugMessage(name));
-			        }
-			    }
-			    jar.close();
-			} else { // Run with IDE
-				path = "net"+seperator+"Jordaria"+seperator+"assets"+seperator+"textures";
+				seperator = "/";
+				path = jarFile.getAbsolutePath()+seperator+"assets"+seperator+"textures";
+				path.replaceAll("\\." , "/");
+
+				final JarFile jar = new JarFile(jarFile);
+				final Enumeration<JarEntry> entries = jar.entries(); //gives ALL entries in jar
+				while(entries.hasMoreElements()) {
+
+					final String name = entries.nextElement().getName();
+					if (name.startsWith(path)) { //filter according to the path
+						//System.out.println(name);
+						jd.eventManager.fireEvent(new DebugMessage(name));
+					}
+				}
+
+				jar.close();
+			}
+			//Uncomment to output dirs
+			/*
+			else { // Run with IDE
+				path = seperator+"assets"+seperator+"textures";
+				path.replaceAll("\\." , "/");
 			    final URL url = FileIO.class.getResource(path);
 			    if (url != null) {
 			        try {
 			            final File apps = new File(url.toURI());
 			            for (File app : apps.listFiles()) {
 			                System.out.println(app);
-			                jd.eventManager.fireEvent(new DebugMessage(app.getAbsolutePath()));
+			                //jd.eventManager.fireEvent(new DebugMessage(app.getAbsolutePath()));
 			            }
 			        } catch (URISyntaxException ex) {
 			            // never happens
 			        }
 			    }
-			}
+			}*/
 		} catch (IOException e) {
 			jd.eventManager.fireEvent(new Error("Error copying file to disk ("+e.getMessage()+")"));
 		}

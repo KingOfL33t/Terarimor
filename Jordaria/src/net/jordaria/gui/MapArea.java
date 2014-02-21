@@ -121,7 +121,7 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 				for (x = 0+cameraX; x < tileWidth+cameraX; x++){
 					if (currentMap.getTile(x, y).getTileType().getName().equals("floor")){
 						BufferedImage img = textureManager.getTextureBuffer(currentMap.getTile(x, y).getTileType().getName());
-						//texturePaint = new TexturePaint(img, new Rectangle(0, 0, img.getWidth(), img.getHeight()));
+						texturePaint = new TexturePaint(img, new Rectangle(0, 0, img.getWidth(), img.getHeight()));
 						g2d.setPaint(texturePaint);
 						g2d.drawRect(x*scale-cameraX*scale, y*scale-cameraY*scale, scale, scale);
 					}

@@ -1,15 +1,12 @@
 package net.jordaria.gui;
 
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
-import de.matthiasmann.twl.utils.PNGDecoder;
-import de.matthiasmann.twl.utils.PNGDecoder.Format;
+import net.jordaria.FileIO;
 
 /**
  * Handles loading, storing, and retrieving textures.
@@ -38,8 +35,10 @@ public class TextureManager {
 	public void loadTexture(String name){
 		try {
 			BufferedImage img;
-			//img = ImageIO.read(this.getClass().getResource("/Jordaria/assets/textures/"+name+".png"));
-			//textures.put(name, img);
+			String path = "\\assets\\textures\\";
+			path.replaceAll("\\." , "/");
+			img = ImageIO.read(FileIO.class.getResource(path+name+".png"));
+			textures.put(name, img);
 		}
 		catch (Exception e){
 			e.printStackTrace();
