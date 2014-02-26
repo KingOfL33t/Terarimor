@@ -24,8 +24,14 @@ public class TextureManager {
 	public TextureManager() {
 		loadTexture("test");
 		loadTexture("floor");
+		loadTexture("floorBloody");
+		loadTexture("floorBroken");
+		loadTexture("floorCracked");
+		loadTexture("floorPlant");
+		loadTexture("floorRocks");
+		loadTexture("walls");
 	}
-	
+
 	/**
 	 * Loads the texture located in the given path.
 	 * Assumes .png filetype.
@@ -44,7 +50,7 @@ public class TextureManager {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Gets the {@link ByteBuffer ByteBuffer} of the specified image name.
 	 * 

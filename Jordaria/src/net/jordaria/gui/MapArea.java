@@ -117,13 +117,21 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 
 
 			int x,y;
+			String tileName;
 			for (y = 0+cameraY; y < tileHeight+cameraY; y++){
 				for (x = 0+cameraX; x < tileWidth+cameraX; x++){
-					if (currentMap.getTile(x, y).getTileType().getName().equals("floor")){
+					tileName = currentMap.getTile(x, y).getTileType().getName();
+					if (tileName.equals("floor")
+							||tileName.equals("floorBloody")
+							||tileName.equals("floorBroken")
+							||tileName.equals("floorCracked")
+							||tileName.equals("floorPlant")
+							||tileName.equals("floorRocks")
+							||tileName.equals("walls")){
 						BufferedImage img = textureManager.getTextureBuffer(currentMap.getTile(x, y).getTileType().getName());
-						texturePaint = new TexturePaint(img, new Rectangle(0, 0, img.getWidth(), img.getHeight()));
+						texturePaint = new TexturePaint(img, new Rectangle(0, 0, scale, scale));
 						g2d.setPaint(texturePaint);
-						g2d.drawRect(x*scale-cameraX*scale, y*scale-cameraY*scale, scale, scale);
+						g2d.fillRect(x*scale-cameraX*scale, y*scale-cameraY*scale, scale, scale);
 					}
 					else{
 						g.setColor(tmpGetColorForTile(currentMap.getTile(x, y).getTileType().getID()));
