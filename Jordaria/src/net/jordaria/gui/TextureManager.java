@@ -30,6 +30,7 @@ public class TextureManager {
 		loadTexture("floorPlant");
 		loadTexture("floorRocks");
 		loadTexture("walls");
+		loadTexture("roof");
 	}
 
 	/**

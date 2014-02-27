@@ -121,20 +121,15 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 			for (y = 0+cameraY; y < tileHeight+cameraY; y++){
 				for (x = 0+cameraX; x < tileWidth+cameraX; x++){
 					tileName = currentMap.getTile(x, y).getTileType().getName();
-					if (tileName.equals("floor")
-							||tileName.equals("floorBloody")
-							||tileName.equals("floorBroken")
-							||tileName.equals("floorCracked")
-							||tileName.equals("floorPlant")
-							||tileName.equals("floorRocks")
-							||tileName.equals("walls")){
+					try{
 						BufferedImage img = textureManager.getTextureBuffer(currentMap.getTile(x, y).getTileType().getName());
 						texturePaint = new TexturePaint(img, new Rectangle(0, 0, scale, scale));
 						g2d.setPaint(texturePaint);
 						g2d.fillRect(x*scale-cameraX*scale, y*scale-cameraY*scale, scale, scale);
 					}
-					else{
-						g.setColor(tmpGetColorForTile(currentMap.getTile(x, y).getTileType().getID()));
+					catch(NullPointerException e){
+
+						g.setColor(new Color(.8f, .21f, .43f));
 						g.fillRect(x*scale-cameraX*scale, y*scale-cameraY*scale, scale, scale);
 					}
 				}
@@ -142,49 +137,6 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 		}
 	}
 
-	/**
-	 * Temporary method. finds the color for a given tiletype.
-	 */
-	private Color tmpGetColorForTile(int id){
-		switch (id){
-		case -1: return new Color(.8f, .21f, .43f);
-		case 0: return new Color(.01f, .01f, .05f);
-		case 1: return new Color(.7f, .3f, .1f);
-		case 2: return new Color(.7f, .3f, .3f);
-		case 3: return new Color(.7f, .3f, .4f);
-		case 4: return new Color(.7f, .3f, .6f);
-		case 5: return new Color(.7f, .3f, .8f);
-		case 6: return new Color(.7f, .5f, .8f);
-		case 7: return new Color(.2f, .2f, .2f);
-		case 8: return new Color(.2f, .4f, .4f);
-		case 9: return new Color(.4f, .4f, .4f);
-		case 10: return new Color(.4f, .2f, .2f);
-		case 12: return new Color(.4f, .2f, .4f);
-		case 13: return new Color(.4f, .4f, .2f);
-		case 14: return new Color(.3f, .3f, .3f);
-		case 15: return new Color(.4f, .2f, .3f);
-		case 16: return new Color(.4f, .8f, .5f);
-		case 17: return new Color(.5f, .4f, .8f);
-		case 18: return new Color(.8f, .4f, .1f);
-		case 19: return new Color(.2f, .7f, .3f);
-		case 20: return new Color(.2f, .7f, .3f);
-		case 21: return new Color(.3f, .2f, .8f);
-		case 22: return new Color(.1f, .9f, .9f);
-		case 23: return new Color(.1f, .7f, .9f);
-		case 24: return new Color(.1f, .5f, .9f);
-		case 25: return new Color(.1f, .3f, .9f);
-		case 26: return new Color(.6f, .2f, .9f);
-		case 27: return new Color(.2f, .2f, .8f);
-		case 28: return new Color(.2f, .8f, .8f);
-		case 29: return new Color(.8f, .8f, .2f);
-		case 30: return new Color(.8f, .8f, .8f);
-		case 31: return new Color(.5f, .1f, .1f);
-		case 32: return new Color(.1f, .5f, .5f);
-		case 33: return new Color(.5f, .6f, .5f);
-		case 34: return new Color(.5f, .6f, .6f);
-		}
-		return new Color(.8f, .21f, .43f);
-	}
 	/**
 	 * Resets this map to the new one and resets the camera.
 	 * 

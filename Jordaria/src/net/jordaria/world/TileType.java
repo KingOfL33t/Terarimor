@@ -22,13 +22,11 @@ public enum TileType {
 	LEDGE_W(12,"ledgeW", true),
 	DOOR_N(13,"doorN"),
 	DOOR_E(14,"doorE"),
-	DOOR_S(15,"doorS"),
-	DOOR_W(16,"doorW"),
-	STAIRS_N(17,"stairsN"),
-	STAIRS_E(18,"stairsE"),
-	STAIRS_S(19,"stairsS"),
-	STAIRS_W(20,"stairsW"),
-	ROOF(21,"roof", true),
+	DOOR_W(15,"doorW"),
+	STAIRS_N(16,"stairsN"),
+	STAIRS_E(17,"stairsE"),
+	STAIRS_W(8,"stairsW"),
+	ROOF(19,"roof", true),
 	ERROR(-1,"error");
 	
 	private int tileID;
