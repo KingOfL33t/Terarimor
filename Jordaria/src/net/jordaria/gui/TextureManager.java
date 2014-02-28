@@ -31,6 +31,7 @@ public class TextureManager {
 		loadTexture("floorRocks");
 		loadTexture("walls");
 		loadTexture("roof");
+		loadTexture("doorN");
 	}
 
 	/**

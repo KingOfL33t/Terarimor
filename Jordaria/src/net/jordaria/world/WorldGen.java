@@ -58,7 +58,10 @@ public class WorldGen {
 	public void fillWithTown(Map map){
 		generateMixedFloor(map);
 		setOutsideWalls(map);
-		for (int i = 0; i < 10; i++){
+		int area = map.getWidth()*map.getHeight();
+		int density = 20;//density in percent
+		
+		for (int i = 0; i < (area*density)/(100*28); i++){//28 is max area of a house
 			if (!generateHouse(map)){
 				i--;
 			}
@@ -96,7 +99,13 @@ public class WorldGen {
 		Structure house = new Structure();
 
 		int width = random.getIntBetween(3,7);
-		int height = random.getIntBetween(2,4);
+		while (width % 2 == 0){
+			width = random.getIntBetween(3,7);
+		}
+		int height = random.getIntBetween(3,4);
+		while (height % 2 != 0){
+			height = random.getIntBetween(3,4);
+		}
 
 		Tile[][] houseTiles = new Tile[height][width];
 		int x,y;
@@ -146,7 +155,7 @@ public class WorldGen {
 		AxisAlignedBoundingBox structAABB = new AxisAlignedBoundingBox(posX, posY, posX+struct.getWidth(), posY+struct.getHeight());
 
 		if (requiresPerimeter){
-			structAABB.expand(1, 1);
+			structAABB.expand(2, 2);
 		}
 
 		if (!(structAABB.isInside(mapAABB))){

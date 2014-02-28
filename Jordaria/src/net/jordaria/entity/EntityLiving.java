@@ -11,7 +11,6 @@ import net.jordaria.world.World;
 public class EntityLiving extends EntityWithInventory{
 	public int health;
 	public int maxHealth = 100;
-	public String name;
 	
 	/**
 	 * Constructs a new EntityLiving in the given world.
@@ -20,6 +19,7 @@ public class EntityLiving extends EntityWithInventory{
 	 */
 	public EntityLiving(World world){
 		super(world);
+		health = maxHealth;
 	}
 	
 	/**
@@ -53,5 +53,7 @@ public class EntityLiving extends EntityWithInventory{
 	public void setHealthToMax(){
 		this.health = this.maxHealth;
 	}
+	
+	
 	
 }

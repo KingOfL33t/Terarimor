@@ -1,4 +1,4 @@
-package net.jordaria.entity;
+package net.jordaria.math;
 
 /**
  * A class for generating random names.

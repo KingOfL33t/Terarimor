@@ -23,6 +23,8 @@ public abstract class Entity {
 	public float width;
 	public float height;
 	public Direction direction;
+	
+	public String name;
 
 	/**
 	 * Constructs a new entity in the specified world with 
@@ -147,5 +149,23 @@ public abstract class Entity {
 	 */
 	public Direction getDirection() {
 		return direction;
+	}
+	
+	/**
+	 * Sets the name of the entity.
+	 * 
+	 * @param name The new name
+	 */
+	public void setName(String name){
+		this.name = name;
+	}
+	
+	/**
+	 * Returns the name of the entity.
+	 * 
+	 * @return The current name
+	 */
+	public String getName(){
+		return this.name;
 	}
 }

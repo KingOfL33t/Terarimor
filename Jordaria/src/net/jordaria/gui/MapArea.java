@@ -117,10 +117,9 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 
 
 			int x,y;
-			String tileName;
+
 			for (y = 0+cameraY; y < tileHeight+cameraY; y++){
 				for (x = 0+cameraX; x < tileWidth+cameraX; x++){
-					tileName = currentMap.getTile(x, y).getTileType().getName();
 					try{
 						BufferedImage img = textureManager.getTextureBuffer(currentMap.getTile(x, y).getTileType().getName());
 						texturePaint = new TexturePaint(img, new Rectangle(0, 0, scale, scale));

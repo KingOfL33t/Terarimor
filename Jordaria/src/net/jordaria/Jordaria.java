@@ -5,7 +5,6 @@ import javax.swing.JLabel;
 
 import net.jordaria.debug.DebugConsole;
 import net.jordaria.entity.EntityPlayer;
-import net.jordaria.entity.NameGenerator;
 import net.jordaria.event.EventHandler;
 import net.jordaria.event.EventManager;
 import net.jordaria.event.Listener;
@@ -16,6 +15,7 @@ import net.jordaria.event.events.GraphicsSystemStarted;
 import net.jordaria.event.events.ShuttingDown;
 import net.jordaria.event.events.Tick;
 import net.jordaria.gui.SwingMainWindow;
+import net.jordaria.math.NameGenerator;
 import net.jordaria.math.Random;
 import net.jordaria.world.Map;
 import net.jordaria.world.World;
@@ -96,7 +96,7 @@ public class Jordaria implements Runnable, Listener{
 			
 
 			//Create a small test map
-			Map map = new Map(30, 30);
+			Map map = new Map(50, 50);
 			theWorld.getWorldGenerator().fillWithTown(map);
 			theWorld.setCurrentMap(map);
 
