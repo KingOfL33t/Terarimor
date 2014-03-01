@@ -137,7 +137,7 @@ public class Map {
 	 */
 	public void repopulateCollisionBoxes(){
 		ArrayList<AxisAlignedBoundingBox> boxes = new ArrayList<AxisAlignedBoundingBox>();
-		AxisAlignedBoundingBox tmp = new AxisAlignedBoundingBox(0, 0, 0, 0);
+		AxisAlignedBoundingBox tmp = new AxisAlignedBoundingBox(0, 0, 0, 0, 0, 0);
 		//true if the block at that pos is solid, false otherwise.
 		Boolean[][] solid = new Boolean[getHeight()][getWidth()];
 
@@ -176,7 +176,7 @@ public class Map {
 	 * @return The largest rectangles AABB
 	 */
 	private AxisAlignedBoundingBox getLargestRectStartingAtCoord(Boolean[][] solidArray, int x, int y){
-		AxisAlignedBoundingBox largestRect = new AxisAlignedBoundingBox(x, y, x, y);
+		AxisAlignedBoundingBox largestRect = new AxisAlignedBoundingBox(x, y, 0, x, y, 0);
 
 		int arrayWidth = 0;
 		int arrayHeight = solidArray.length;
@@ -244,7 +244,7 @@ public class Map {
 
 		}
 		
-		largestRect.setBounds(x, y, x+maxWidth, y+maxHeight);
+		largestRect.setBounds(x, y, 0, x+maxWidth, y+maxHeight, 0);
 
 		return largestRect;
 

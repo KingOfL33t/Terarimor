@@ -150,12 +150,12 @@ public class WorldGen {
 	 */
 	private boolean isValidPosition(Map map, Structure struct, int posX, int posY, boolean requiresPerimeter){
 		//create an AABB with the maps dimensions
-		AxisAlignedBoundingBox mapAABB = new AxisAlignedBoundingBox(0, 0, map.getWidth()-1, map.getHeight()-1);
+		AxisAlignedBoundingBox mapAABB = new AxisAlignedBoundingBox(0, 0, 0, map.getWidth()-1, map.getHeight()-1, 0);
 
-		AxisAlignedBoundingBox structAABB = new AxisAlignedBoundingBox(posX, posY, posX+struct.getWidth(), posY+struct.getHeight());
+		AxisAlignedBoundingBox structAABB = new AxisAlignedBoundingBox(posX, posY, 0, posX+struct.getWidth(), posY+struct.getHeight(), 0);
 
 		if (requiresPerimeter){
-			structAABB.expand(2, 2);
+			structAABB.expand(2, 2, 0);
 		}
 
 		if (!(structAABB.isInside(mapAABB))){
