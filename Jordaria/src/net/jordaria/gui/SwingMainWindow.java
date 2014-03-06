@@ -7,14 +7,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
-import java.util.EventListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JScrollPane;
 
 import net.jordaria.Jordaria;
 import net.jordaria.KeyBind;
@@ -43,7 +41,7 @@ public class SwingMainWindow extends WindowAdapter implements Listener, ActionLi
 	JMenu menuDebug;//The debug menu. Disabled if debug is not active
 	JMenuItem menuItemDebugPanel;//starts the debug panel
 	//The text area
-	ScrollingTextArea textArea;
+	//ScrollingTextArea textArea;
 	//The area for displaying the map
 	MapArea mapArea;
 	//A reference to the main jordaria class
@@ -89,16 +87,16 @@ public class SwingMainWindow extends WindowAdapter implements Listener, ActionLi
 		menuFile.add(menuItemFileExit);
 		menuDebug.add(menuItemDebugPanel);
 
-		textArea = new ScrollingTextArea();
-		textArea.setMaxHistory(50);
-		textArea.setBorder(BorderFactory.createEtchedBorder());
+		//textArea = new ScrollingTextArea();
+		//textArea.setMaxHistory(50);
+		//textArea.setBorder(BorderFactory.createEtchedBorder());
 
 		mapArea = new MapArea(jordaria);
 		mapArea.setBorder(BorderFactory.createEtchedBorder());
 		
 		menuBar.addKeyListener(this);
 		mapArea.addKeyListener(this);
-		textArea.addKeyListener(this);
+		//textArea.addKeyListener(this);
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
@@ -113,14 +111,14 @@ public class SwingMainWindow extends WindowAdapter implements Listener, ActionLi
 		c.gridheight = 4;
 		c.gridx = 0;
 		c.gridy = 1;
-		c.weighty = 4;
+		c.weighty = 1;
 		frame.add(mapArea, c);
-		c.gridwidth = 2;
-		c.gridheight = 1;
-		c.gridx = 0;
-		c.gridy = 5;
-		c.weighty = .5;
-		frame.add(new JScrollPane(textArea), c);
+		//c.gridwidth = 2;
+		//c.gridheight = 1;
+		//c.gridx = 0;
+		//c.gridy = 5;
+		//c.weighty = .5;
+		//frame.add(new JScrollPane(textArea), c);
 
 		frame.setVisible(true);
 
@@ -191,6 +189,7 @@ public class SwingMainWindow extends WindowAdapter implements Listener, ActionLi
 	public void keyPressed(KeyEvent e) {
 		KeyBind.setKeyBindState(e.getKeyCode(), true);
 		KeyBind.onTick(e.getKeyCode());
+		System.out.println(e.getKeyChar());
 	}
 
 	@Override

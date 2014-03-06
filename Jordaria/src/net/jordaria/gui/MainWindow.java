@@ -110,60 +110,6 @@ public class MainWindow implements Listener{
 	}
 	
 	/**
-	 * Draws a the top triangle of a rectangle on the screen with the specified data.
-	 * 
-	 * @param posX The x position to start in
-	 * @param posY The y position to start in
-	 * @param width The width of the rectangle
-	 * @param height The height of the rectangle
-	 * @param r The red color value
-	 * @param g The green color value
-	 * @param b The blue color value
-	 */
-	private void fillTriangleTop(float posX, float posY, float width, float height, float r, float g, float b){
-		GL11.glBegin(GL11.GL_TRIANGLES);
-
-		// top left
-		GL11.glColor3f(r, g, b);
-		GL11.glVertex2f(posX, posY);
-
-		// top right
-		GL11.glVertex2f(posX+width, posY);
-
-		// bottom right
-		GL11.glVertex2f(posX+width, posY+height);
-
-		GL11.glEnd();
-	}
-	
-	/**
-	 * Draws a the bottom triangle of a rectangle on the screen with the specified data.
-	 * 
-	 * @param posX The x position to start in
-	 * @param posY The y position to start in
-	 * @param width The width of the rectangle
-	 * @param height The height of the rectangle
-	 * @param r The red color value
-	 * @param g The green color value
-	 * @param b The blue color value
-	 */
-	private void fillTriangleBottom(float posX, float posY, float width, float height, float r, float g, float b){
-		GL11.glBegin(GL11.GL_TRIANGLES);
-
-		// bottom right
-		GL11.glColor3f(r, g, b);
-		GL11.glVertex2f(posX+width, posY+height);
-
-		//bottom left
-		GL11.glVertex2f(posX, posY+height);
-
-		//top left
-		GL11.glVertex2f(posX, posY);
-
-		GL11.glEnd();
-	}
-	
-	/**
 	 * Set keybinds and execute commands based on key states.
 	 */
 	public void handleKeyboard(){
