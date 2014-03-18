@@ -6,9 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 
-import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -30,7 +31,7 @@ import net.jordaria.event.events.Tick;
  * @author Ches Burks
  *
  */
-public class SwingMainWindow extends WindowAdapter implements Listener, ActionListener, KeyListener{
+public class SwingMainWindow extends WindowAdapter implements Listener, ActionListener, KeyListener, MouseMotionListener{
 	//This windows frame
 	JFrame frame;
 	//The menu bar for the window
@@ -40,14 +41,11 @@ public class SwingMainWindow extends WindowAdapter implements Listener, ActionLi
 	JMenu menuSettings;//The settings menu
 	JMenu menuDebug;//The debug menu. Disabled if debug is not active
 	JMenuItem menuItemDebugPanel;//starts the debug panel
-	//The text area
-	//ScrollingTextArea textArea;
 	//The area for displaying the map
 	MapArea mapArea;
 	//A reference to the main jordaria class
 	Jordaria jordaria;
 	private boolean registered;//True if the event system has registered. A bit of a hack.
-
 
 	/**
 	 * Constructs a new {@link SwingMainWindow} with a reference 
@@ -63,12 +61,12 @@ public class SwingMainWindow extends WindowAdapter implements Listener, ActionLi
 	 * Initializes the frame for use.
 	 */
 	public void init(){
+		
 		//frame
 		frame = new JFrame(Jordaria.config.getWindow_title());
 		frame.setSize(Jordaria.config.getWindow_width(), Jordaria.config.getWindow_height());
 		frame.setLayout(new GridBagLayout());
 		
-
 		//menus
 		menuBar = new JMenuBar();
 		menuFile = new JMenu("File");
@@ -87,16 +85,10 @@ public class SwingMainWindow extends WindowAdapter implements Listener, ActionLi
 		menuFile.add(menuItemFileExit);
 		menuDebug.add(menuItemDebugPanel);
 
-		//textArea = new ScrollingTextArea();
-		//textArea.setMaxHistory(50);
-		//textArea.setBorder(BorderFactory.createEtchedBorder());
-
 		mapArea = new MapArea(jordaria);
-		mapArea.setBorder(BorderFactory.createEtchedBorder());
-		
+		frame.addKeyListener(this);
 		menuBar.addKeyListener(this);
 		mapArea.addKeyListener(this);
-		//textArea.addKeyListener(this);
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
@@ -112,13 +104,8 @@ public class SwingMainWindow extends WindowAdapter implements Listener, ActionLi
 		c.gridx = 0;
 		c.gridy = 1;
 		c.weighty = 1;
-		frame.add(mapArea, c);
-		//c.gridwidth = 2;
-		//c.gridheight = 1;
-		//c.gridx = 0;
-		//c.gridy = 5;
-		//c.weighty = .5;
-		//frame.add(new JScrollPane(textArea), c);
+		frame.add(mapArea, c, 0);
+		
 
 		frame.setVisible(true);
 
@@ -189,7 +176,7 @@ public class SwingMainWindow extends WindowAdapter implements Listener, ActionLi
 	public void keyPressed(KeyEvent e) {
 		KeyBind.setKeyBindState(e.getKeyCode(), true);
 		KeyBind.onTick(e.getKeyCode());
-		System.out.println(e.getKeyChar());
+		//System.out.println(e.getKeyChar());
 	}
 
 	@Override
@@ -199,4 +186,9 @@ public class SwingMainWindow extends WindowAdapter implements Listener, ActionLi
 
 	@Override
 	public void keyTyped(KeyEvent e) {}
+	
+	@Override
+	public void mouseDragged(MouseEvent e) {}
+	@Override
+	public void mouseMoved(MouseEvent e) {}
 }

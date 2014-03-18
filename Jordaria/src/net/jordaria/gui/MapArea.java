@@ -29,10 +29,10 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 
 	private static final long serialVersionUID = -6525651076156323158L;
 
-	private int tileWidth = 20;//how many tiles fit horizontally
-	private int tileHeight = 20;//how many tiles fit vertically
-	private int defaultTileWidth = 20;
-	private int defaultTileHeight = 20;
+	private int defaultTileWidth = 10;
+	private int defaultTileHeight = 10;
+	private int tileWidth = defaultTileWidth;//how many tiles fit horizontally
+	private int tileHeight = defaultTileHeight;//how many tiles fit vertically
 	private int mapWidth = 0;//how wide the map is
 	private int mapHeight = 0;//how tall the map is
 	private int scale = 1;//how large a tile should be drawn on the map area
@@ -69,39 +69,38 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 
 	@EventHandler
 	public void onTick(Tick event){
-		repaint();
 		handleKeyboard();
+		repaint();
 	}
 
 	/**
 	 * Handles input from the keyboard
 	 */
 	public void handleKeyboard(){
-		while (jordaria.getGameSettings().KEYBIND_MOVE_FORWARD.isPressed() && this.cameraY > 0)
-		{
-			this.cameraY-=1;
-		}
-		while (jordaria.getGameSettings().KEYBIND_MOVE_BACKWARD.isPressed() && this.cameraY+tileHeight < mapHeight)
-		{
-			this.cameraY+=1;
-		}
-		while (jordaria.getGameSettings().KEYBIND_MOVE_LEFT.isPressed() && this.cameraX > 0)
-		{
-			this.cameraX-=1;
-		}
-		while (jordaria.getGameSettings().KEYBIND_MOVE_RIGHT.isPressed() && this.cameraX+tileWidth < mapWidth)
-		{
-			this.cameraX+=1;
-		}
-
+			while (jordaria.getGameSettings().KEYBIND_MOVE_FORWARD.isPressed() && this.cameraY > 0)
+			{
+					this.cameraY-=1;
+			}
+			while (jordaria.getGameSettings().KEYBIND_MOVE_BACKWARD.isPressed() && this.cameraY+tileHeight < mapHeight)
+			{
+					this.cameraY+=1;
+			}
+			while (jordaria.getGameSettings().KEYBIND_MOVE_LEFT.isPressed() && this.cameraX > 0)
+			{
+					this.cameraX-=1;
+			}
+			while (jordaria.getGameSettings().KEYBIND_MOVE_RIGHT.isPressed() && this.cameraX+tileWidth < mapWidth)
+			{
+					this.cameraX+=1;
+			}
 	}
 	/**
 	 * Repaints the component
 	 */
 	public void paint(Graphics g) {
 		super.paint(g);
-		Graphics2D g2d = (Graphics2D) g;
 		if (eventManagerValid){
+			Graphics2D g2d = (Graphics2D) g;
 			if(currentMap == null){
 				System.out.println("Null map");
 				return;
@@ -115,7 +114,7 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 				return;
 			}
 
-
+			//draw the map
 			int x,y;
 
 			for (y = 0+cameraY; y < tileHeight+cameraY; y++){
@@ -133,6 +132,15 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 					}
 				}
 			}
+			g2d.setColor(new Color(0,0,0));
+			//paint text
+			g2d.drawString("Map W:"+mapWidth, 10, 10);
+			g2d.drawString("Map H:"+mapHeight, 10, 20);
+			g2d.drawString("Tile W:"+tileWidth, 10, 30);
+			g2d.drawString("Tile H:"+tileHeight, 10, 40);
+			g2d.drawString("scale:"+scale, 10, 50);
+			g2d.drawString("Cam X:"+cameraX, 10, 60);
+			g2d.drawString("Cam Y:"+cameraY, 10, 70);
 		}
 	}
 
@@ -223,7 +231,6 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 		if (this.getWidth()>this.getHeight()){
 			//WIDE so limited by the height
 			scale = getHeight()/tileHeight;
-
 		}
 		else{
 			//TALL so limited by width
