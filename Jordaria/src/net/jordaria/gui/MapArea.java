@@ -13,7 +13,6 @@ import javax.swing.JPanel;
 
 import net.jordaria.Jordaria;
 import net.jordaria.event.EventHandler;
-import net.jordaria.event.EventManager;
 import net.jordaria.event.Listener;
 import net.jordaria.event.events.MapChanged;
 import net.jordaria.event.events.Tick;
@@ -37,7 +36,6 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 	private int mapHeight = 0;//how tall the map is
 	private int scale = 1;//how large a tile should be drawn on the map area
 	private Map currentMap;
-	private EventManager eventManager;
 	private Jordaria jordaria;
 	private int cameraX = 0;//how far the map is offset x
 	private int cameraY = 0;//how far the map is offset y
@@ -63,7 +61,7 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 	 * Event system is set up to prevent null references
 	 */
 	public void setEventManager(){
-		this.eventManager = jordaria.getEventManager();
+		jordaria.getEventManager();
 		this.eventManagerValid = true;
 	}
 

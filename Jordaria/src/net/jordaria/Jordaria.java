@@ -13,7 +13,6 @@ import net.jordaria.event.events.Error;
 import net.jordaria.event.events.EventSystemStarted;
 import net.jordaria.event.events.GraphicsSystemStarted;
 import net.jordaria.event.events.ShuttingDown;
-import net.jordaria.event.events.Tick;
 import net.jordaria.gui.SwingMainWindow;
 import net.jordaria.math.NameGenerator;
 import net.jordaria.math.Random;
@@ -41,6 +40,7 @@ public class Jordaria implements Runnable, Listener{
 	public Random rand;//The random number generator for the main program
 	public World theWorld;//The current world
 	public SwingMainWindow swingMainWindow;
+	public Heart heart;
 
 	/**
 	 * The main method. Creates and starts a new game.
@@ -92,7 +92,8 @@ public class Jordaria implements Runnable, Listener{
 			thePlayer = new EntityPlayer(theWorld, namegen.getCharacterNameNordic());
 
 			eventManager.fireEvent(new DebugMessage("Player ("+thePlayer.getUsername()+") created!"));
-
+			
+			heart = new Heart(eventManager);
 			
 
 			//Create a small test map
@@ -177,15 +178,7 @@ public class Jordaria implements Runnable, Listener{
 	 * Fires Tick events while the game is running.
 	 */
 	public void run(){
-		while (this.running){
-			try{
-				eventManager.fireEvent(new Tick());
-			}
-			catch(Exception e){
-				break;
-			}
-		}
-
+		heart.start();
 	}
 
 	/**

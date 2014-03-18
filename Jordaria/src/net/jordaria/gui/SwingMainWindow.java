@@ -11,6 +11,8 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
+import javax.swing.JLayeredPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -104,7 +106,13 @@ public class SwingMainWindow extends WindowAdapter implements Listener, ActionLi
 		c.gridx = 0;
 		c.gridy = 1;
 		c.weighty = 1;
-		frame.add(mapArea, c, 0);
+		frame.add(mapArea, c, JLayeredPane.DEFAULT_LAYER);
+		
+		
+		JInternalFrame internalFrame = new JInternalFrame("Window", true, true);
+		internalFrame.setSize(100, 100);
+		internalFrame.setVisible(true);
+		frame.getLayeredPane().add(internalFrame, JLayeredPane.MODAL_LAYER);
 		
 
 		frame.setVisible(true);
