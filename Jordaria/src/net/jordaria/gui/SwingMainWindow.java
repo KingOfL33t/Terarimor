@@ -9,9 +9,11 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
+import java.awt.image.BufferedImage;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -47,7 +49,8 @@ public class SwingMainWindow extends WindowAdapter implements Listener, ActionLi
 	MapArea mapArea;
 	//A reference to the main jordaria class
 	Jordaria jordaria;
-	private boolean registered;//True if the event system has registered. A bit of a hack.
+	private boolean registered;//True if the event system has registered. A bit of a hack.\
+	private TextureManager textureManager;
 
 	/**
 	 * Constructs a new {@link SwingMainWindow} with a reference 
@@ -86,8 +89,10 @@ public class SwingMainWindow extends WindowAdapter implements Listener, ActionLi
 		menuBar.add(menuDebug);
 		menuFile.add(menuItemFileExit);
 		menuDebug.add(menuItemDebugPanel);
+		
+		textureManager = new TextureManager();
 
-		mapArea = new MapArea(jordaria);
+		mapArea = new MapArea(jordaria, textureManager);
 		frame.addKeyListener(this);
 		menuBar.addKeyListener(this);
 		mapArea.addKeyListener(this);
@@ -108,12 +113,11 @@ public class SwingMainWindow extends WindowAdapter implements Listener, ActionLi
 		c.weighty = 1;
 		frame.add(mapArea, c, JLayeredPane.DEFAULT_LAYER);
 		
+		BufferedImage myPicture = textureManager.getTextureBuffer("test");
+		JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+		picLabel.setSize(100, 100);
 		
-		JInternalFrame internalFrame = new JInternalFrame("Window", true, true);
-		internalFrame.setSize(100, 100);
-		internalFrame.setVisible(true);
-		frame.getLayeredPane().add(internalFrame, JLayeredPane.MODAL_LAYER);
-		
+		frame.getLayeredPane().add(picLabel, JLayeredPane.MODAL_LAYER);
 
 		frame.setVisible(true);
 

@@ -49,11 +49,12 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 	 * 
 	 * @param jordaria The reference to the main program
 	 */
-	public MapArea(Jordaria jordaria){
+	public MapArea(Jordaria jordaria, TextureManager textureManager){
 		this.jordaria = jordaria;
+		this.textureManager = textureManager;
 		resetCamera();
 		addComponentListener(this);
-		textureManager = new TextureManager();
+		
 	}
 
 	/**
