@@ -13,9 +13,9 @@ import javax.swing.JPanel;
 
 import net.jordaria.Jordaria;
 import net.jordaria.event.EventHandler;
+import net.jordaria.event.EventManager;
 import net.jordaria.event.EventPriority;
 import net.jordaria.event.Listener;
-import net.jordaria.event.events.Error;
 import net.jordaria.event.events.ShuttingDown;
 import net.jordaria.world.Map;
 import net.jordaria.world.World;
@@ -41,6 +41,7 @@ public class DebugPanel implements ActionListener, Listener{
 	 * Constructs a new DebugPanel and sets up components.
 	 */
 	public DebugPanel(){
+		jd = Jordaria.getInstance();
 		frame = new JFrame("Debug Panel");
 		frame.setSize(350,250);
 		frame.setLayout(new GridLayout(2, 2));
@@ -54,15 +55,12 @@ public class DebugPanel implements ActionListener, Listener{
 		frame.add(b_testTownGen);
 		frame.add(b_startItemTester);
 		frame.setVisible(true);
-	}
-	
-	/**
-	 * Sets the reference to the main program.
-	 * 
-	 * @param jordaria A reference to the main program
-	 */
-	public void setJordariaVar(Jordaria jordaria){
-		this.jd = jordaria;
+		
+		try {
+			EventManager.getInstance().registerEventListeners(this);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -126,12 +124,7 @@ public class DebugPanel implements ActionListener, Listener{
 			frame.setVisible(true);
 		}
 		else if (e.getSource().equals(b_startItemTester)){
-			DebugItemGenPanel itemPanel = new DebugItemGenPanel();
-			try {
-				jd.getEventManager().registerEventListeners(itemPanel);
-			} catch (Exception e1) {
-				jd.getEventManager().fireEvent(new Error("Failed to register itemTest panel"));
-			}
+			new DebugItemGenPanel();
 		}
 
 	}

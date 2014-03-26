@@ -12,8 +12,10 @@ import javax.swing.JTextField;
 
 import net.jordaria.Jordaria;
 import net.jordaria.event.EventHandler;
+import net.jordaria.event.EventManager;
 import net.jordaria.event.EventPriority;
 import net.jordaria.event.Listener;
+import net.jordaria.event.events.Error;
 import net.jordaria.event.events.ShuttingDown;
 import net.jordaria.item.Element;
 import net.jordaria.item.Item;
@@ -59,6 +61,7 @@ public class DebugItemGenPanel implements ActionListener, Listener{
 	 * Constructs a new DebugItemGenPanel and sets up the components.
 	 */
 	public DebugItemGenPanel(){
+
 		frame = new JFrame("Debug Panel");
 		frame.setSize(400,500);
 		frame.setLayout(new GridLayout(7, 2));
@@ -107,15 +110,12 @@ public class DebugItemGenPanel implements ActionListener, Listener{
 
 
 		frame.setVisible(true);
-	}
-	
-	/**
-	 * Sets the reference to the main program.
-	 * 
-	 * @param jordaria A reference to the main program
-	 */
-	public void setJordariaVar(Jordaria jordaria){
-		this.jd = jordaria;
+
+		jd = Jordaria.getInstance();
+		try {
+		} catch (Exception e1) {
+			EventManager.getInstance().fireEvent(new Error("Failed to register itemTest panel"));
+		}
 	}
 
 	/**
@@ -223,7 +223,7 @@ public class DebugItemGenPanel implements ActionListener, Listener{
 			t_itemType.setText("Potion");
 		}
 	}
-	
+
 	/**
 	 * Resets all text fields
 	 */

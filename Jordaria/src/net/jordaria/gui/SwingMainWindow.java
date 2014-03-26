@@ -23,8 +23,8 @@ import net.jordaria.Jordaria;
 import net.jordaria.KeyBind;
 import net.jordaria.debug.DebugPanel;
 import net.jordaria.event.EventHandler;
+import net.jordaria.event.EventManager;
 import net.jordaria.event.Listener;
-import net.jordaria.event.events.EventSystemStarted;
 import net.jordaria.event.events.ShuttingDown;
 import net.jordaria.event.events.Tick;
 
@@ -49,23 +49,26 @@ public class SwingMainWindow extends WindowAdapter implements Listener, ActionLi
 	MapArea mapArea;
 	//A reference to the main jordaria class
 	Jordaria jordaria;
-	private boolean registered;//True if the event system has registered. A bit of a hack.\
 	private TextureManager textureManager;
 
 	/**
-	 * Constructs a new {@link SwingMainWindow} with a reference 
-	 * to the {@link Jordaria main program}.
-	 * 
-	 * @param jd The reference to the main program
+	 * Constructs a new {@link SwingMainWindow} to serve 
+	 * as the gui. This is the window the program shows in.
 	 */
-	public SwingMainWindow(Jordaria jd){
-		this.jordaria = jd;
+	public SwingMainWindow(){
+		this.jordaria = Jordaria.getInstance();
 		this.init();
 	}
 	/**
 	 * Initializes the frame for use.
 	 */
 	public void init(){
+		
+		try {
+			EventManager.getInstance().registerEventListeners(this);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		//frame
 		frame = new JFrame(Jordaria.config.getWindow_title());
@@ -92,7 +95,7 @@ public class SwingMainWindow extends WindowAdapter implements Listener, ActionLi
 		
 		textureManager = new TextureManager();
 
-		mapArea = new MapArea(jordaria, textureManager);
+		mapArea = new MapArea(textureManager);
 		frame.addKeyListener(this);
 		menuBar.addKeyListener(this);
 		mapArea.addKeyListener(this);
@@ -135,52 +138,18 @@ public class SwingMainWindow extends WindowAdapter implements Listener, ActionLi
 
 	@EventHandler
 	public void onTick(Tick event){
-		if (!registered){
-			registerEventListeners();
-		}
 		if (!frame.isVisible()){
-			jordaria.getEventManager().fireEvent(new ShuttingDown());
-		}
-	}
-
-	/**
-	 * Registers listeners once the event system is running.
-	 * This prevents possible issues with registering when the 
-	 * Event system is not running.
-	 * 
-	 * @param event The event that occurred
-	 */
-	@EventHandler
-	public void onEventSystemStarted(EventSystemStarted event){
-		registerEventListeners();
-	}
-	/**
-	 * Registers listeners with the event manager.
-	 */
-	private void registerEventListeners(){
-		try {
-			jordaria.getEventManager().registerEventListeners(mapArea);
-			mapArea.setEventManager();
-			registered = true;
-		} catch (Exception e) {
-			e.printStackTrace();
-
+			EventManager.getInstance().fireEvent(new ShuttingDown());
 		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == menuItemFileExit){
-			jordaria.getEventManager().fireEvent(new ShuttingDown());
+			EventManager.getInstance().fireEvent(new ShuttingDown());
 		}
 		else if (e.getSource() == menuItemDebugPanel){
-			DebugPanel panel = new DebugPanel();
-			panel.setJordariaVar(jordaria);
-			try {
-				jordaria.getEventManager().registerEventListeners(panel);
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
+			new DebugPanel();
 		}
 	}
 	

@@ -10,6 +10,22 @@ import java.util.Set;
  * Manages events and listeners.
  */
 public class EventManager {
+	
+	private static EventManager instance;
+	
+	/**
+	 * Creates a new EventManager if one does not already exist, 
+	 * and then returns the manager. There is only one instance at 
+	 * any time.
+	 * 
+	 * @return The instance of the EventManager
+	 */
+	public static synchronized EventManager getInstance(){
+		if (instance == null){
+			instance = new EventManager();
+		}
+		return instance;
+	}
 
 	/**
 	 * Registers event listeners in the supplied listener.
@@ -17,7 +33,7 @@ public class EventManager {
 	 * @param listener The listener to register
 	 * @throws Exception If there is an error registering
 	 */
-	public void registerEventListeners(Listener listener) throws Exception {
+	public synchronized void registerEventListeners(Listener listener) throws Exception {
 		for (Map.Entry<Class<? extends Event>, Set<EventListener>> entry : createRegisteredListeners(listener).entrySet()) {
 			getEventListeners(getRegistrationClass(entry.getKey())).registerAll(entry.getValue());
 		}
@@ -29,7 +45,7 @@ public class EventManager {
 	 * @param type The type of event to find handlers for
 	 * @throws Exception If an exception occurred
 	 */
-	private HandlerList getEventListeners(Class<? extends Event> type)
+	private synchronized HandlerList getEventListeners(Class<? extends Event> type)
 			throws Exception {
 		try {
 			Method method = getRegistrationClass(type).getDeclaredMethod("getHandlerList");
@@ -46,7 +62,7 @@ public class EventManager {
 	 * @param eventClass The class to find handlers for
 	 * @throws Exception If a handler list cannot be found
 	 */
-	private Class<? extends Event> getRegistrationClass(
+	private synchronized Class<? extends Event> getRegistrationClass(
 			Class<? extends Event> eventClass) throws Exception {
 		try {
 			eventClass.getDeclaredMethod("getHandlerList");
@@ -89,7 +105,7 @@ public class EventManager {
 	 * @param listener The listener to create EventListenrs for
 	 * @return A map of events to a set of EventListeners belonging to it
 	 */
-	public Map<Class<? extends Event>, Set<EventListener>> createRegisteredListeners(Listener listener) {
+	public synchronized Map<Class<? extends Event>, Set<EventListener>> createRegisteredListeners(Listener listener) {
 
 		Map<Class<? extends Event>, Set<EventListener>> toReturn = new HashMap<Class<? extends Event>, Set<EventListener>>();
 		Set<Method> methods;

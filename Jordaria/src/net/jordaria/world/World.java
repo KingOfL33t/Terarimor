@@ -28,13 +28,12 @@ public class World {
 	public EventManager eventManager;
 
 	/**
-	 * Construct a new world with the given name and {@link EventManager manager}.
+	 * Construct a new world with the given name.
 	 * 
 	 * @param name The name of the world
-	 * @param manager The event manager to use
 	 */
-	public World(String name, EventManager manager){
-		this.eventManager = manager;
+	public World(String name){
+		this.eventManager = EventManager.getInstance();
 		this.worldName = name;
 		this.rng = new Random();
 		rng.initializeGenerator((int)(Math.random()*1337));

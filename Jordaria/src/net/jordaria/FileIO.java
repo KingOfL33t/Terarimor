@@ -26,11 +26,9 @@ public class FileIO {
 
 	/**
 	 * Constructs a new fileIO.
-	 * 
-	 * @param jordaria A reference to the main program
 	 */
-	public FileIO(Jordaria jordaria){
-		this.jd = jordaria;
+	public FileIO(){
+		this.jd = Jordaria.getInstance();
 	}
 
 	/**

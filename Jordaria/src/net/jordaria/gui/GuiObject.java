@@ -56,6 +56,12 @@ public class GuiObject implements Listener{
 	public GuiObject(GuiObject parent){
 		this();
 		setParent(parent);
+		eventManager = EventManager.getInstance();
+		try {
+			eventManager.registerEventListeners(this);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	/**
 	 * Performs initialization of the gui object. 
@@ -63,10 +69,6 @@ public class GuiObject implements Listener{
 	 */
 	public void init(){
 		
-	}
-	
-	public void setEventManager(EventManager eventManager){
-		this.eventManager = eventManager;
 	}
 	
 	/**
@@ -77,13 +79,7 @@ public class GuiObject implements Listener{
 	 * @param child The child object to add
 	 */
 	public void addChild(GuiObject child){
-		child.setEventManager(eventManager);
 		child.init();
-		try {
-			eventManager.registerEventListeners(child);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		this.children.add(child);
 	}
 	

@@ -13,6 +13,7 @@ import javax.swing.text.DefaultCaret;
 import net.jordaria.Configuration;
 import net.jordaria.entity.EntityPlayer;
 import net.jordaria.event.EventHandler;
+import net.jordaria.event.EventManager;
 import net.jordaria.event.EventPriority;
 import net.jordaria.event.Listener;
 import net.jordaria.event.events.DebugMessage;
@@ -43,6 +44,7 @@ public class DebugConsole extends WindowAdapter implements Listener{
 	 * Constructs a new debug console and sets up components.
 	 */
 	public DebugConsole(){
+		
 		frame = new JFrame(window_title);
 		frame.setSize(width, height);
 
@@ -56,6 +58,12 @@ public class DebugConsole extends WindowAdapter implements Listener{
 		frame.getContentPane().setLayout(new BorderLayout());
 		frame.getContentPane().add(new JScrollPane(textArea),BorderLayout.CENTER);
 
+		try {
+			EventManager.getInstance().registerEventListeners(this);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		frame.setVisible(true);
 	}
 

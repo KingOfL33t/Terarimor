@@ -24,13 +24,11 @@ public class GameSettings {
 
 	/**
 	 * Constructs a new GameSettings and loads default settings.
-	 * 
-	 * @param jordaria A reference to the main program
 	 */
-	public GameSettings(Jordaria jordaria)
+	public GameSettings()
 	{
 		this.keyBindings = new KeyBind[] {this.KEYBIND_MOVE_FORWARD, this.KEYBIND_MOVE_BACKWARD, this.KEYBIND_MOVE_LEFT, this.KEYBIND_MOVE_RIGHT};
-		this.jd = jordaria;
+		this.jd = Jordaria.getInstance();
 		this.loadDefaults();
 	}
 	

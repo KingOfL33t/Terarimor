@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 
 import net.jordaria.Jordaria;
 import net.jordaria.event.EventHandler;
+import net.jordaria.event.EventManager;
 import net.jordaria.event.Listener;
 import net.jordaria.event.events.MapChanged;
 import net.jordaria.event.events.Tick;
@@ -44,26 +45,20 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 	private TextureManager textureManager;
 
 	/**
-	 * Constructs a new {@link MapArea} with the given 
-	 * {@link Jordaria} reference.
-	 * 
-	 * @param jordaria The reference to the main program
+	 * Constructs a new {@link MapArea} to display a 
+	 * map on the gui.
 	 */
-	public MapArea(Jordaria jordaria, TextureManager textureManager){
-		this.jordaria = jordaria;
+	public MapArea(TextureManager textureManager){
+		this.jordaria = Jordaria.getInstance();
+		try {
+			EventManager.getInstance().registerEventListeners(this);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		this.textureManager = textureManager;
 		resetCamera();
 		addComponentListener(this);
 		
-	}
-
-	/**
-	 * Sets the event manager to jordarias. This is called after the 
-	 * Event system is set up to prevent null references
-	 */
-	public void setEventManager(){
-		jordaria.getEventManager();
-		this.eventManagerValid = true;
 	}
 
 	@EventHandler

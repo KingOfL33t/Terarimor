@@ -15,13 +15,10 @@ public class Heart extends Thread {
 	private boolean running;
 
 	/**
-	 * Constructs a new {@link Heart} with the given 
-	 * {@link EventManager} to tick.
-	 * 
-	 * @param eventManager The event manager
+	 * Constructs a new {@link Heart} to fire tick events.
 	 */
-	public Heart(EventManager eventManager){
-		this.evtManager = eventManager;
+	public Heart(){
+		this.evtManager = EventManager.getInstance();
 		this.running = true;
 	}
 
