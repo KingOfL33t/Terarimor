@@ -96,6 +96,7 @@ public class SwingMainWindow extends WindowAdapter implements Listener, ActionLi
 		textureManager = new TextureManager();
 
 		mapArea = new MapArea(textureManager);
+		mapArea.setVisible(true);
 		frame.addKeyListener(this);
 		menuBar.addKeyListener(this);
 		mapArea.addKeyListener(this);
@@ -114,7 +115,7 @@ public class SwingMainWindow extends WindowAdapter implements Listener, ActionLi
 		c.gridx = 0;
 		c.gridy = 1;
 		c.weighty = 1;
-		frame.add(mapArea, c, JLayeredPane.DEFAULT_LAYER);
+		frame.add(mapArea, c);
 		
 		BufferedImage myPicture = textureManager.getTextureBuffer("test");
 		JLabel picLabel = new JLabel(new ImageIcon(myPicture));
