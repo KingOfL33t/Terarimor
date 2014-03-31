@@ -91,6 +91,46 @@ public class Map {
 	public int getHeight(){
 		return this.height;
 	}
+	
+	/**
+	 * Returns true if the given x value is 
+	 * a valid x in the map.
+	 * 
+	 * @param xPos The x position
+	 * @return true if the x exists
+	 */
+	public boolean containsX(int xPos){
+		if (xPos >= 0 && xPos < this.width){
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Returns true if the given y value is 
+	 * a valid y in the map.
+	 * 
+	 * @param yPos The y position
+	 * @return true if the y exists
+	 */
+	public boolean containsY(int yPos){
+		if (yPos >= 0 && yPos < this.width){
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Returns true if the given location is 
+	 * a valid position on the map, false otherwise
+	 * 
+	 * @param xPos The x position
+	 * @param yPos The y position
+	 * @return true if the point exists
+	 */
+	public boolean containsPoint(int xPos, int yPos){
+		return (containsX(xPos)&&containsY(yPos));
+	}
 
 	/**
 	 * Returns the {@link Tile tile} at the specified position.

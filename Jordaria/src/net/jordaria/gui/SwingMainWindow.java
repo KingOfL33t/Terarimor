@@ -14,7 +14,6 @@ import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -121,7 +120,7 @@ public class SwingMainWindow extends WindowAdapter implements Listener, ActionLi
 		JLabel picLabel = new JLabel(new ImageIcon(myPicture));
 		picLabel.setSize(100, 100);
 		
-		frame.getLayeredPane().add(picLabel, JLayeredPane.MODAL_LAYER);
+		//frame.getLayeredPane().add(picLabel, JLayeredPane.MODAL_LAYER);
 
 		frame.setVisible(true);
 

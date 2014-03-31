@@ -34,6 +34,7 @@ public class TextureManager {
 		loadTexture("walls");
 		loadTexture("roof");
 		loadTexture("doorN");
+		loadTexture("notexture");
 	}
 
 	/**

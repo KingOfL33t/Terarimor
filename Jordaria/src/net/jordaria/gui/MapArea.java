@@ -3,7 +3,7 @@ package net.jordaria.gui;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.TexturePaint;
+import java.awt.GridLayout;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.image.BufferedImage;
@@ -30,18 +30,17 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 
 	private static final long serialVersionUID = -6525651076156323158L;
 
-	private int tileWidth = 100;
-	private int tileHeight = 100;
-	private int mapWidth = 0;//how wide the map is
-	private int mapHeight = 0;//how tall the map is
-	private int tilesY;//how many tiles fit in the y direction
-	private int tilesX;//how many tiles fit in the x direction
+	private int tileWidth;
+	private int tileHeight;
+	private int mapWidth = 0;//how wide the map is in tiles
+	private int mapHeight = 0;//how tall the map is in tiles
+	private int tilesY = 30;//how many tiles fit in the y direction
+	private int tilesX = 30;//how many tiles fit in the x direction
 	private Map currentMap;
 	private Jordaria jordaria;
 	private int cameraX = 0;//how far the map is offset x
 	private int cameraY = 0;//how far the map is offset y
 	private boolean eventManagerValid = false;
-	private TexturePaint texturePaint;
 	private TextureManager textureManager;
 	private JLabel[][] tiles;
 
@@ -57,6 +56,7 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 			e.printStackTrace();
 		}
 		this.textureManager = textureManager;
+		setupTiles();
 		resetCamera();
 		addComponentListener(this);
 
@@ -68,6 +68,27 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 		repaint();
 	}
 
+	private void setupTiles(){
+		int y,x;
+		this.tileWidth = this.getWidth()/this.tilesX;
+		this.tileHeight = this.getHeight()/this.tilesY;
+
+		tiles = new JLabel[tilesY][tilesX];
+		
+		setLayout(new GridLayout(tilesX, tilesY));
+
+		if (tilesX > 0 && tilesY > 0){
+			for (y = 0; y < tilesY; y++){
+				for (x = 0; x < tilesX; x++){
+					tiles[y][x] = new JLabel();
+					tiles[y][x].setLocation(x*tileWidth, y*tileHeight);
+					tiles[y][x].setSize(tileWidth, tileHeight);
+					tiles[y][x].setVisible(true);
+					this.add(tiles[y][x]);
+				}
+			}
+		}
+	}
 	/**
 	 * Handles input from the keyboard
 	 */
@@ -110,10 +131,8 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 			}
 
 			//draw the map
-			
 
 			g2d.setColor(new Color(0,0,0));
-			//paint text
 			g2d.drawString("Map W:"+mapWidth, 10, 10);
 			g2d.drawString("Map H:"+mapHeight, 10, 20);
 			g2d.drawString("Tile W:"+tileWidth, 10, 30);
@@ -133,36 +152,6 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 		currentMap = event.getMap();
 		this.mapHeight = currentMap.getHeight();
 		this.mapWidth = currentMap.getWidth();
-		this.tilesX = this.mapWidth/this.tileWidth;
-		this.tilesY = this.mapHeight/this.tileHeight;
-		int y,x;
-
-
-		//remove all the tiles from the area
-		if (tiles!=null){//it exists
-			if (tiles.length>0){//and actually has stuff in it
-				for (JLabel[] labels : tiles){
-					if (labels.length>0){
-						for (JLabel label : labels){
-							this.remove(label);
-						}
-					}
-				}
-			}
-		}
-		tiles = null;
-		tiles = new JLabel[tilesY][tilesX];
-
-
-
-		if (tilesX > 0 && tilesY > 0){
-			for (y = 0; y < tilesX; y++){
-				for (x = 0; x < tilesY; x++){
-					tiles[y][x].setLocation(x*tileWidth, y*tileHeight);
-					this.add(tiles[y][x]);
-				}
-			}
-		}
 
 		resetCamera();
 	}
@@ -175,22 +164,8 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 	public void moveCamera(int x, int y){
 		this.cameraX+=x;
 		this.cameraY+=y;
-		
-		int xx,yy;
-		BufferedImage img;
 
-		for (yy = 0+cameraY; yy < tileHeight+cameraY; yy++){
-			for (xx = 0+cameraX; xx < tileWidth+cameraX; xx++){
-				try{
-					img = textureManager.getTextureBuffer(currentMap.getTile(xx, yy).getTileType().getName());
-					tiles[yy][xx].setIcon(new ImageIcon(img));
-				}
-				catch(NullPointerException e){
-					img = textureManager.getTextureBuffer("notexture");
-					tiles[yy][xx].setIcon(new ImageIcon(img));
-				}
-			}
-		}
+		updateTileTextures();
 	}
 
 	/**
@@ -199,6 +174,49 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 	public void resetCamera(){
 		this.cameraX = 0;
 		this.cameraY = 0;
+
+		updateTileTextures();
+	}
+
+	/**
+	 * Determines what texture to use with each tile and 
+	 * sets them appropriately.
+	 */
+	private void updateTileTextures(){
+		int x,y;
+		BufferedImage img;
+
+		if (currentMap == null){
+			return;
+		}
+		if (tiles == null){
+			return;
+		}
+		if (! (tiles.length > 0)){
+			return;
+		}
+		
+
+		for (y = 0+cameraY; y < tilesY+cameraY; y++){
+			for (x = 0+cameraX; x < tilesX+cameraX; x++){
+				if (currentMap.containsPoint(x, y)){
+					try{
+						img = textureManager.getTextureBuffer(currentMap.getTile(x, y).getTileType().getName());
+					}
+					catch(NullPointerException e){
+						img = textureManager.getTextureBuffer("notexture");
+					}
+					tiles[y][x].setVisible(false);
+					//set the icon to a version of the image scaled to fit
+					tiles[y][x].setIcon(new ImageIcon(img.getScaledInstance(tileWidth, tileHeight, BufferedImage.SCALE_FAST)));
+					tiles[y][x].setSize(tileWidth, tileHeight);
+					tiles[y][x].setVisible(true);
+				}
+				else{
+					tiles[y][x].setVisible(false);
+				}
+			}
+		}
 	}
 
 	/**
@@ -208,6 +226,7 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 	 */
 	public void setCameraX(int x){
 		this.cameraX = x;
+		updateTileTextures();
 	}
 
 	/**
@@ -217,6 +236,7 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 	 */
 	public void setCameraY(int y){
 		this.cameraY = y;
+		updateTileTextures();
 	}
 
 	/**
@@ -228,6 +248,7 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 	public void setCameraPos(int x, int y){
 		setCameraX(x);
 		setCameraY(y);
+		updateTileTextures();
 	}
 
 	/**
@@ -235,33 +256,10 @@ public class MapArea extends JPanel implements Listener, ComponentListener{
 	 *
 	 */
 	public void recalculateScale(){
-		this.tilesX = this.mapWidth/this.tileWidth;
-		this.tilesY = this.mapHeight/this.tileHeight;
-		int y,x;
-
-		//remove all the tiles from the area
-		if (tiles!=null){//it exists
-			if (tiles.length>0){//and actually has stuff in it
-				for (JLabel[] labels : tiles){
-					if (labels.length>0){
-						for (JLabel label : labels){
-							this.remove(label);
-						}
-					}
-				}
-			}
-		}
-		tiles = null;//clear it out of memory
-		tiles = new JLabel[tilesY][tilesX];
-
-		if (tilesX > 0 && tilesY > 0){
-			for (y = 0; y < tilesX; y++){
-				for (x = 0; x < tilesY; x++){
-					tiles[y][x].setLocation(x*tileWidth, y*tileHeight);
-					this.add(tiles[y][x]);
-				}
-			}
-		}
+		this.tileWidth = this.getWidth()/this.tilesX;
+		this.tileHeight = this.getHeight()/this.tilesY;
+	
+		updateTileTextures();
 	}
 
 	@Override
