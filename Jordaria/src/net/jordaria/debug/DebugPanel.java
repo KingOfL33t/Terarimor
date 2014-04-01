@@ -109,7 +109,7 @@ public class DebugPanel implements ActionListener, Listener{
 			frame.setVisible(true);
 		}
 		else if (e.getSource().equals(b_testTownGen)){
-			World world = jd.theWorld;
+			World world = jd.getWorld();
 			WorldGen generator = new WorldGen();
 			int size = 30;
 			Map map = new Map(size, size);

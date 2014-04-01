@@ -28,20 +28,20 @@ public class Jordaria implements Runnable, Listener{
 	private static Jordaria instance;
 
 	//VARIABLES
-	public boolean running;//Whether or not the game is active
+	private boolean running;//Whether or not the game is active
 	public static Configuration config;
-	DebugConsole console;
-	public EntityPlayer thePlayer;
-	EventManager eventManager;
-	public FileIO fileIO;
-	public GameSettings gameSettings;
-	public int displayWidth;
-	public int displayHeight;
+	@SuppressWarnings("unused")
+	private DebugConsole console;//reference to prevent GC
+	private EntityPlayer thePlayer;
+	private EventManager eventManager;
+	private FileIO fileIO;
+	private GameSettings gameSettings;
 	//public MainWindow mainWindow;
-	public Random rand;//The random number generator for the main program
-	public World theWorld;//The current world
-	public SwingMainWindow swingMainWindow;
-	public Heart heart;
+	private Random rand;//The random number generator for the main program
+	private World theWorld;//The current world
+	@SuppressWarnings("unused")
+	private SwingMainWindow swingMainWindow;//reference to prevent GC
+	private Heart heart;
 
 	/**
 	 * The main method. Creates and starts a new game.
@@ -87,12 +87,12 @@ public class Jordaria implements Runnable, Listener{
 			rand = new Random();
 			rand.initializeGenerator((int)(Math.random()*1337));
 			gameSettings = new GameSettings();
-
-			swingMainWindow = new SwingMainWindow();
-
+			
 			fileIO = new FileIO();
 			//fileIO.createMainDirectories(gameSettings.homeDirectory);
-			//fileIO.copyFilesToDisk(gameSettings.homeDirectory);
+			fileIO.listFiles(gameSettings.getHomeDirectory());
+
+			swingMainWindow = new SwingMainWindow();
 
 			initGraphics();
 

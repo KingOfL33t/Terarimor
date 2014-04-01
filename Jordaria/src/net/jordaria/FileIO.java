@@ -7,10 +7,13 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import net.jordaria.event.EventManager;
 import net.jordaria.event.events.DebugMessage;
 import net.jordaria.event.events.Error;
 
@@ -21,15 +24,6 @@ import net.jordaria.event.events.Error;
  *
  */
 public class FileIO {
-
-	private Jordaria jd;
-
-	/**
-	 * Constructs a new fileIO.
-	 */
-	public FileIO(){
-		this.jd = Jordaria.getInstance();
-	}
 
 	/**
 	 * Creates folders in the application data for storing data.
@@ -59,58 +53,59 @@ public class FileIO {
 	}
 
 	/**
-	 * Copies files to the folders created in the Jordaria app data folder.
-	 * Fires an error event if there is a problem.
+	 * Lists the assets in the texture directory. This is for testing 
+	 * purposes.
 	 * 
 	 * @param homeDir The directory where app data is stored
 	 */
-	public void copyFilesToDisk(String homeDir){
+	public void listFiles(String homeDir){
 		try {
-			String seperator = "\\";//File.separator;
+			String separator = System.getProperty("file.separator");
 
 
 			final String path;
 
 			final File jarFile = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
-			//jd.eventManager.fireEvent(new DebugMessage(getClass().getProtectionDomain().getCodeSource().getLocation().getPath()));
-			if(jarFile.isFile()) {  // Run with JAR file
-				seperator = "/";
-				path = jarFile.getAbsolutePath()+seperator+"assets"+seperator+"textures";
+			//EventManager.getInstance().fireEvent(new DebugMessage(getClass().getProtectionDomain().getCodeSource().getLocation().getPath()));
+			if(jarFile.isFile()) {// Run from JAR file
+				separator = "/";
+				path = jarFile.getAbsolutePath()+separator+"assets"+separator+"textures";
 				path.replaceAll("\\." , "/");
 
 				final JarFile jar = new JarFile(jarFile);
-				final Enumeration<JarEntry> entries = jar.entries(); //gives ALL entries in jar
+				final Enumeration<JarEntry> entries = jar.entries();//gives ALL entries in jar
 				while(entries.hasMoreElements()) {
 
 					final String name = entries.nextElement().getName();
-					if (name.startsWith(path)) { //filter according to the path
+					if (name.startsWith(path)) {//filter according to the path
 						//System.out.println(name);
-						jd.eventManager.fireEvent(new DebugMessage(name));
+						EventManager.getInstance().fireEvent(new DebugMessage(name));
 					}
 				}
 
 				jar.close();
 			}
-			//Uncomment to output dirs
-			/*
-			else { // Run with IDE
-				path = seperator+"assets"+seperator+"textures";
+			else {//Run in IDE
+				separator = "/";
+				path = separator+"assets"+separator+"textures";
 				path.replaceAll("\\." , "/");
+				
 			    final URL url = FileIO.class.getResource(path);
 			    if (url != null) {
 			        try {
 			            final File apps = new File(url.toURI());
 			            for (File app : apps.listFiles()) {
 			                System.out.println(app);
-			                //jd.eventManager.fireEvent(new DebugMessage(app.getAbsolutePath()));
+			                EventManager.getInstance().fireEvent(new DebugMessage(app.getAbsolutePath()));
+			                
 			            }
 			        } catch (URISyntaxException ex) {
 			            // never happens
 			        }
 			    }
-			}*/
+			}
 		} catch (IOException e) {
-			jd.eventManager.fireEvent(new Error("Error copying file to disk ("+e.getMessage()+")"));
+			EventManager.getInstance().fireEvent(new Error("Error copying file to disk ("+e.getMessage()+")"));
 		}
 
 	}
@@ -128,7 +123,7 @@ public class FileIO {
 			reader = new BufferedReader(new FileReader(filepath));
 
 		} catch (FileNotFoundException e) {
-			jd.eventManager.fireEvent(new Error("Error creating bufferedReader for "+filepath));
+			EventManager.getInstance().fireEvent(new Error("Error creating bufferedReader for "+filepath));
 		}
 		return reader;
 	}
@@ -145,7 +140,7 @@ public class FileIO {
 			writer = new BufferedWriter(new FileWriter(filepath));
 
 		} catch (IOException e) {
-			jd.eventManager.fireEvent(new Error("Error creating bufferedWriter for "+filepath));
+			EventManager.getInstance().fireEvent(new Error("Error creating bufferedWriter for "+filepath));
 		}
 		return writer;
 	}

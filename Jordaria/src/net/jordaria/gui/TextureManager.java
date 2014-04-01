@@ -17,8 +17,6 @@ import net.jordaria.FileIO;
 public class TextureManager {
 
 	HashMap<String, BufferedImage> textures = new HashMap<String, BufferedImage>();
-	
-	private String fileSeperator = System.getProperty("file.separator");
 
 	/**
 	 * Constructs a new TextureManager and loads a test png.
@@ -46,8 +44,13 @@ public class TextureManager {
 	public void loadTexture(String name){
 		try {
 			BufferedImage img;
-			String path = fileSeperator+"assets"+fileSeperator+"textures"+fileSeperator;
+			String separator = "/";
+			
+			String path = separator+"assets"+separator+"textures"+separator;
 			path.replaceAll("\\." , "/");
+			
+			System.out.println(path+name+".png");
+			
 			img = ImageIO.read(FileIO.class.getResource(path+name+".png"));
 			textures.put(name, img);
 		}
