@@ -58,15 +58,16 @@ public class FileIO {
 	 * 
 	 * @param homeDir The directory where app data is stored
 	 */
-	public void listFiles(String homeDir){
+	public void listFiles(){
 		try {
 			String separator = System.getProperty("file.separator");
 
-
+			
 			final String path;
 
 			final File jarFile = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
 			//EventManager.getInstance().fireEvent(new DebugMessage(getClass().getProtectionDomain().getCodeSource().getLocation().getPath()));
+			
 			if(jarFile.isFile()) {// Run from JAR file
 				separator = "/";
 				path = jarFile.getAbsolutePath()+separator+"assets"+separator+"textures";
@@ -85,12 +86,13 @@ public class FileIO {
 
 				jar.close();
 			}
+			
 			else {//Run in IDE
 				separator = "/";
-				path = separator+"assets"+separator+"textures";
-				path.replaceAll("\\." , "/");
+				path = "assets"+separator+"textures";
 				
 			    final URL url = FileIO.class.getResource(path);
+			    
 			    if (url != null) {
 			        try {
 			            final File apps = new File(url.toURI());
@@ -104,9 +106,11 @@ public class FileIO {
 			        }
 			    }
 			}
+			
 		} catch (IOException e) {
 			EventManager.getInstance().fireEvent(new Error("Error copying file to disk ("+e.getMessage()+")"));
 		}
+		
 
 	}
 

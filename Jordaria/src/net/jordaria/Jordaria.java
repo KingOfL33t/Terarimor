@@ -34,7 +34,8 @@ public class Jordaria implements Runnable, Listener{
 	private DebugConsole console;//reference to prevent GC
 	private EntityPlayer thePlayer;
 	private EventManager eventManager;
-	private FileIO fileIO;
+	@SuppressWarnings("unused")
+	private FileIO fileIO;//reference to prevent GC
 	private GameSettings gameSettings;
 	//public MainWindow mainWindow;
 	private Random rand;//The random number generator for the main program
@@ -90,7 +91,6 @@ public class Jordaria implements Runnable, Listener{
 			
 			fileIO = new FileIO();
 			//fileIO.createMainDirectories(gameSettings.homeDirectory);
-			fileIO.listFiles(gameSettings.getHomeDirectory());
 
 			swingMainWindow = new SwingMainWindow();
 

@@ -46,7 +46,7 @@ public class TextureManager {
 			BufferedImage img;
 			String separator = "/";
 			
-			String path = separator+"assets"+separator+"textures"+separator;
+			String path = "assets"+separator+"textures"+separator;
 			path.replaceAll("\\." , "/");
 			
 			System.out.println(path+name+".png");
