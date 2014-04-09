@@ -49,8 +49,6 @@ public class TextureManager {
 			String path = "assets"+separator+"textures"+separator;
 			path.replaceAll("\\." , "/");
 			
-			System.out.println(path+name+".png");
-			
 			img = ImageIO.read(FileIO.class.getResource(path+name+".png"));
 			textures.put(name, img);
 		}
