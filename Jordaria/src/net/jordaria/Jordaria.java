@@ -99,8 +99,6 @@ public class Jordaria implements Runnable, Listener{
 			fileIO = new FileIO();
 			//fileIO.createMainDirectories(gameSettings.homeDirectory);
 
-			swingMainWindow = new SwingMainWindow();
-
 			initGraphics();
 
 			theWorld = new World("Test");
@@ -134,7 +132,7 @@ public class Jordaria implements Runnable, Listener{
 	 * Fires an {@link EventSystemStarted EventSystemStarted} event on completion.
 	 * 
 	 */
-	private synchronized void initEventManager(){
+	private void initEventManager(){
 		eventManager = EventManager.getInstance();//likely creates the manager
 		eventManager.fireEvent(new EventSystemStarted());
 	}
@@ -143,14 +141,15 @@ public class Jordaria implements Runnable, Listener{
 	 * Initializes graphics subsystem and creates the main window.
 	 * Fires an {@link GraphicsSystemStarted GraphicsSystemStarted} event on completion.
 	 */
-	private synchronized void initGraphics(){
+	private void initGraphics(){
+		swingMainWindow = new SwingMainWindow();
 		
 		try
 		{
 			AppGameContainer appgc;
 			appgc = new AppGameContainer(new Game("Simple Slick Game"));
 			appgc.setDisplayMode(640, 480, false);
-			appgc.start();
+			appgc.start();//TODO this seems to be where code execution stops. I can haz fix plz?
 		}
 		catch (SlickException ex)
 		{
