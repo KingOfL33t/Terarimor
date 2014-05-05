@@ -1,13 +1,7 @@
 package net.jordaria;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-
-import org.newdawn.slick.AppGameContainer;
-import org.newdawn.slick.SlickException;
 
 import net.jordaria.debug.DebugConsole;
 import net.jordaria.entity.EntityPlayer;
@@ -19,7 +13,6 @@ import net.jordaria.event.events.Error;
 import net.jordaria.event.events.EventSystemStarted;
 import net.jordaria.event.events.GraphicsSystemStarted;
 import net.jordaria.event.events.ShuttingDown;
-import net.jordaria.gui.Game;
 import net.jordaria.gui.SwingMainWindow;
 import net.jordaria.math.NameGenerator;
 import net.jordaria.math.Random;
@@ -144,7 +137,7 @@ public class Jordaria implements Runnable, Listener{
 	private void initGraphics(){
 		swingMainWindow = new SwingMainWindow();
 		
-		try
+		/*try
 		{
 			AppGameContainer appgc;
 			appgc = new AppGameContainer(new Game("Simple Slick Game"));
@@ -154,7 +147,7 @@ public class Jordaria implements Runnable, Listener{
 		catch (SlickException ex)
 		{
 			Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-		}
+		}*/
 		eventManager.fireEvent(new GraphicsSystemStarted());
 	}
 
